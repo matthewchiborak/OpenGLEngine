@@ -1,0 +1,27 @@
+#ifndef __TEXTURE_H
+#define __TEXTURE_H
+
+#include <string>
+#include <GL/glew.h>
+#include "stb_image.h"
+#include <cassert>
+#include <iostream>
+
+class Texture
+{
+public:
+	Texture(const std::string& fileName);
+
+	//Set opengl to use the texture. Can bind up to 32 textures at once
+	void bind(unsigned int unit);
+
+	virtual ~Texture();
+private:
+	Texture(const Texture& other) {}
+	void operator=(const Texture& other) {}
+
+	//Handle to the opengl texture
+	GLuint m_texture;
+};
+
+#endif
