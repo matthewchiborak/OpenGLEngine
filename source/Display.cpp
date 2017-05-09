@@ -46,6 +46,8 @@ Display::Display(int width, int height, const std::string& title)
 	for (int i = 0; i < 322; i++) 
 	{ // init them all to false
 		KEYS[i] = false;
+		KEYDOWN[i] = false;
+		KEYUP[i] = false;
 	}
 
 	//SDL_EnableKeyRepeat(0, 0); // you can configure this how you want, but it makes it nice for when you want to register a key continuously being held down
@@ -78,14 +80,43 @@ void Display::Update()
 				break;
 			case SDL_KEYDOWN:
 				KEYS[e.key.keysym.sym] = true;
+				KEYUP[e.key.keysym.sym] = false;
 				break;
 			case SDL_KEYUP:
 				KEYS[e.key.keysym.sym] = false;
+				KEYDOWN[e.key.keysym.sym] = false;
+				//Reset the keydown bool
+				break;
+			case SDL_MOUSEMOTION:
+				//Store the new mouse position
+				mousePrevX = mouseX;
+				mousePrevY = mouseY;
+				mouseX = e.button.x;
+				mouseY = e.button.x;
 				break;
 			default:
 			break;
 		}
 	}
+}
+
+int Display::getMouseDifX()
+{
+	int result = (mousePrevX - mouseX);
+
+	//Event has been handled
+	mousePrevX = mouseX;
+
+	return result;
+}
+int Display::getMouseDifY()
+{
+	int result = (mousePrevY - mouseY);
+
+	//Event has been handled
+	mousePrevY = mouseY;
+
+	return result;
 }
 
 bool Display::isClosed()
@@ -104,4 +135,26 @@ void Display::clear(float r, float g, float b, float a)
 bool Display::checkKey(int key)
 {
 	return KEYS[key];
+}
+
+bool Display::checkKeyDown(int key)
+{
+	if (KEYS[key] && !KEYDOWN[key])
+	{
+		KEYDOWN[key] = true;
+		return true;
+	}
+
+	return false;
+}
+
+bool Display::checkKeyUp(int key)
+{
+	if (!KEYS[key] && !KEYUP[key])
+	{
+		KEYUP[key] = true;
+		return true;
+	}
+
+	return false;
 }

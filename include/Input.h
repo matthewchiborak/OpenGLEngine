@@ -6,24 +6,43 @@
 #include "GameObject.h"
 #include "Transform.h"
 #include "Display.h"
+#include "Camera.h"
 
 enum InputType
 {
-	KEY_PRESS_TRANSFORM
+	KEY_PRESS_TRANSFORM,
+	KEY_PRESS_DOWN_TRANSFORM,
+	KEY_PRESS_UP_TRANSFORM,
+	KEY_PRESS_CAMERA_TRANSFORM,
+	KEY_PRESS_DOWN_CAMERA_TRANSFORM,
+	KEY_PRESS_UP_CAMERA_TRANSFORM,
+
+	MOUSE_MOVE_X_TRANSFORM,
+	MOUSE_MOVE_Y_TRANSFORM
 };
 
 class Input
 {
 public:
 	Input(int type, GameObject* objectToAffect, int key, Vec9 transform);
+	Input(int type, Camera* objectToAffect, int key, Vec9 transform);
+	Input(int type, Camera* objectToAffect);
 	void execute(Display* display);
 private:
 	int type;
 	GameObject* gameObject;
+	Camera* cameraObject;
 	int key;
 	Vec9 transform;
 
 	void keyPressTransform(Display* display);
+	void keyPressDownTransform(Display* display);
+	void keyPressUpTransform(Display* display);
+	void keyPressCameraTransform(Display* display);
+	void keyPressDownCameraTransform(Display* display);
+	void keyPressUpCameraTransform(Display* display);
+	void mouseMoveXTransform(Display* display);
+	void mouseMoveYTransform(Display* display);
 };
 
 #endif

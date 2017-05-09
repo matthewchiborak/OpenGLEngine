@@ -24,7 +24,7 @@ int main(int argc, char** argv)
 	std::vector<Scene*> scenes;
 	scenes.push_back(new Scene("Main", WIDTH, HEIGHT));
 
-	scenes.at(currentScene)->resetCamera(Vec9::createVec9(0, 1, -2, 0, 0, 1, 0, 1, 0));
+	//scenes.at(currentScene)->resetCamera(Vec9::createVec9(0, 1, -2, 0, 0, 1, 0, 1, 0));
 
 	Shader shader(".\\res\\basicShader");
 
@@ -35,7 +35,7 @@ int main(int argc, char** argv)
 	scenes.at(currentScene)->addGameObjectToScene(new GameObject("Monkey", "./res/monkey3.obj", &texture2, &shader));
 
 	//Assign inputs to the gameobject
-	scenes.at(currentScene)->addInputToScene(new Input(KEY_PRESS_TRANSFORM, scenes.at(currentScene)->getGameObject("Arwing"), SDLK_w, Vec9::createVec9(Direction::MOVE_Y, 0.01)));
+	/*scenes.at(currentScene)->addInputToScene(new Input(KEY_PRESS_TRANSFORM, scenes.at(currentScene)->getGameObject("Arwing"), SDLK_w, Vec9::createVec9(Direction::MOVE_Y, 0.01)));
 	scenes.at(currentScene)->addInputToScene(new Input(KEY_PRESS_TRANSFORM, scenes.at(currentScene)->getGameObject("Arwing"), SDLK_a, Vec9::createVec9(Direction::MOVE_X, 0.01)));
 	scenes.at(currentScene)->addInputToScene(new Input(KEY_PRESS_TRANSFORM, scenes.at(currentScene)->getGameObject("Arwing"), SDLK_s, Vec9::createVec9(Direction::MOVE_Y, -0.01)));
 	scenes.at(currentScene)->addInputToScene(new Input(KEY_PRESS_TRANSFORM, scenes.at(currentScene)->getGameObject("Arwing"), SDLK_d, Vec9::createVec9(Direction::MOVE_X, -0.01)));
@@ -44,7 +44,14 @@ int main(int argc, char** argv)
 	scenes.at(currentScene)->addInputToScene(new Input(KEY_PRESS_TRANSFORM, scenes.at(currentScene)->getGameObject("Arwing"), SDLK_e, Vec9::createVec9(Direction::ROT_Y, -0.01)));
 
 	scenes.at(currentScene)->addInputToScene(new Input(KEY_PRESS_TRANSFORM, scenes.at(currentScene)->getGameObject("Monkey"), SDLK_e, Vec9::createVec9(Direction::ROT_Y, -0.01)));
-	scenes.at(currentScene)->addInputToScene(new Input(KEY_PRESS_TRANSFORM, scenes.at(currentScene)->getGameObject("Monkey"), SDLK_r, Vec9::createVec9(Direction::MOVE_Y, 0.01)));
+	scenes.at(currentScene)->addInputToScene(new Input(KEY_PRESS_TRANSFORM, scenes.at(currentScene)->getGameObject("Monkey"), SDLK_r, Vec9::createVec9(Direction::MOVE_Y, 0.01)));*/
+	//scenes.at(currentScene)->addInputToScene(new Input(KEY_PRESS_UP_TRANSFORM, scenes.at(currentScene)->getGameObject("Arwing"), SDLK_w, Vec9::createVec9(Direction::MOVE_Y, 1)));
+	//scenes.at(currentScene)->addInputToScene(new Input(KEY_PRESS_UP_TRANSFORM, scenes.at(currentScene)->getGameObject("Arwing"), SDLK_s, Vec9::createVec9(Direction::MOVE_Y, -1)));
+	scenes.at(currentScene)->addInputToScene(new Input(KEY_PRESS_CAMERA_TRANSFORM, scenes.at(currentScene)->getCamera(), SDLK_w, Vec9::createVec9(Direction::MOVE_Z, 0.1)));
+	scenes.at(currentScene)->addInputToScene(new Input(KEY_PRESS_CAMERA_TRANSFORM, scenes.at(currentScene)->getCamera(), SDLK_s, Vec9::createVec9(Direction::MOVE_Z, -0.1)));
+	scenes.at(currentScene)->addInputToScene(new Input(KEY_PRESS_CAMERA_TRANSFORM, scenes.at(currentScene)->getCamera(), SDLK_a, Vec9::createVec9(Direction::MOVE_X, 0.1)));
+	scenes.at(currentScene)->addInputToScene(new Input(KEY_PRESS_CAMERA_TRANSFORM, scenes.at(currentScene)->getCamera(), SDLK_d, Vec9::createVec9(Direction::MOVE_X, -0.1)));
+	scenes.at(currentScene)->addInputToScene(new Input(MOUSE_MOVE_X_TRANSFORM, scenes.at(currentScene)->getCamera()));
 
 	float counter = 0.0f;
 
@@ -80,7 +87,7 @@ int main(int argc, char** argv)
 		//Output the framerate
 		if (frameCounter >= Time::SECOND)
 		{
-			std::cout << frames << "\n";
+			std::cout << "FPS: " << frames << "\n";
 			frames = 0;
 			frameCounter = 0;
 		}

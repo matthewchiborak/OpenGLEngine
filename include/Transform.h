@@ -106,6 +106,11 @@ public:
 	{
 		return Vec9(direction, magnitude);
 	}
+
+	static glm::vec3 rotate(float angle, glm::vec3 axis)
+	{
+		
+	}
 };
 
 class Transform

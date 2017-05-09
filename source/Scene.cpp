@@ -22,17 +22,20 @@ void Scene::resetCamera(Vec9 atLookUp)
 
 void Scene::setPerspective(float fov, float aspect, float zNear, float zFar)
 {
-
+	camera->setPerspective(fov, aspect, zNear, zFar);
 }
 
 void Scene::setNewCamera(Camera* camera)
 {
-	if (camera != NULL)
-	{
-		delete this->camera;
-	}
+	this->camera->setPosition(camera->getPosition());
+	this->camera->setForward(camera->getForward());
+	this->camera->setUp(camera->getUp());
+	this->camera->setPerspective(camera->getPerspective());
+}
 
-	this->camera = camera;
+Camera* Scene::getCamera()
+{
+	return camera;
 }
 
 Scene::~Scene()

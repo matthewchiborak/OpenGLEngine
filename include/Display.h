@@ -16,6 +16,11 @@ public:
 	bool isClosed();
 	void clear(float r, float g, float b, float a);
 	bool checkKey(int key);
+	bool checkKeyDown(int key);
+	bool checkKeyUp(int key);
+
+	int getMouseDifX();
+	int getMouseDifY();
 
 	virtual ~Display();
 private:
@@ -28,6 +33,13 @@ private:
 	bool m_isClosed;
 
 	bool KEYS[322];  // 322 is the number of SDLK_DOWN events
+	bool KEYDOWN[322]; //Keeps track of if the key press has been handled
+	bool KEYUP[322]; //Keeps track of if the key release has been handled
+
+	int mouseX;
+	int mouseY;
+	int mousePrevX;
+	int mousePrevY;
 };
 
 #endif

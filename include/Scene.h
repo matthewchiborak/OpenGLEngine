@@ -21,8 +21,9 @@ public:
 	void update(Display* display);
 	void moveCamera(Vec9 atLookUp);
 	void resetCamera(Vec9 atLookUp);
-	void setNewCamera(Camera* camera);
 	void setPerspective(float fov, float aspect, float zNear, float zFar);
+	Camera* getCamera();
+	void setNewCamera(Camera* camera);
 
 private:
 	std::string name;
