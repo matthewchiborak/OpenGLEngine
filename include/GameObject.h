@@ -12,11 +12,14 @@ class GameObject
 {
 public:
 	GameObject(std::string name, std::string meshFile, Texture* texture, Shader* shader);
+	GameObject(std::string name, Mesh* mesh, Texture* texture, Shader* shader);
 	~GameObject();
 	void draw(Camera* camera);
 	void move(Vec9 change);
 	void setTransform(Vec9 change);
 	std::string getName();
+
+	static GameObject* createCube(std::string name, float width, float height, float depth, Texture* texture, Shader* shader);
 
 private:
 	std::string name;

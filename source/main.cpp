@@ -31,8 +31,9 @@ int main(int argc, char** argv)
 	Texture texture2(".\\res\\bricks.jpg");
 	Texture texture(".\\res\\body.png");
 	
-	scenes.at(currentScene)->addGameObjectToScene(new GameObject("Arwing", "./res/arwing.obj", &texture, &shader));
-	scenes.at(currentScene)->addGameObjectToScene(new GameObject("Monkey", "./res/monkey3.obj", &texture2, &shader));
+	//scenes.at(currentScene)->addGameObjectToScene(new GameObject("Arwing", "./res/arwing.obj", &texture, &shader));
+	//scenes.at(currentScene)->addGameObjectToScene(new GameObject("Monkey", "./res/monkey3.obj", &texture2, &shader));
+	scenes.at(currentScene)->addGameObjectToScene(GameObject::createCube("TestCube", 5, 10, 1, &texture2, &shader));
 
 	//Assign inputs to the gameobject
 	/*scenes.at(currentScene)->addInputToScene(new Input(KEY_PRESS_TRANSFORM, scenes.at(currentScene)->getGameObject("Arwing"), SDLK_w, Vec9::createVec9(Direction::MOVE_Y, 0.01)));
@@ -59,6 +60,8 @@ int main(int argc, char** argv)
 	//scenes.at(currentScene)->addInputToScene(new Input(KEY_PRESS_CAMERA_TRANSFORM, scenes.at(currentScene)->getCamera(), SDLK_d, Vec9::createVec9(Direction::MOVE_X, -0.1)));
 	scenes.at(currentScene)->addInputToScene(new Input(MOUSE_MOVE_X_TRANSFORM, scenes.at(currentScene)->getCamera()));
 	//scenes.at(currentScene)->addInputToScene(new Input(MOUSE_MOVE_Y_TRANSFORM, scenes.at(currentScene)->getCamera()));
+
+	
 
 	float counter = 0.0f;
 
