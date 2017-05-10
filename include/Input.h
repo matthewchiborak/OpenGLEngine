@@ -18,7 +18,10 @@ enum InputType
 	KEY_PRESS_UP_CAMERA_TRANSFORM,
 
 	MOUSE_MOVE_X_TRANSFORM,
-	MOUSE_MOVE_Y_TRANSFORM
+	MOUSE_MOVE_Y_TRANSFORM,
+
+	KEY_PRESS_FORWARD_CAMERA_TRANSFORM,
+	KEY_PRESS_LEFT_CAMERA_TRANSFORM
 };
 
 class Input
@@ -26,6 +29,7 @@ class Input
 public:
 	Input(int type, GameObject* objectToAffect, int key, Vec9 transform);
 	Input(int type, Camera* objectToAffect, int key, Vec9 transform);
+	Input(int type, Camera* objectToAffect, int key, float magnitude);
 	Input(int type, Camera* objectToAffect);
 	void execute(Display* display);
 private:
@@ -34,6 +38,7 @@ private:
 	Camera* cameraObject;
 	int key;
 	Vec9 transform;
+	float magnitude;
 
 	void keyPressTransform(Display* display);
 	void keyPressDownTransform(Display* display);
@@ -43,6 +48,9 @@ private:
 	void keyPressUpCameraTransform(Display* display);
 	void mouseMoveXTransform(Display* display);
 	void mouseMoveYTransform(Display* display);
+
+	void keyPressForwardTransform(Display* display);
+	void keyPressLeftTransform(Display* display);
 };
 
 #endif

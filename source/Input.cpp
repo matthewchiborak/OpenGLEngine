@@ -23,6 +23,14 @@ Input::Input(int type, Camera* objectToAffect)
 	this->key = NULL;
 	gameObject = NULL;
 }
+Input::Input(int type, Camera* objectToAffect, int key, float magnitude)
+{
+	this->type = type;
+	gameObject = NULL;
+	this->key = key;
+	this->magnitude = magnitude;
+	cameraObject = objectToAffect;
+}
 
 void Input::execute(Display* display)
 {
@@ -57,6 +65,14 @@ void Input::execute(Display* display)
 	else if (type == MOUSE_MOVE_Y_TRANSFORM)
 	{
 		mouseMoveYTransform(display);
+	}
+	else if (type == KEY_PRESS_FORWARD_CAMERA_TRANSFORM)
+	{
+		keyPressForwardTransform(display);
+	}
+	else if (type == KEY_PRESS_LEFT_CAMERA_TRANSFORM)
+	{
+		keyPressLeftTransform(display);
 	}
 }
 
@@ -121,4 +137,26 @@ void Input::mouseMoveXTransform(Display* display)
 void Input::mouseMoveYTransform(Display* display)
 {
 	//cameraObject->moveForward();
+	cameraObject->rotateX(cameraObject->getSensitivity() * display->getMouseDifY());
+}
+
+void Input::keyPressForwardTransform(Display* display)
+{
+	if (display->checkKey(key))
+	{
+		glm::vec3 temp(cameraObject->getForward().x * magnitude, cameraObject->getForward().y * magnitude, cameraObject->getForward().z * magnitude);
+
+		cameraObject->movePosition(temp);
+	}
+}
+void Input::keyPressLeftTransform(Display* display)
+{
+	if (display->checkKey(key))
+	{
+		glm::vec3 left = glm::cross(cameraObject->getForward(), cameraObject->getUp());
+
+		glm::vec3 temp(left.x * magnitude, left.y * magnitude, left.z * magnitude);
+
+		cameraObject->movePosition(temp);
+	}
 }

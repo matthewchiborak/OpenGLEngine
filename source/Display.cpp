@@ -92,7 +92,7 @@ void Display::Update()
 				mousePrevX = mouseX;
 				mousePrevY = mouseY;
 				mouseX = e.button.x;
-				mouseY = e.button.x;
+				mouseY = e.button.y;
 				break;
 			default:
 			break;
