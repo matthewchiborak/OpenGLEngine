@@ -9,6 +9,7 @@
 #include <iostream>
 #include "Transform.h"
 #include "Camera.h"
+#include "DirectionalLight.h"
 
 class Shader
 {
@@ -25,6 +26,9 @@ public:
 	void setBaseColor(glm::fvec3 color);
 	glm::fvec3 getBaseColor();
 
+	void setDirectionalBase(glm::fvec3 color, float intensity);
+	void setDirectionalDirection(glm::fvec3 direction);
+
 	virtual ~Shader();
 
 private:
@@ -36,8 +40,12 @@ private:
 	enum
 	{
 		TRANSFORM_U,
+		TRANSFORM_PROJECTED,
 		BASE_COLOR,
 		AMBIENT_LIGHT,
+		DIRECTIONAL_LIGHT_BASE_COLOR,
+		DIRECTIONAL_LIGHT_BASE_INTENSITY,
+		DIRECTIONAL_LIGHT_DIRECTION,
 
 		NUM_UNIFORMS
 	};
@@ -50,6 +58,7 @@ private:
 	glm::fvec3 ambientLight;
 	glm::fvec3 baseColor;
 
+	DirectionalLight directionalLight;
 };
 
 #endif

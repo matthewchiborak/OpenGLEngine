@@ -30,13 +30,15 @@ int main(int argc, char** argv)
 	Shader shader(".\\res\\PhongShader");
 	shader.setAmbientLight(glm::fvec3(0.1f,0.1f,0.1f));
 	shader.setBaseColor(glm::fvec3(1.0f, 1.0f, 1.0f));
+	shader.setDirectionalDirection(glm::fvec3(1, 0, 0));
+	shader.setDirectionalBase(glm::fvec3(1, 1, 1), 1);
 
 	Texture wall(".\\res\\bricks.jpg");
 	Texture texture(".\\res\\body.png");
 	Texture floor(".\\res\\floor.jpg");
 	//Texture ceiling(".\\res\\ceiling.jpg");
 	
-	//scenes.at(currentScene)->addGameObjectToScene(new GameObject("Arwing", "./res/arwing.obj", &texture, &shader));
+	//scenes.at(currentScene)->addGameObjectToScene(new GameObject("Ship", "./res/arwing.obj", &texture, &shader));
 	//scenes.at(currentScene)->addGameObjectToScene(new GameObject("Monkey", "./res/monkey3.obj", &texture2, &shader));
 
 	scenes.at(currentScene)->addGameObjectToScene(GameObject::createCube("TestCube", 5, 10, 5, 0.5, 0.5, &wall, &shader));
@@ -84,6 +86,8 @@ int main(int argc, char** argv)
 	//scenes.at(currentScene)->addInputToScene(new Input(MOUSE_MOVE_Y_TRANSFORM, scenes.at(currentScene)->getCamera()));
 	scenes.at(currentScene)->addInputToScene(new Input(KEY_PRESS_CAMERA_TRANSFORM, scenes.at(currentScene)->getCamera(), SDLK_q, Vec9::createVec9(Direction::MOVE_Y, 0.1)));
 	scenes.at(currentScene)->addInputToScene(new Input(KEY_PRESS_CAMERA_TRANSFORM, scenes.at(currentScene)->getCamera(), SDLK_e, Vec9::createVec9(Direction::MOVE_Y, -0.1)));
+
+	scenes.at(currentScene)->addInputToScene(new Input(KEY_PRESS_TRANSFORM, scenes.at(currentScene)->getGameObject("TestCube"), SDLK_f, Vec9::createVec9(Direction::ROT_Y, -0.01)));
 
 	
 
