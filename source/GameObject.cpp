@@ -16,7 +16,7 @@ GameObject::GameObject(std::string name, Mesh* mesh, Texture* texture, Shader* s
 	this->shader = shader;
 }
 
-GameObject* GameObject::createCube(std::string name, float width, float height, float depth, Texture* texture, Shader* shader)
+GameObject* GameObject::createCube(std::string name, float width, float height, float depth, float repeatFactorX, float repeatFactorY, Texture* texture, Shader* shader)
 {
 	//fvec3??????
 	float w = width / 2;
@@ -25,38 +25,39 @@ GameObject* GameObject::createCube(std::string name, float width, float height, 
 
 	Vertex vertices[] =
 	{
-		Vertex(glm::vec3(-w, -h, -d), glm::vec2(1, 0), glm::vec3(0, 0, -1)),
+		Vertex(glm::vec3(-w, -h, -d), glm::vec2(repeatFactorX, 0), glm::vec3(0, 0, -1)),
 		Vertex(glm::vec3(-w, h, -d), glm::vec2(0, 0), glm::vec3(0, 0, -1)),
-		Vertex(glm::vec3(w, h, -d), glm::vec2(0, 1), glm::vec3(0, 0, -1)),
-		Vertex(glm::vec3(w, -h, -d), glm::vec2(1, 1), glm::vec3(0, 0, -1)),
+		Vertex(glm::vec3(w, h, -d), glm::vec2(0, repeatFactorY), glm::vec3(0, 0, -1)),
+		Vertex(glm::vec3(w, -h, -d), glm::vec2(repeatFactorX, repeatFactorY), glm::vec3(0, 0, -1)),
 
-		Vertex(glm::vec3(-w, -h, d), glm::vec2(1, 0), glm::vec3(0, 0, 1)),
+		Vertex(glm::vec3(-w, -h, d), glm::vec2(repeatFactorX, 0), glm::vec3(0, 0, 1)),
 		Vertex(glm::vec3(-w, h, d), glm::vec2(0, 0), glm::vec3(0, 0, 1)),
-		Vertex(glm::vec3(w, h, d), glm::vec2(0, 1), glm::vec3(0, 0, 1)),
-		Vertex(glm::vec3(w, -h, d), glm::vec2(1, 1), glm::vec3(0, 0, 1)),
+		Vertex(glm::vec3(w, h, d), glm::vec2(0, repeatFactorY), glm::vec3(0, 0, 1)),
+		Vertex(glm::vec3(w, -h, d), glm::vec2(repeatFactorX, repeatFactorY), glm::vec3(0, 0, 1)),
 
-		Vertex(glm::vec3(-w, -h, -d), glm::vec2(0, 1), glm::vec3(0, -1, 0)),
-		Vertex(glm::vec3(-w, -h, d), glm::vec2(1, 1), glm::vec3(0, -1, 0)),
-		Vertex(glm::vec3(w, -h, d), glm::vec2(1, 0), glm::vec3(0, -1, 0)),
+		Vertex(glm::vec3(-w, -h, -d), glm::vec2(0, repeatFactorY), glm::vec3(0, -1, 0)),
+		Vertex(glm::vec3(-w, -h, d), glm::vec2(repeatFactorX, repeatFactorY), glm::vec3(0, -1, 0)),
+		Vertex(glm::vec3(w, -h, d), glm::vec2(repeatFactorX, 0), glm::vec3(0, -1, 0)),
 		Vertex(glm::vec3(w, -h, -d), glm::vec2(0, 0), glm::vec3(0, -1, 0)),
 
-		Vertex(glm::vec3(-w, h, -d), glm::vec2(0, 1), glm::vec3(0, 1, 0)),
-		Vertex(glm::vec3(-w, h, d), glm::vec2(1, 1), glm::vec3(0, 1, 0)),
-		Vertex(glm::vec3(w, h, d), glm::vec2(1, 0), glm::vec3(0, 1, 0)),
+		Vertex(glm::vec3(-w, h, -d), glm::vec2(0, repeatFactorY), glm::vec3(0, 1, 0)),
+		Vertex(glm::vec3(-w, h, d), glm::vec2(repeatFactorX, repeatFactorY), glm::vec3(0, 1, 0)),
+		Vertex(glm::vec3(w, h, d), glm::vec2(repeatFactorX, 0), glm::vec3(0, 1, 0)),
 		Vertex(glm::vec3(w, h, -d), glm::vec2(0, 0), glm::vec3(0, 1, 0)),
 
-		Vertex(glm::vec3(-w, -h, -d), glm::vec2(1, 1), glm::vec3(-1, 0, 0)),
-		Vertex(glm::vec3(-w, -h, d), glm::vec2(1, 0), glm::vec3(-1, 0, 0)),
+		Vertex(glm::vec3(-w, -h, -d), glm::vec2(repeatFactorX, repeatFactorY), glm::vec3(-1, 0, 0)),
+		Vertex(glm::vec3(-w, -h, d), glm::vec2(repeatFactorX, 0), glm::vec3(-1, 0, 0)),
 		Vertex(glm::vec3(-w, h, d), glm::vec2(0, 0), glm::vec3(-1, 0, 0)),
-		Vertex(glm::vec3(-w, h, -d), glm::vec2(0, 1), glm::vec3(-1, 0, 0)),
+		Vertex(glm::vec3(-w, h, -d), glm::vec2(0, repeatFactorY), glm::vec3(-1, 0, 0)),
 
-		Vertex(glm::vec3(w, -h, -d), glm::vec2(1, 1), glm::vec3(1, 0, 0)),
-		Vertex(glm::vec3(w, -h, d), glm::vec2(1, 0), glm::vec3(1, 0, 0)),
+		Vertex(glm::vec3(w, -h, -d), glm::vec2(repeatFactorX, repeatFactorY), glm::vec3(1, 0, 0)),
+		Vertex(glm::vec3(w, -h, d), glm::vec2(repeatFactorX, 0), glm::vec3(1, 0, 0)),
 		Vertex(glm::vec3(w, h, d), glm::vec2(0, 0), glm::vec3(1, 0, 0)),
-		Vertex(glm::vec3(w, h, -d), glm::vec2(0, 1), glm::vec3(1, 0, 0)),
+		Vertex(glm::vec3(w, h, -d), glm::vec2(0, repeatFactorY), glm::vec3(1, 0, 0)),
 	};
 
-	unsigned int indices[] = { 0, 1, 2,
+	unsigned int indices[] = { 
+		0, 1, 2,
 		0, 2, 3,
 
 		6, 5, 4,

@@ -38,6 +38,8 @@ Shader::Shader(const std::string& fileName)
 
 	//Get access to the transform uniform in the shader
 	m_uniforms[TRANSFORM_U] = glGetUniformLocation(m_program, "transform");
+	m_uniforms[BASE_COLOR] = glGetUniformLocation(m_program, "baseColor");
+	m_uniforms[AMBIENT_LIGHT] = glGetUniformLocation(m_program, "ambientLight");
 }
 
 Shader::~Shader()
@@ -141,4 +143,26 @@ void Shader::update(const Transform& transform, const Camera& camera)
 	glm::mat4 model = camera.GetViewProjection() * transform.GetModel();
 
 	glUniformMatrix4fv(m_uniforms[TRANSFORM_U], 1, GL_FALSE, &model[0][0]);
+
+	//Update base color and ambient light???
+	//glUniformMatrix4fv(m_uniforms[AMBIENT_LIGHT], 1, GL_FALSE, &model[0][0]);
+	glUniform3fv(m_uniforms[AMBIENT_LIGHT], 1, &ambientLight[0]);
+	glUniform3fv(m_uniforms[BASE_COLOR], 1, &baseColor[0]);
+}
+
+void Shader::setAmbientLight(glm::fvec3 light)
+{
+	ambientLight = light;
+}
+glm::fvec3 Shader::getAmbientLight()
+{
+	return ambientLight;
+}
+void Shader::setBaseColor(glm::fvec3 color)
+{
+	baseColor = color;
+}
+glm::fvec3 Shader::getBaseColor()
+{
+	return baseColor;
 }

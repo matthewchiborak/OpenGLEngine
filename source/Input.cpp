@@ -124,19 +124,10 @@ void Input::keyPressUpCameraTransform(Display* display)
 
 void Input::mouseMoveXTransform(Display* display)
 {
-	/*cameraObject->movePosition(glm::vec3(sin(cameraObject->getSensitivity() * display->getMouseDifX()) * (cameraObject->getForward().x - cameraObject->getPosition().x),
-		0,
-		cos(cameraObject->getSensitivity() * display->getMouseDifX()) * (cameraObject->getForward().z - cameraObject->getPosition().z)));*/
-
-	/*cameraObject->moveForward(glm::vec3(sin(cameraObject->getSensitivity() * display->getMouseDifX()) * (cameraObject->getForward().x - cameraObject->getPosition().x), 
-		0, 
-		cos(cameraObject->getSensitivity() * display->getMouseDifX()) * (cameraObject->getForward().z - cameraObject->getPosition().z)));*/
-
 	cameraObject->rotateY(cameraObject->getSensitivity() * display->getMouseDifX());
 }
 void Input::mouseMoveYTransform(Display* display)
 {
-	//cameraObject->moveForward();
 	cameraObject->rotateX(cameraObject->getSensitivity() * display->getMouseDifY());
 }
 

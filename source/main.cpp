@@ -26,14 +26,36 @@ int main(int argc, char** argv)
 
 	//scenes.at(currentScene)->resetCamera(Vec9::createVec9(0, 1, -2, 0, 0, 1, 0, 1, 0));
 
-	Shader shader(".\\res\\basicShader");
+	//Shader shader(".\\res\\basicShader");
+	Shader shader(".\\res\\PhongShader");
+	shader.setAmbientLight(glm::fvec3(0.1f,0.1f,0.1f));
+	shader.setBaseColor(glm::fvec3(1.0f, 1.0f, 1.0f));
 
-	Texture texture2(".\\res\\bricks.jpg");
+	Texture wall(".\\res\\bricks.jpg");
 	Texture texture(".\\res\\body.png");
+	Texture floor(".\\res\\floor.jpg");
+	//Texture ceiling(".\\res\\ceiling.jpg");
 	
 	//scenes.at(currentScene)->addGameObjectToScene(new GameObject("Arwing", "./res/arwing.obj", &texture, &shader));
 	//scenes.at(currentScene)->addGameObjectToScene(new GameObject("Monkey", "./res/monkey3.obj", &texture2, &shader));
-	scenes.at(currentScene)->addGameObjectToScene(GameObject::createCube("TestCube", 5, 10, 1, &texture2, &shader));
+
+	scenes.at(currentScene)->addGameObjectToScene(GameObject::createCube("TestCube", 5, 10, 5, 0.5, 0.5, &wall, &shader));
+	scenes.at(currentScene)->addGameObjectToScene(GameObject::createCube("TestCube2", 5, 10, 5, 1, 1, &wall, &shader));
+	scenes.at(currentScene)->getGameObject("TestCube2")->move(Vec9::createVec9(Direction::MOVE_X, 10));
+
+	scenes.at(currentScene)->addGameObjectToScene(GameObject::createCube("Floor", 25, 1, 25, 0.5, 0.5, &floor, &shader));
+	scenes.at(currentScene)->getGameObject("Floor")->move(Vec9::createVec9(Direction::MOVE_Y, -5));
+	scenes.at(currentScene)->addGameObjectToScene(GameObject::createCube("Ceiling", 25, 1, 25, 0.5, 0.5, &texture, &shader));
+	scenes.at(currentScene)->getGameObject("Ceiling")->move(Vec9::createVec9(Direction::MOVE_Y, 5));
+
+	scenes.at(currentScene)->addGameObjectToScene(GameObject::createCube("Wall1", 1, 10, 25, 0.5, 0.5, &wall, &shader));
+	scenes.at(currentScene)->getGameObject("Wall1")->move(Vec9::createVec9(Direction::MOVE_X, 12.5));
+	scenes.at(currentScene)->addGameObjectToScene(GameObject::createCube("Wall2", 1, 10, 25, 0.5, 0.5, &wall, &shader));
+	scenes.at(currentScene)->getGameObject("Wall2")->move(Vec9::createVec9(Direction::MOVE_X, -12.5));
+	scenes.at(currentScene)->addGameObjectToScene(GameObject::createCube("Wall3", 25, 10, 1, 0.5, 0.5, &wall, &shader));
+	scenes.at(currentScene)->getGameObject("Wall3")->move(Vec9::createVec9(Direction::MOVE_Z, 12.5));
+	scenes.at(currentScene)->addGameObjectToScene(GameObject::createCube("Wall4", 25, 10, 1, 0.5, 0.5, &wall, &shader));
+	scenes.at(currentScene)->getGameObject("Wall4")->move(Vec9::createVec9(Direction::MOVE_Z, -12.5));
 
 	//Assign inputs to the gameobject
 	/*scenes.at(currentScene)->addInputToScene(new Input(KEY_PRESS_TRANSFORM, scenes.at(currentScene)->getGameObject("Arwing"), SDLK_w, Vec9::createVec9(Direction::MOVE_Y, 0.01)));
@@ -60,6 +82,8 @@ int main(int argc, char** argv)
 	//scenes.at(currentScene)->addInputToScene(new Input(KEY_PRESS_CAMERA_TRANSFORM, scenes.at(currentScene)->getCamera(), SDLK_d, Vec9::createVec9(Direction::MOVE_X, -0.1)));
 	scenes.at(currentScene)->addInputToScene(new Input(MOUSE_MOVE_X_TRANSFORM, scenes.at(currentScene)->getCamera()));
 	//scenes.at(currentScene)->addInputToScene(new Input(MOUSE_MOVE_Y_TRANSFORM, scenes.at(currentScene)->getCamera()));
+	scenes.at(currentScene)->addInputToScene(new Input(KEY_PRESS_CAMERA_TRANSFORM, scenes.at(currentScene)->getCamera(), SDLK_q, Vec9::createVec9(Direction::MOVE_Y, 0.1)));
+	scenes.at(currentScene)->addInputToScene(new Input(KEY_PRESS_CAMERA_TRANSFORM, scenes.at(currentScene)->getCamera(), SDLK_e, Vec9::createVec9(Direction::MOVE_Y, -0.1)));
 
 	
 

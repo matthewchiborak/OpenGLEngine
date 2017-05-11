@@ -19,7 +19,7 @@ public:
 		m_up = atLookUp.scale;
 		//m_forward = glm::vec3(0, 0, 1);
 		//m_up = glm::vec3(0, 1, 0);
-		sensitivity = 90.0f / 5000.0f;
+		sensitivity = 90.0f / 10000.0f;
 	}
 
 	inline glm::mat4 GetViewProjection() const
@@ -106,8 +106,8 @@ public:
 
 		m_forward = rotation * m_forward;
 
-		m_up = glm::cross(m_forward, Haxis);
-		m_up = glm::normalize(m_up);
+		//m_up = glm::cross(m_forward, Haxis);
+		//m_up = glm::normalize(m_up);
 	}
 
 	void rotateX(float angle)

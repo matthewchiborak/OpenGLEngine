@@ -1,6 +1,8 @@
 #ifndef __SHADER_H
 #define __SHADER_H
 
+#include <D:/OpenGL2017/glm-0.9.8.4/glm-0.9.8.4/glm/glm.hpp>
+
 #include <string>
 #include <GL/glew.h>
 #include <fstream>
@@ -18,6 +20,11 @@ public:
 
 	void update(const Transform& transform, const Camera& camera);
 
+	void setAmbientLight(glm::fvec3 light);
+	glm::fvec3 getAmbientLight();
+	void setBaseColor(glm::fvec3 color);
+	glm::fvec3 getBaseColor();
+
 	virtual ~Shader();
 
 private:
@@ -29,6 +36,8 @@ private:
 	enum
 	{
 		TRANSFORM_U,
+		BASE_COLOR,
+		AMBIENT_LIGHT,
 
 		NUM_UNIFORMS
 	};
@@ -37,6 +46,10 @@ private:
 	GLuint m_program;
 	GLuint m_shaders[NUM_SHADERS];
 	GLuint m_uniforms[NUM_UNIFORMS];
+
+	glm::fvec3 ambientLight;
+	glm::fvec3 baseColor;
+
 };
 
 #endif
