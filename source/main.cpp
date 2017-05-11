@@ -30,8 +30,10 @@ int main(int argc, char** argv)
 	Shader shader(".\\res\\PhongShader");
 	shader.setAmbientLight(glm::fvec3(0.1f,0.1f,0.1f));
 	shader.setBaseColor(glm::fvec3(1.0f, 1.0f, 1.0f));
-	shader.setDirectionalDirection(glm::fvec3(1, 0, 0));
+	shader.setDirectionalDirection(glm::fvec3(1, 0.2, 0));
 	shader.setDirectionalBase(glm::fvec3(1, 1, 1), 1);
+	shader.setSpecularIntensity(2);
+	shader.setSpecularExponent(32);
 
 	Texture wall(".\\res\\bricks.jpg");
 	Texture texture(".\\res\\body.png");

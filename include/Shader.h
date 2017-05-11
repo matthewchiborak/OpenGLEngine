@@ -19,7 +19,7 @@ public:
 	//Set cpu to use shader
 	void bind();
 
-	void update(const Transform& transform, const Camera& camera);
+	void update(const Transform& transform, Camera& camera);
 
 	void setAmbientLight(glm::fvec3 light);
 	glm::fvec3 getAmbientLight();
@@ -28,6 +28,9 @@ public:
 
 	void setDirectionalBase(glm::fvec3 color, float intensity);
 	void setDirectionalDirection(glm::fvec3 direction);
+
+	void setSpecularIntensity(float value);
+	void setSpecularExponent(float value);
 
 	virtual ~Shader();
 
@@ -47,6 +50,10 @@ private:
 		DIRECTIONAL_LIGHT_BASE_INTENSITY,
 		DIRECTIONAL_LIGHT_DIRECTION,
 
+		SPECULAR_INTENSITY,
+		SPECULAR_EXPONENT,
+		EYE_POS,
+
 		NUM_UNIFORMS
 	};
 
@@ -59,6 +66,10 @@ private:
 	glm::fvec3 baseColor;
 
 	DirectionalLight directionalLight;
+
+	float specularIntensity;
+	//This is how wide the reflection is
+	float specularExponent;
 };
 
 #endif
