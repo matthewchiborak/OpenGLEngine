@@ -30,17 +30,25 @@ int main(int argc, char** argv)
 	Shader shader(".\\res\\PhongShader");
 	shader.setAmbientLight(glm::fvec3(0.1f,0.1f,0.1f));
 	shader.setBaseColor(glm::fvec3(1.0f, 1.0f, 1.0f));
-	shader.setDirectionalDirection(glm::fvec3(1, 0.2, 0));
-	shader.setDirectionalBase(glm::fvec3(1, 1, 1), 1);
+	shader.setDirectionalDirection(glm::fvec3(1, 0, 0));
+	shader.setDirectionalBase(glm::fvec3(0, 0, 0), 0);
+	//Note to self. Having directional color to white but intensity to 0 causes the specular reflection to give a flashlight effect
+
 	shader.setSpecularIntensity(2);
 	shader.setSpecularExponent(32);
+
+	/*shader.setPointLight(0, glm::fvec3(-2, 0, 6), glm::fvec3(1, 0, 0), 10.0f, 0, 0, 1);
+	shader.setPointLight(1, glm::fvec3(2, 0, 7), glm::fvec3(0,0, 1), 10, 0, 0, 1);*/
+	shader.setPointLight(0, glm::fvec3(-2, 0, 6), glm::fvec3(1, 1, 1), 10.0f, 0, 0, 1);
+	shader.setPointLight(1, glm::fvec3(2, 0, 7), glm::fvec3(1, 1, 1), 10, 0, 0, 1);
 
 	Texture wall(".\\res\\bricks.jpg");
 	Texture texture(".\\res\\body.png");
 	Texture floor(".\\res\\floor.jpg");
 	//Texture ceiling(".\\res\\ceiling.jpg");
 	
-	//scenes.at(currentScene)->addGameObjectToScene(new GameObject("Ship", "./res/arwing.obj", &texture, &shader));
+	scenes.at(currentScene)->addGameObjectToScene(new GameObject("Ship", "./res/arwing.obj", &texture, &shader));
+	scenes.at(currentScene)->getGameObject("Ship")->move(Vec9::createVec9(Direction::MOVE_Y, 12));
 	//scenes.at(currentScene)->addGameObjectToScene(new GameObject("Monkey", "./res/monkey3.obj", &texture2, &shader));
 
 	scenes.at(currentScene)->addGameObjectToScene(GameObject::createCube("TestCube", 5, 10, 5, 0.5, 0.5, &wall, &shader));
@@ -86,11 +94,12 @@ int main(int argc, char** argv)
 	//scenes.at(currentScene)->addInputToScene(new Input(KEY_PRESS_CAMERA_TRANSFORM, scenes.at(currentScene)->getCamera(), SDLK_d, Vec9::createVec9(Direction::MOVE_X, -0.1)));
 	scenes.at(currentScene)->addInputToScene(new Input(MOUSE_MOVE_X_TRANSFORM, scenes.at(currentScene)->getCamera()));
 	//scenes.at(currentScene)->addInputToScene(new Input(MOUSE_MOVE_Y_TRANSFORM, scenes.at(currentScene)->getCamera()));
+
 	scenes.at(currentScene)->addInputToScene(new Input(KEY_PRESS_CAMERA_TRANSFORM, scenes.at(currentScene)->getCamera(), SDLK_q, Vec9::createVec9(Direction::MOVE_Y, 0.1)));
 	scenes.at(currentScene)->addInputToScene(new Input(KEY_PRESS_CAMERA_TRANSFORM, scenes.at(currentScene)->getCamera(), SDLK_e, Vec9::createVec9(Direction::MOVE_Y, -0.1)));
 
 	scenes.at(currentScene)->addInputToScene(new Input(KEY_PRESS_TRANSFORM, scenes.at(currentScene)->getGameObject("TestCube"), SDLK_f, Vec9::createVec9(Direction::ROT_Y, -0.01)));
-
+	scenes.at(currentScene)->addInputToScene(new Input(KEY_PRESS_TRANSFORM, scenes.at(currentScene)->getGameObject("Ship"), SDLK_f, Vec9::createVec9(Direction::ROT_Y, -0.01)));
 	
 
 	float counter = 0.0f;

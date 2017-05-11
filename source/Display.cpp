@@ -38,6 +38,9 @@ Display::Display(int width, int height, const std::string& title)
 	//Enable zbuffering
 	glEnable(GL_DEPTH_TEST);
 
+	//Prevent clip inside objects
+	glEnable(GL_DEPTH_CLAMP);
+
 	//Fix the issue of order of rendering (back face culling)
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);

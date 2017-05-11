@@ -1,5 +1,8 @@
 #include "../include/Shader.h"
 
+
+PointLight Shader::pointLights[] = {};
+
 static void CheckShaderError(GLuint shader, GLuint flag, bool isProgram, const std::string& errorMessage);
 //Loads text file from the harddrive
 static std::string LoadShader(const std::string& fileName);
@@ -47,6 +50,59 @@ Shader::Shader(const std::string& fileName)
 	m_uniforms[SPECULAR_INTENSITY] = glGetUniformLocation(m_program, "specularIntensity");
 	m_uniforms[SPECULAR_EXPONENT] = glGetUniformLocation(m_program, "specularExponent");
 	m_uniforms[EYE_POS] = glGetUniformLocation(m_program, "eyePos");
+
+	/*POINT_LIGHT_POSITION0,
+		POINT_LIGHT_BASE_COLOR0,
+		POINT_LIGHT_BASE_INTENSITY0,
+		POINT_LIGHT_ATTEN_CONSTANT0,
+		POINT_LIGHT_ATTEN_LINEAR0,
+		POINT_LIGHT_ATTEN_EXPONENT0,*/
+
+	m_uniforms[POINT_LIGHT_POSITION0] = glGetUniformLocation(m_program, "pointLights[0].position");
+	m_uniforms[POINT_LIGHT_BASE_INTENSITY0] = glGetUniformLocation(m_program, "pointLights[0].base.intensity");
+	m_uniforms[POINT_LIGHT_BASE_COLOR0] = glGetUniformLocation(m_program, "pointLights[0].base.color");
+	m_uniforms[POINT_LIGHT_ATTEN_CONSTANT0] = glGetUniformLocation(m_program, "pointLights[0].atten.constant");
+	m_uniforms[POINT_LIGHT_ATTEN_LINEAR0] = glGetUniformLocation(m_program, "pointLights[0].atten.linear");
+	m_uniforms[POINT_LIGHT_ATTEN_EXPONENT0] = glGetUniformLocation(m_program, "pointLights[0].atten.exponent");
+
+	m_uniforms[POINT_LIGHT_POSITION1] = glGetUniformLocation(m_program, "pointLights[1].position");
+	m_uniforms[POINT_LIGHT_BASE_INTENSITY1] = glGetUniformLocation(m_program, "pointLights[1].base.intensity");
+	m_uniforms[POINT_LIGHT_BASE_COLOR1] = glGetUniformLocation(m_program, "pointLights[1].base.color");
+	m_uniforms[POINT_LIGHT_ATTEN_CONSTANT1] = glGetUniformLocation(m_program, "pointLights[1].atten.constant");
+	m_uniforms[POINT_LIGHT_ATTEN_LINEAR1] = glGetUniformLocation(m_program, "pointLights[1].atten.linear");
+	m_uniforms[POINT_LIGHT_ATTEN_EXPONENT1] = glGetUniformLocation(m_program, "pointLights[1].atten.exponent");
+
+	m_uniforms[POINT_LIGHT_POSITION2] = glGetUniformLocation(m_program, "pointLights[2].position");
+	m_uniforms[POINT_LIGHT_BASE_INTENSITY2] = glGetUniformLocation(m_program, "pointLights[2].base.intensity");
+	m_uniforms[POINT_LIGHT_BASE_COLOR2] = glGetUniformLocation(m_program, "pointLights[2].base.color");
+	m_uniforms[POINT_LIGHT_ATTEN_CONSTANT2] = glGetUniformLocation(m_program, "pointLights[2].atten.constant");
+	m_uniforms[POINT_LIGHT_ATTEN_LINEAR2] = glGetUniformLocation(m_program, "pointLights[2].atten.linear");
+	m_uniforms[POINT_LIGHT_ATTEN_EXPONENT2] = glGetUniformLocation(m_program, "pointLights[2].atten.exponent");
+
+	m_uniforms[POINT_LIGHT_POSITION3] = glGetUniformLocation(m_program, "pointLights[3].position");
+	m_uniforms[POINT_LIGHT_BASE_INTENSITY3] = glGetUniformLocation(m_program, "pointLights[3].base.intensity");
+	m_uniforms[POINT_LIGHT_BASE_COLOR3] = glGetUniformLocation(m_program, "pointLights[3].base.color");
+	m_uniforms[POINT_LIGHT_ATTEN_CONSTANT3] = glGetUniformLocation(m_program, "pointLights[3].atten.constant");
+	m_uniforms[POINT_LIGHT_ATTEN_LINEAR3] = glGetUniformLocation(m_program, "pointLights[3].atten.linear");
+	m_uniforms[POINT_LIGHT_ATTEN_EXPONENT3] = glGetUniformLocation(m_program, "pointLights[3].atten.exponent");
+
+	////Point light stuff
+	//char temp[1];
+	//std::string result = "";
+	//for (int i = 0; i < MAX_POINT_LIGHTS * 5; i += 5)
+	//{
+	//	result = "";
+	//	itoa(i, temp, 1);
+	//	result.append("pointLights[");
+	//	result.append(temp);
+	//	result.append("].base.color");
+	//	
+	//	const int SIZE = result.size();
+	//	
+	//	GLchar charResult[SIZE];
+
+	//	m_pointLight_uniforms[i] = glGetUniformLocation(m_program, result);
+	//}
 }
 
 Shader::~Shader()
@@ -167,6 +223,35 @@ void Shader::update(const Transform& transform, Camera& camera)
 	glUniform1f(m_uniforms[SPECULAR_INTENSITY], specularIntensity);
 	glUniform1f(m_uniforms[SPECULAR_EXPONENT], specularExponent);
 	glUniform3fv(m_uniforms[EYE_POS], 1, &camera.getPosition()[0]);
+
+	//Point lights
+	glUniform3fv(m_uniforms[POINT_LIGHT_POSITION0], 1, &pointLights[0].getPosition()[0]);
+	glUniform1f(m_uniforms[POINT_LIGHT_BASE_INTENSITY0], pointLights[0].getBaseIntensity());
+	glUniform3fv(m_uniforms[POINT_LIGHT_BASE_COLOR0], 1, &pointLights[0].getBaseColor()[0]);
+	glUniform1f(m_uniforms[POINT_LIGHT_ATTEN_CONSTANT0], pointLights[0].getConstant());
+	glUniform1f(m_uniforms[POINT_LIGHT_ATTEN_LINEAR0], pointLights[0].getLinear());
+	glUniform1f(m_uniforms[POINT_LIGHT_ATTEN_EXPONENT0], pointLights[0].getExponent());
+
+	glUniform3fv(m_uniforms[POINT_LIGHT_POSITION1], 1, &pointLights[1].getPosition()[0]);
+	glUniform1f(m_uniforms[POINT_LIGHT_BASE_INTENSITY1], pointLights[1].getBaseIntensity());
+	glUniform3fv(m_uniforms[POINT_LIGHT_BASE_COLOR1], 1, &pointLights[1].getBaseColor()[0]);
+	glUniform1f(m_uniforms[POINT_LIGHT_ATTEN_CONSTANT1], pointLights[1].getConstant());
+	glUniform1f(m_uniforms[POINT_LIGHT_ATTEN_LINEAR1], pointLights[1].getLinear());
+	glUniform1f(m_uniforms[POINT_LIGHT_ATTEN_EXPONENT1], pointLights[1].getExponent());
+
+	glUniform3fv(m_uniforms[POINT_LIGHT_POSITION2], 1, &pointLights[2].getPosition()[0]);
+	glUniform1f(m_uniforms[POINT_LIGHT_BASE_INTENSITY2], pointLights[2].getBaseIntensity());
+	glUniform3fv(m_uniforms[POINT_LIGHT_BASE_COLOR2], 1, &pointLights[2].getBaseColor()[0]);
+	glUniform1f(m_uniforms[POINT_LIGHT_ATTEN_CONSTANT2], pointLights[2].getConstant());
+	glUniform1f(m_uniforms[POINT_LIGHT_ATTEN_LINEAR2], pointLights[2].getLinear());
+	glUniform1f(m_uniforms[POINT_LIGHT_ATTEN_EXPONENT2], pointLights[2].getExponent());
+
+	glUniform3fv(m_uniforms[POINT_LIGHT_POSITION3], 1, &pointLights[3].getPosition()[0]);
+	glUniform1f(m_uniforms[POINT_LIGHT_BASE_INTENSITY3], pointLights[3].getBaseIntensity());
+	glUniform3fv(m_uniforms[POINT_LIGHT_BASE_COLOR3], 1, &pointLights[3].getBaseColor()[0]);
+	glUniform1f(m_uniforms[POINT_LIGHT_ATTEN_CONSTANT3], pointLights[3].getConstant());
+	glUniform1f(m_uniforms[POINT_LIGHT_ATTEN_LINEAR3], pointLights[3].getLinear());
+	glUniform1f(m_uniforms[POINT_LIGHT_ATTEN_EXPONENT3], pointLights[3].getExponent());
 }
 
 void Shader::setAmbientLight(glm::fvec3 light)
@@ -201,4 +286,17 @@ void Shader::setSpecularIntensity(float value)
 void Shader::setSpecularExponent(float value)
 {
 	specularExponent = value;
+}
+
+void Shader::setPointLight(int index, glm::fvec3 position, glm::fvec3 color, float intensity, float constant, float linear, float exponent)
+{
+	if (index >= MAX_POINT_LIGHTS)
+	{
+		std::cerr << "Error: Not a valid point light. Maximum point lights: " << MAX_POINT_LIGHTS << "\n";
+		return;
+	}
+
+	pointLights[index].setPosition(position);
+	pointLights[index].setBaseLight(color, intensity);
+	pointLights[index].setAtten(constant, linear, exponent);
 }
