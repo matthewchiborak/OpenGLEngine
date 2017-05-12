@@ -11,6 +11,7 @@
 #include "Camera.h"
 #include "DirectionalLight.h"
 #include "PointLight.h"
+#include "SpotLight.h"
 
 class Shader
 {
@@ -33,7 +34,8 @@ public:
 	void setSpecularIntensity(float value);
 	void setSpecularExponent(float value);
 
-	static void setPointLight(int index, glm::fvec3 position, glm::fvec3 color, float intensity, float constant, float linear, float exponent);
+	static void setPointLight(int index, glm::fvec3 position, glm::fvec3 color, float intensity, float range, float constant, float linear, float exponent);
+	static void setSpotLight(int index, glm::fvec3 position, glm::fvec3 color, float intensity, float range, float constant, float linear, float exponent, glm::fvec3 direction, float cutoff);
 
 	virtual ~Shader();
 
@@ -63,6 +65,7 @@ private:
 		POINT_LIGHT_ATTEN_CONSTANT0,
 		POINT_LIGHT_ATTEN_LINEAR0,
 		POINT_LIGHT_ATTEN_EXPONENT0,
+		POINT_LIGHT_RANGE0,
 
 		POINT_LIGHT_POSITION1,
 		POINT_LIGHT_BASE_COLOR1,
@@ -70,6 +73,7 @@ private:
 		POINT_LIGHT_ATTEN_CONSTANT1,
 		POINT_LIGHT_ATTEN_LINEAR1,
 		POINT_LIGHT_ATTEN_EXPONENT1,
+		POINT_LIGHT_RANGE1,
 
 		POINT_LIGHT_POSITION2,
 		POINT_LIGHT_BASE_COLOR2,
@@ -77,6 +81,7 @@ private:
 		POINT_LIGHT_ATTEN_CONSTANT2,
 		POINT_LIGHT_ATTEN_LINEAR2,
 		POINT_LIGHT_ATTEN_EXPONENT2,
+		POINT_LIGHT_RANGE2,
 
 		POINT_LIGHT_POSITION3,
 		POINT_LIGHT_BASE_COLOR3,
@@ -84,6 +89,47 @@ private:
 		POINT_LIGHT_ATTEN_CONSTANT3,
 		POINT_LIGHT_ATTEN_LINEAR3,
 		POINT_LIGHT_ATTEN_EXPONENT3,
+		POINT_LIGHT_RANGE3,
+
+		SPOT_LIGHT_POINT_POSITION_0,
+		SPOT_LIGHT_POINT_COLOR_0,
+		SPOT_LIGHT_POINT_INTENSITY_0,
+		SPOT_LIGHT_POINT_CONSTANT_0,
+		SPOT_LIGHT_POINT_LINEAR_0,
+		SPOT_LIGHT_POINT_EXPONENT_0,
+		SPOT_LIGHT_POINT_RANGE_0,
+		SPOT_LIGHT_DIRECTION_0,
+		SPOT_LIGHT_CUTOFF_0,
+
+		SPOT_LIGHT_POINT_POSITION_1,
+		SPOT_LIGHT_POINT_COLOR_1,
+		SPOT_LIGHT_POINT_INTENSITY_1,
+		SPOT_LIGHT_POINT_CONSTANT_1,
+		SPOT_LIGHT_POINT_LINEAR_1,
+		SPOT_LIGHT_POINT_EXPONENT_1,
+		SPOT_LIGHT_POINT_RANGE_1,
+		SPOT_LIGHT_DIRECTION_1,
+		SPOT_LIGHT_CUTOFF_1,
+
+		SPOT_LIGHT_POINT_POSITION_2,
+		SPOT_LIGHT_POINT_COLOR_2,
+		SPOT_LIGHT_POINT_INTENSITY_2,
+		SPOT_LIGHT_POINT_CONSTANT_2,
+		SPOT_LIGHT_POINT_LINEAR_2,
+		SPOT_LIGHT_POINT_EXPONENT_2,
+		SPOT_LIGHT_POINT_RANGE_2,
+		SPOT_LIGHT_DIRECTION_2,
+		SPOT_LIGHT_CUTOFF_2,
+
+		SPOT_LIGHT_POINT_POSITION_3,
+		SPOT_LIGHT_POINT_COLOR_3,
+		SPOT_LIGHT_POINT_INTENSITY_3,
+		SPOT_LIGHT_POINT_CONSTANT_3,
+		SPOT_LIGHT_POINT_LINEAR_3,
+		SPOT_LIGHT_POINT_EXPONENT_3,
+		SPOT_LIGHT_POINT_RANGE_3,
+		SPOT_LIGHT_DIRECTION_3,
+		SPOT_LIGHT_CUTOFF_3,
 
 		NUM_UNIFORMS
 	};
@@ -96,7 +142,11 @@ private:
 	//MUST BE THE SAME AS IT IS IN THE SHADER glsl. 
 	static const int MAX_POINT_LIGHTS = 4;
 	static PointLight pointLights[MAX_POINT_LIGHTS];
-	GLuint m_pointLight_uniforms[MAX_POINT_LIGHTS * 5];
+	//GLuint m_pointLight_uniforms[MAX_POINT_LIGHTS * 5];
+
+	//Spot lights
+	static const int MAX_SPOT_LIGHTS = 4;
+	static SpotLight spotLights[MAX_SPOT_LIGHTS];
 
 	glm::fvec3 ambientLight;
 	glm::fvec3 baseColor;

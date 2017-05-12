@@ -10,6 +10,8 @@ PointLight::PointLight()
 	baseLight.setIntensity(0);
 
 	this->position = glm::fvec3(0,0,0);
+
+	range = 2;
 }
 
 PointLight::~PointLight()
@@ -55,4 +57,13 @@ float PointLight::getLinear()
 float PointLight::getExponent()
 {
 	return atten.getExponent();
+}
+
+float PointLight::getRange()
+{
+	return range;
+}
+void PointLight::setRange(float value)
+{
+	range = value;
 }

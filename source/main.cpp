@@ -39,8 +39,10 @@ int main(int argc, char** argv)
 
 	/*shader.setPointLight(0, glm::fvec3(-2, 0, 6), glm::fvec3(1, 0, 0), 10.0f, 0, 0, 1);
 	shader.setPointLight(1, glm::fvec3(2, 0, 7), glm::fvec3(0,0, 1), 10, 0, 0, 1);*/
-	shader.setPointLight(0, glm::fvec3(-2, 0, 6), glm::fvec3(1, 1, 1), 10.0f, 0, 0, 1);
-	shader.setPointLight(1, glm::fvec3(2, 0, 7), glm::fvec3(1, 1, 1), 10, 0, 0, 1);
+	//shader.setPointLight(0, glm::fvec3(-2, 0, 6), glm::fvec3(1, 1, 1), 10.0f, 20, 0, 0, 1);
+	//shader.setPointLight(1, glm::fvec3(2, 0, 7), glm::fvec3(1, 1, 1), 10, 20, 0, 0, 1);
+
+	shader.setSpotLight(0, glm::fvec3(-2, 0, 6), glm::fvec3(1, 1, 1), 0.4f, 20, 0, 0, 0.02f, glm::vec3(0, 0, 1), 0.7);
 
 	Texture wall(".\\res\\bricks.jpg");
 	Texture texture(".\\res\\body.png");
@@ -126,6 +128,13 @@ int main(int argc, char** argv)
 
 		//UPDATE GAME
 		display.clear(0.0f, 0.15f, 0.3f, 1.0f);
+
+		//Test
+		//shader.setSpotLight(0, scenes.at(currentScene)->getCamera()->getPosition(), glm::fvec3(1, 1, 1), 100.0f, 100, 0, 0, 0.1f, scenes.at(currentScene)->getCamera()->getForward(), 0.1f);
+		//shader.setSpotLight(0, scenes.at(currentScene)->getCamera()->getPosition(), glm::fvec3(1, 1, 1), 0.4f, 20, 0, 0, 0.02f, scenes.at(currentScene)->getCamera()->getForward(), 0.7);
+		//shader.setPointLight(0, scenes.at(currentScene)->getCamera()->getPosition(), glm::fvec3(1, 1, 1), 0.5, 50, 0, 0, 0.01f);
+		shader.setSpotLight(0, scenes.at(currentScene)->getCamera()->getPosition(), glm::fvec3(1, 1, 1), 0.5, 50, 0, 0, 0.01f, scenes.at(currentScene)->getCamera()->getForward(), 0.7);
+		//Test
 
 		scenes.at(currentScene)->update(&display);
 		display.Update();

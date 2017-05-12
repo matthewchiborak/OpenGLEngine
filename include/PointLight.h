@@ -23,10 +23,14 @@ public:
 	float getLinear();
 	float getExponent();
 
+	float getRange();
+	void setRange(float value);
+
 private:
 	BaseLight baseLight;
 	Attenuation atten;
 	glm::fvec3 position;
+	float range;
 };
 
 #endif
