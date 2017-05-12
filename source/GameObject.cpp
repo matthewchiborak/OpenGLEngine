@@ -16,17 +16,58 @@ GameObject::GameObject(std::string name, Mesh* mesh, Texture* texture, Shader* s
 	this->shader = shader;
 }
 
-GameObject* GameObject::createSquare(std::string name, float width, float height, float repeatFactorX, float repeatFactorY, Texture* texture, Shader* shader)
+GameObject* GameObject::createSquare(std::string name, float width, float height, float depth, bool oppositeNormal, float repeatFactorX, float repeatFactorY, Texture* texture, Shader* shader)
 {
 	float w = width / 2;
 	float h = height / 2;
+	float d = depth / 2;
 
 	Vertex vertices[] =
 	{
-		Vertex(glm::vec3(-w, -h, 0), glm::vec2(repeatFactorX, 0), glm::vec3(0, 0, -1)),
-		Vertex(glm::vec3(-w, h, 0), glm::vec2(0, 0), glm::vec3(0, 0, -1)),
 		Vertex(glm::vec3(w, h, 0), glm::vec2(0, repeatFactorY), glm::vec3(0, 0, -1)),
 		Vertex(glm::vec3(w, -h, 0), glm::vec2(repeatFactorX, repeatFactorY), glm::vec3(0, 0, -1)),
+		Vertex(glm::vec3(-w, -h, 0), glm::vec2(repeatFactorX, 0), glm::vec3(0, 0, -1)),
+		Vertex(glm::vec3(-w, h, 0), glm::vec2(0, 0), glm::vec3(0, 0, -1))
+	};
+
+	Vertex vertices2[] =
+	{
+		Vertex(glm::vec3(w, h, 0), glm::vec2(0, repeatFactorY), glm::vec3(0, 0, 1)),
+		Vertex(glm::vec3(w, -h, 0), glm::vec2(repeatFactorX, repeatFactorY), glm::vec3(0, 0, 1)),
+		Vertex(glm::vec3(-w, -h, 0), glm::vec2(repeatFactorX, 0), glm::vec3(0, 0, 1)),
+		Vertex(glm::vec3(-w, h, 0), glm::vec2(0, 0), glm::vec3(0, 0, 1))
+	};
+
+	Vertex vertices3[] =
+	{
+		Vertex(glm::vec3(-w, 0, -d), glm::vec2(0, repeatFactorY), glm::vec3(0, -1, 0)),
+		Vertex(glm::vec3(-w, 0, d), glm::vec2(repeatFactorX, repeatFactorY), glm::vec3(0, -1, 0)),
+		Vertex(glm::vec3(w, 0, d), glm::vec2(repeatFactorX, 0), glm::vec3(0, -1, 0)),
+		Vertex(glm::vec3(w, 0, -d), glm::vec2(0, 0), glm::vec3(0, -1, 0))
+	};
+
+	Vertex vertices4[] =
+	{
+		Vertex(glm::vec3(-w, 0, -d), glm::vec2(0, repeatFactorY), glm::vec3(0, 1, 0)),
+		Vertex(glm::vec3(-w, 0, d), glm::vec2(repeatFactorX, repeatFactorY), glm::vec3(0, 1, 0)),
+		Vertex(glm::vec3(w, 0, d), glm::vec2(repeatFactorX, 0), glm::vec3(0, 1, 0)),
+		Vertex(glm::vec3(w, 0, -d), glm::vec2(0, 0), glm::vec3(0, 1, 0))
+	};
+
+	Vertex vertices5[] =
+	{
+		Vertex(glm::vec3(0, h, -d), glm::vec2(0, repeatFactorY), glm::vec3(-1, 0, 0)),
+		Vertex(glm::vec3(0, -h, -d), glm::vec2(repeatFactorX, repeatFactorY), glm::vec3(-1, 0, 0)),
+		Vertex(glm::vec3(0, -h, d), glm::vec2(repeatFactorX, 0), glm::vec3(-1, 0, 0)),
+		Vertex(glm::vec3(0, h, d), glm::vec2(0, 0), glm::vec3(-1, 0, 0))
+	};
+
+	Vertex vertices6[] =
+	{
+		Vertex(glm::vec3(0, h, -d), glm::vec2(0, repeatFactorY), glm::vec3(1, 0, 0)),
+		Vertex(glm::vec3(0, -h, -d), glm::vec2(repeatFactorX, repeatFactorY), glm::vec3(1, 0, 0)),
+		Vertex(glm::vec3(0, -h, d), glm::vec2(repeatFactorX, 0), glm::vec3(1, 0, 0)),
+		Vertex(glm::vec3(0, h, d), glm::vec2(0, 0), glm::vec3(1, 0, 0))
 	};
 
 	unsigned int indices[] = {
@@ -34,7 +75,43 @@ GameObject* GameObject::createSquare(std::string name, float width, float height
 		0, 2, 3,
 	};
 
-	Mesh* temp = new Mesh(vertices, sizeof(vertices) / sizeof(vertices[0]), indices, sizeof(indices) / sizeof(indices[0]));
+	unsigned int indices2[] = {
+		2, 1, 0,
+		3, 2, 0,
+	};
+
+	Mesh* temp; 
+	
+	if (!oppositeNormal)
+	{
+		if (width == 0)
+		{
+			temp = new Mesh(vertices2, sizeof(vertices2) / sizeof(vertices2[0]), indices, sizeof(indices) / sizeof(indices[0]));
+		}
+		else if (height == 0)
+		{
+			temp = new Mesh(vertices4, sizeof(vertices4) / sizeof(vertices4[0]), indices, sizeof(indices) / sizeof(indices[0]));
+		}
+		else
+		{
+			temp = new Mesh(vertices6, sizeof(vertices6) / sizeof(vertices6[0]), indices, sizeof(indices) / sizeof(indices[0]));
+		}
+	}
+	else
+	{
+		if (width == 0)
+		{
+			temp = new Mesh(vertices, sizeof(vertices) / sizeof(vertices[0]), indices, sizeof(indices) / sizeof(indices[0]));
+		}
+		else if (height == 0)
+		{
+			temp = new Mesh(vertices3, sizeof(vertices3) / sizeof(vertices3[0]), indices2, sizeof(indices2) / sizeof(indices2[0]));
+		}
+		else
+		{
+			temp = new Mesh(vertices5, sizeof(vertices5) / sizeof(vertices5[0]), indices2, sizeof(indices2) / sizeof(indices2[0]));
+		}
+	}
 
 	return new GameObject(name, temp, texture, shader);
 }
