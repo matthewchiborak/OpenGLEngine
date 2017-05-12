@@ -48,6 +48,7 @@ int main(int argc, char** argv)
 	Texture wall(".\\res\\bricks.jpg");
 	Texture texture(".\\res\\body.png");
 	Texture floor(".\\res\\floor.jpg");
+	Texture wolfCollection(".\\res\\WolfCollection.png");
 	//Texture ceiling(".\\res\\ceiling.jpg");
 
 	//Wolf3d////////////////////////////////////
@@ -59,6 +60,8 @@ int main(int argc, char** argv)
 	const float SPOT_WIDTH = 1;
 	const float SPOT_HEIGHT = 1;
 	const float SPOT_DEPTH = 1;
+	static int NUM_TEX_EXP = 4;
+	static int NUM_TEXTURES = pow(2, NUM_TEX_EXP);
 
 	for (int i = 0; i < level.getWidth(); i++)
 	{
@@ -71,11 +74,17 @@ int main(int argc, char** argv)
 			}
 
 			//Floor
-			scenes.at(currentScene)->addGameObjectToScene(GameObject::createSquare("Wolf3DFloor_" + std::to_string(i) + "_" + std::to_string(j), SPOT_WIDTH, 0, SPOT_DEPTH, false, 1, 1, &floor, &shader));
+			//Use the green component for the texture to use
+			int texX = level.getPixel(i, j).g / NUM_TEXTURES; //16 textures in the collection
+			int texY = texX % NUM_TEX_EXP;
+			texX /= NUM_TEX_EXP;
+			texX += 1;
+
+			scenes.at(currentScene)->addGameObjectToScene(GameObject::createSquarePartTexture("Wolf3DFloor_" + std::to_string(i) + "_" + std::to_string(j), SPOT_WIDTH, 0, SPOT_DEPTH, false, (1.0f - (float)texX / (float)NUM_TEX_EXP) - (1.0f / (float)NUM_TEX_EXP), 1.0f - (float)texX / (float)NUM_TEX_EXP, 1.0f - (float)texY / (float)NUM_TEX_EXP, (1.0f - (float)texY / (float)NUM_TEX_EXP) - (1.0f / (float)NUM_TEX_EXP), &wolfCollection, &shader));
 			scenes.at(currentScene)->getGameObject("Wolf3DFloor_" + std::to_string(i) + "_" + std::to_string(j))->setTransform(Vec9::createVec9(i * SPOT_WIDTH, 0, j * SPOT_DEPTH, 0, 0, 0, 1, 1, 1));
 
 			//Ceiling
-			scenes.at(currentScene)->addGameObjectToScene(GameObject::createSquare("Wolf3DCeiling_" + std::to_string(i) + "_" + std::to_string(j), SPOT_WIDTH, 0, SPOT_DEPTH, true, 1, 1, &floor, &shader));
+			scenes.at(currentScene)->addGameObjectToScene(GameObject::createSquarePartTexture("Wolf3DCeiling_" + std::to_string(i) + "_" + std::to_string(j), SPOT_WIDTH, 0, SPOT_DEPTH, true, (1.0f - (float)texX / (float)NUM_TEX_EXP) - (1.0f/(float)NUM_TEX_EXP), 1.0f - (float)texX / (float)NUM_TEX_EXP, 1.0f - (float)texY / (float)NUM_TEX_EXP, (1.0f - (float)texY / (float)NUM_TEX_EXP) - (1.0f / (float)NUM_TEX_EXP),  &wolfCollection, &shader));
 			scenes.at(currentScene)->getGameObject("Wolf3DCeiling_" + std::to_string(i) + "_" + std::to_string(j))->setTransform(Vec9::createVec9(i * SPOT_WIDTH, SPOT_HEIGHT, j * SPOT_DEPTH, 0, 0, 0, 1, 1, 1));
 
 			//walls. Check if ajacent is a wall
@@ -111,22 +120,22 @@ int main(int argc, char** argv)
 			////walls. Check if ajacent is a wall
 			if (level.getPixel(i, j - 1).r == 0 && level.getPixel(i, j - 1).g == 0 && level.getPixel(i, j - 1).b == 0)
 			{
-				scenes.at(currentScene)->addGameObjectToScene(GameObject::createCube("Wolf3DWall_a_" + std::to_string(i) + "_" + std::to_string(j), SPOT_WIDTH, SPOT_HEIGHT, 0, 1, 1, &wall, &shader));
+				scenes.at(currentScene)->addGameObjectToScene(GameObject::createCubePartTexture("Wolf3DWall_a_" + std::to_string(i) + "_" + std::to_string(j), SPOT_WIDTH, SPOT_HEIGHT, 0, (1.0f - (float)texX / (float)NUM_TEX_EXP) - (1.0f / (float)NUM_TEX_EXP), 1.0f - (float)texX / (float)NUM_TEX_EXP, 1.0f - (float)texY / (float)NUM_TEX_EXP, (1.0f - (float)texY / (float)NUM_TEX_EXP) - (1.0f / (float)NUM_TEX_EXP),  &wolfCollection, &shader));
 				scenes.at(currentScene)->getGameObject("Wolf3DWall_a_" + std::to_string(i) + "_" + std::to_string(j))->setTransform(Vec9::createVec9(i * SPOT_WIDTH, SPOT_HEIGHT/2, (j - 0.5) * SPOT_DEPTH, 0, 0, 0, 1, 1, 1));
 			}
 			if (level.getPixel(i, j + 1).r == 0 && level.getPixel(i, j + 1).g == 0 && level.getPixel(i, j + 1).b == 0)
 			{
-				scenes.at(currentScene)->addGameObjectToScene(GameObject::createCube("Wolf3DWall_b_" + std::to_string(i) + "_" + std::to_string(j), SPOT_WIDTH, SPOT_HEIGHT, 0, 1, 1, &wall, &shader));
+				scenes.at(currentScene)->addGameObjectToScene(GameObject::createCubePartTexture("Wolf3DWall_b_" + std::to_string(i) + "_" + std::to_string(j), SPOT_WIDTH, SPOT_HEIGHT, 0, (1.0f - (float)texX / (float)NUM_TEX_EXP) - (1.0f / (float)NUM_TEX_EXP), 1.0f - (float)texX / (float)NUM_TEX_EXP, 1.0f - (float)texY / (float)NUM_TEX_EXP, (1.0f - (float)texY / (float)NUM_TEX_EXP) - (1.0f / (float)NUM_TEX_EXP),  &wolfCollection, &shader));
 				scenes.at(currentScene)->getGameObject("Wolf3DWall_b_" + std::to_string(i) + "_" + std::to_string(j))->setTransform(Vec9::createVec9(i * SPOT_WIDTH, SPOT_HEIGHT / 2, (j + 0.5) * SPOT_DEPTH, 0, 0, 0, 1, 1, 1));
 			}
 			if (level.getPixel(i - 1, j).r == 0 && level.getPixel(i - 1, j).g == 0 && level.getPixel(i - 1, j).b == 0)
 			{
-				scenes.at(currentScene)->addGameObjectToScene(GameObject::createCube("Wolf3DWall_c_" + std::to_string(i) + "_" + std::to_string(j), 0, SPOT_HEIGHT, SPOT_DEPTH, 1, 1, &wall, &shader));
+				scenes.at(currentScene)->addGameObjectToScene(GameObject::createCubePartTexture("Wolf3DWall_c_" + std::to_string(i) + "_" + std::to_string(j), 0, SPOT_HEIGHT, SPOT_DEPTH, (1.0f - (float)texX / (float)NUM_TEX_EXP) - (1.0f / (float)NUM_TEX_EXP), 1.0f - (float)texX / (float)NUM_TEX_EXP, 1.0f - (float)texY / (float)NUM_TEX_EXP, (1.0f - (float)texY / (float)NUM_TEX_EXP) - (1.0f / (float)NUM_TEX_EXP),  &wolfCollection, &shader));
 				scenes.at(currentScene)->getGameObject("Wolf3DWall_c_" + std::to_string(i) + "_" + std::to_string(j))->setTransform(Vec9::createVec9((i - 0.5) * SPOT_WIDTH, SPOT_HEIGHT / 2, (j) * SPOT_DEPTH, 0, 0, 0, 1, 1, 1));
 			}
 			if (level.getPixel(i + 1, j).r == 0 && level.getPixel(i + 1, j).g == 0 && level.getPixel(i + 1, j).b == 0)
 			{
-				scenes.at(currentScene)->addGameObjectToScene(GameObject::createCube("Wolf3DWall_d_" + std::to_string(i) + "_" + std::to_string(j), 0, SPOT_HEIGHT, SPOT_DEPTH, 1, 1, &wall, &shader));
+				scenes.at(currentScene)->addGameObjectToScene(GameObject::createCubePartTexture("Wolf3DWall_d_" + std::to_string(i) + "_" + std::to_string(j), 0, SPOT_HEIGHT, SPOT_DEPTH, (1.0f - (float)texX / (float)NUM_TEX_EXP) - (1.0f / (float)NUM_TEX_EXP), 1.0f - (float)texX / (float)NUM_TEX_EXP, 1.0f - (float)texY / (float)NUM_TEX_EXP, (1.0f - (float)texY / (float)NUM_TEX_EXP) - (1.0f / (float)NUM_TEX_EXP),  &wolfCollection, &shader));
 				scenes.at(currentScene)->getGameObject("Wolf3DWall_d_" + std::to_string(i) + "_" + std::to_string(j))->setTransform(Vec9::createVec9((i + 0.5) * SPOT_WIDTH, SPOT_HEIGHT / 2, (j)* SPOT_DEPTH, 0, 0, 0, 1, 1, 1));
 			}
 		}
