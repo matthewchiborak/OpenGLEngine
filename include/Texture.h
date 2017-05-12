@@ -11,6 +11,9 @@ class Texture
 {
 public:
 	Texture(const std::string& fileName);
+	Texture(const std::string& name, const std::string& fileName);
+
+	std::string getName();
 
 	//Set opengl to use the texture. Can bind up to 32 textures at once
 	void bind(unsigned int unit);
@@ -22,6 +25,8 @@ private:
 
 	//Handle to the opengl texture
 	GLuint m_texture;
+
+	std::string name;
 };
 
 #endif

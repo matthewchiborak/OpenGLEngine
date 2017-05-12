@@ -16,7 +16,10 @@
 class Shader
 {
 public:
+	Shader(const std::string& name, const std::string& fileName);
 	Shader(const std::string& fileName);
+
+	std::string getName();
 
 	//Set cpu to use shader
 	void bind();
@@ -40,6 +43,7 @@ public:
 	virtual ~Shader();
 
 private:
+	std::string name;
 	//If using a geometry shader this will be 3. 2 is just vertex and fragment
 	static const unsigned int NUM_SHADERS = 2;
 	Shader(const Shader& other) {}

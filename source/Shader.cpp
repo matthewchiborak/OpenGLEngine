@@ -152,6 +152,149 @@ Shader::Shader(const std::string& fileName)
 	//}
 }
 
+Shader::Shader(const std::string& name, const std::string& fileName)
+{
+	this->name = name;
+
+	//Create new shader program
+	m_program = glCreateProgram();
+
+	//Create the vertex and fragment shaders
+	m_shaders[0] = CreateShader(LoadShader(fileName + ".vs.txt"), GL_VERTEX_SHADER);
+	m_shaders[1] = CreateShader(LoadShader(fileName + ".fs.txt"), GL_FRAGMENT_SHADER);
+
+	//Add shaders to the shader program
+	for (unsigned int i = 0; i < NUM_SHADERS; i++)
+	{
+		glAttachShader(m_program, m_shaders[i]);
+	}
+
+	//Tells opengl what part of data to read as what variable.
+	//Need to map variable in the mesh to variable in shader so that it knows about it
+	glBindAttribLocation(m_program, 0, "position"); //MUST BE SPELLED THE SAME AS IN THE VERTEX
+	glBindAttribLocation(m_program, 1, "texCoord");
+	glBindAttribLocation(m_program, 2, "normal");
+
+	//Link
+	glLinkProgram(m_program);
+	CheckShaderError(m_program, GL_LINK_STATUS, true, "Error: Shader program failed to link: ");
+
+	//Validation
+	glValidateProgram(m_program);
+	CheckShaderError(m_program, GL_VALIDATE_STATUS, true, "Error: Shader program is invalid: ");
+
+	//Get access to the transform uniform in the shader
+	m_uniforms[TRANSFORM_U] = glGetUniformLocation(m_program, "transform");
+	m_uniforms[TRANSFORM_PROJECTED] = glGetUniformLocation(m_program, "transformProjected");
+	m_uniforms[BASE_COLOR] = glGetUniformLocation(m_program, "baseColor");
+	m_uniforms[AMBIENT_LIGHT] = glGetUniformLocation(m_program, "ambientLight");
+	m_uniforms[DIRECTIONAL_LIGHT_BASE_COLOR] = glGetUniformLocation(m_program, "directionalLight.base.color");
+	m_uniforms[DIRECTIONAL_LIGHT_BASE_INTENSITY] = glGetUniformLocation(m_program, "directionalLight.base.intensity");
+	m_uniforms[DIRECTIONAL_LIGHT_DIRECTION] = glGetUniformLocation(m_program, "directionalLight.direction");
+	m_uniforms[SPECULAR_INTENSITY] = glGetUniformLocation(m_program, "specularIntensity");
+	m_uniforms[SPECULAR_EXPONENT] = glGetUniformLocation(m_program, "specularExponent");
+	m_uniforms[EYE_POS] = glGetUniformLocation(m_program, "eyePos");
+
+	/*POINT_LIGHT_POSITION0,
+	POINT_LIGHT_BASE_COLOR0,
+	POINT_LIGHT_BASE_INTENSITY0,
+	POINT_LIGHT_ATTEN_CONSTANT0,
+	POINT_LIGHT_ATTEN_LINEAR0,
+	POINT_LIGHT_ATTEN_EXPONENT0,*/
+
+	//POINT LIGHTS
+	m_uniforms[POINT_LIGHT_POSITION0] = glGetUniformLocation(m_program, "pointLights[0].position");
+	m_uniforms[POINT_LIGHT_BASE_INTENSITY0] = glGetUniformLocation(m_program, "pointLights[0].base.intensity");
+	m_uniforms[POINT_LIGHT_BASE_COLOR0] = glGetUniformLocation(m_program, "pointLights[0].base.color");
+	m_uniforms[POINT_LIGHT_ATTEN_CONSTANT0] = glGetUniformLocation(m_program, "pointLights[0].atten.constant");
+	m_uniforms[POINT_LIGHT_ATTEN_LINEAR0] = glGetUniformLocation(m_program, "pointLights[0].atten.linear");
+	m_uniforms[POINT_LIGHT_ATTEN_EXPONENT0] = glGetUniformLocation(m_program, "pointLights[0].atten.exponent");
+	m_uniforms[POINT_LIGHT_RANGE0] = glGetUniformLocation(m_program, "pointLights[0].range");
+
+	m_uniforms[POINT_LIGHT_POSITION1] = glGetUniformLocation(m_program, "pointLights[1].position");
+	m_uniforms[POINT_LIGHT_BASE_INTENSITY1] = glGetUniformLocation(m_program, "pointLights[1].base.intensity");
+	m_uniforms[POINT_LIGHT_BASE_COLOR1] = glGetUniformLocation(m_program, "pointLights[1].base.color");
+	m_uniforms[POINT_LIGHT_ATTEN_CONSTANT1] = glGetUniformLocation(m_program, "pointLights[1].atten.constant");
+	m_uniforms[POINT_LIGHT_ATTEN_LINEAR1] = glGetUniformLocation(m_program, "pointLights[1].atten.linear");
+	m_uniforms[POINT_LIGHT_ATTEN_EXPONENT1] = glGetUniformLocation(m_program, "pointLights[1].atten.exponent");
+	m_uniforms[POINT_LIGHT_RANGE1] = glGetUniformLocation(m_program, "pointLights[1].range");
+
+	m_uniforms[POINT_LIGHT_POSITION2] = glGetUniformLocation(m_program, "pointLights[2].position");
+	m_uniforms[POINT_LIGHT_BASE_INTENSITY2] = glGetUniformLocation(m_program, "pointLights[2].base.intensity");
+	m_uniforms[POINT_LIGHT_BASE_COLOR2] = glGetUniformLocation(m_program, "pointLights[2].base.color");
+	m_uniforms[POINT_LIGHT_ATTEN_CONSTANT2] = glGetUniformLocation(m_program, "pointLights[2].atten.constant");
+	m_uniforms[POINT_LIGHT_ATTEN_LINEAR2] = glGetUniformLocation(m_program, "pointLights[2].atten.linear");
+	m_uniforms[POINT_LIGHT_ATTEN_EXPONENT2] = glGetUniformLocation(m_program, "pointLights[2].atten.exponent");
+	m_uniforms[POINT_LIGHT_RANGE2] = glGetUniformLocation(m_program, "pointLights[2].range");
+
+	m_uniforms[POINT_LIGHT_POSITION3] = glGetUniformLocation(m_program, "pointLights[3].position");
+	m_uniforms[POINT_LIGHT_BASE_INTENSITY3] = glGetUniformLocation(m_program, "pointLights[3].base.intensity");
+	m_uniforms[POINT_LIGHT_BASE_COLOR3] = glGetUniformLocation(m_program, "pointLights[3].base.color");
+	m_uniforms[POINT_LIGHT_ATTEN_CONSTANT3] = glGetUniformLocation(m_program, "pointLights[3].atten.constant");
+	m_uniforms[POINT_LIGHT_ATTEN_LINEAR3] = glGetUniformLocation(m_program, "pointLights[3].atten.linear");
+	m_uniforms[POINT_LIGHT_ATTEN_EXPONENT3] = glGetUniformLocation(m_program, "pointLights[3].atten.exponent");
+	m_uniforms[POINT_LIGHT_RANGE3] = glGetUniformLocation(m_program, "pointLights[3].range");
+
+	//SPOT LIGHTS
+	m_uniforms[SPOT_LIGHT_POINT_POSITION_0] = glGetUniformLocation(m_program, "spotLights[0].pointLight.position");
+	m_uniforms[SPOT_LIGHT_POINT_COLOR_0] = glGetUniformLocation(m_program, "spotLights[0].pointLight.base.intensity");
+	m_uniforms[SPOT_LIGHT_POINT_INTENSITY_0] = glGetUniformLocation(m_program, "spotLights[0].pointLight.base.color");
+	m_uniforms[SPOT_LIGHT_POINT_CONSTANT_0] = glGetUniformLocation(m_program, "spotLights[0].pointLight.atten.constant");
+	m_uniforms[SPOT_LIGHT_POINT_LINEAR_0] = glGetUniformLocation(m_program, "spotLights[0].pointLight.atten.linear");
+	m_uniforms[SPOT_LIGHT_POINT_EXPONENT_0] = glGetUniformLocation(m_program, "spotLights[0].pointLight.atten.exponent");
+	m_uniforms[SPOT_LIGHT_POINT_RANGE_0] = glGetUniformLocation(m_program, "spotLights[0].pointLight.range");
+	m_uniforms[SPOT_LIGHT_DIRECTION_0] = glGetUniformLocation(m_program, "spotLights[0].direction");
+	m_uniforms[SPOT_LIGHT_CUTOFF_0] = glGetUniformLocation(m_program, "spotLights[0].cutoff");
+
+	m_uniforms[SPOT_LIGHT_POINT_POSITION_1] = glGetUniformLocation(m_program, "spotLights[1].pointLight.position");
+	m_uniforms[SPOT_LIGHT_POINT_COLOR_1] = glGetUniformLocation(m_program, "spotLights[1].pointLight.base.intensity");
+	m_uniforms[SPOT_LIGHT_POINT_INTENSITY_1] = glGetUniformLocation(m_program, "spotLights[1].pointLight.base.color");
+	m_uniforms[SPOT_LIGHT_POINT_CONSTANT_1] = glGetUniformLocation(m_program, "spotLights[1].pointLight.atten.constant");
+	m_uniforms[SPOT_LIGHT_POINT_LINEAR_1] = glGetUniformLocation(m_program, "spotLights[1].pointLight.atten.linear");
+	m_uniforms[SPOT_LIGHT_POINT_EXPONENT_1] = glGetUniformLocation(m_program, "spotLights[1].pointLight.atten.exponent");
+	m_uniforms[SPOT_LIGHT_POINT_RANGE_1] = glGetUniformLocation(m_program, "spotLights[1].pointLight.range");
+	m_uniforms[SPOT_LIGHT_DIRECTION_1] = glGetUniformLocation(m_program, "spotLights[1].direction");
+	m_uniforms[SPOT_LIGHT_CUTOFF_1] = glGetUniformLocation(m_program, "spotLights[1].cutoff");
+
+	m_uniforms[SPOT_LIGHT_POINT_POSITION_2] = glGetUniformLocation(m_program, "spotLights[2].pointLight.position");
+	m_uniforms[SPOT_LIGHT_POINT_COLOR_2] = glGetUniformLocation(m_program, "spotLights[2].pointLight.base.intensity");
+	m_uniforms[SPOT_LIGHT_POINT_INTENSITY_2] = glGetUniformLocation(m_program, "spotLights[2].pointLight.base.color");
+	m_uniforms[SPOT_LIGHT_POINT_CONSTANT_2] = glGetUniformLocation(m_program, "spotLights[2].pointLight.atten.constant");
+	m_uniforms[SPOT_LIGHT_POINT_LINEAR_2] = glGetUniformLocation(m_program, "spotLights[2].pointLight.atten.linear");
+	m_uniforms[SPOT_LIGHT_POINT_EXPONENT_2] = glGetUniformLocation(m_program, "spotLights[2].pointLight.atten.exponent");
+	m_uniforms[SPOT_LIGHT_POINT_RANGE_2] = glGetUniformLocation(m_program, "spotLights[2].pointLight.range");
+	m_uniforms[SPOT_LIGHT_DIRECTION_2] = glGetUniformLocation(m_program, "spotLights[2].direction");
+	m_uniforms[SPOT_LIGHT_CUTOFF_2] = glGetUniformLocation(m_program, "spotLights[2].cutoff");
+
+	m_uniforms[SPOT_LIGHT_POINT_POSITION_3] = glGetUniformLocation(m_program, "spotLights[3].pointLight.position");
+	m_uniforms[SPOT_LIGHT_POINT_COLOR_3] = glGetUniformLocation(m_program, "spotLights[3].pointLight.base.intensity");
+	m_uniforms[SPOT_LIGHT_POINT_INTENSITY_3] = glGetUniformLocation(m_program, "spotLights[3].pointLight.base.color");
+	m_uniforms[SPOT_LIGHT_POINT_CONSTANT_3] = glGetUniformLocation(m_program, "spotLights[3].pointLight.atten.constant");
+	m_uniforms[SPOT_LIGHT_POINT_LINEAR_3] = glGetUniformLocation(m_program, "spotLights[3].pointLight.atten.linear");
+	m_uniforms[SPOT_LIGHT_POINT_EXPONENT_3] = glGetUniformLocation(m_program, "spotLights[3].pointLight.atten.exponent");
+	m_uniforms[SPOT_LIGHT_POINT_RANGE_3] = glGetUniformLocation(m_program, "spotLights[3].pointLight.range");
+	m_uniforms[SPOT_LIGHT_DIRECTION_3] = glGetUniformLocation(m_program, "spotLights[3].direction");
+	m_uniforms[SPOT_LIGHT_CUTOFF_3] = glGetUniformLocation(m_program, "spotLights[3].cutoff");
+
+	////Point light stuff
+	//char temp[1];
+	//std::string result = "";
+	//for (int i = 0; i < MAX_POINT_LIGHTS * 5; i += 5)
+	//{
+	//	result = "";
+	//	itoa(i, temp, 1);
+	//	result.append("pointLights[");
+	//	result.append(temp);
+	//	result.append("].base.color");
+	//	
+	//	const int SIZE = result.size();
+	//	
+	//	GLchar charResult[SIZE];
+
+	//	m_pointLight_uniforms[i] = glGetUniformLocation(m_program, result);
+	//}
+}
+
 Shader::~Shader()
 {
 	//Deleting program doesnt delete the shaders
@@ -162,6 +305,11 @@ Shader::~Shader()
 	}
 
 	glDeleteProgram(m_program);
+}
+
+std::string Shader::getName()
+{
+	return name;
 }
 
 static GLuint CreateShader(const std::string& text, GLenum shaderType)

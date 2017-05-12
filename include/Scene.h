@@ -8,11 +8,15 @@
 #include "Input.h"
 #include "Camera.h"
 #include "Display.h"
+#include "ShaderManager.h"
+#include "TextureManager.h"
+#include "Bitmap.h"
 
 class Scene
 {
 public:
 	Scene(std::string name, float windowWidth, float windowHeight);
+	Scene(std::string name, std::string fileName, float windowWidth, float windowHeight);
 	~Scene();
 	std::string getName();
 	void addGameObjectToScene(GameObject* object);
@@ -30,6 +34,7 @@ private:
 	Camera* camera;
 	std::vector<GameObject*> gameObjects;
 	std::vector<Input*> inputs;
+	Bitmap* level;
 };
 
 #endif
