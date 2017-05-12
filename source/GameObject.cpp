@@ -16,6 +16,29 @@ GameObject::GameObject(std::string name, Mesh* mesh, Texture* texture, Shader* s
 	this->shader = shader;
 }
 
+GameObject* GameObject::createSquare(std::string name, float width, float height, float repeatFactorX, float repeatFactorY, Texture* texture, Shader* shader)
+{
+	float w = width / 2;
+	float h = height / 2;
+
+	Vertex vertices[] =
+	{
+		Vertex(glm::vec3(-w, -h, 0), glm::vec2(repeatFactorX, 0), glm::vec3(0, 0, -1)),
+		Vertex(glm::vec3(-w, h, 0), glm::vec2(0, 0), glm::vec3(0, 0, -1)),
+		Vertex(glm::vec3(w, h, 0), glm::vec2(0, repeatFactorY), glm::vec3(0, 0, -1)),
+		Vertex(glm::vec3(w, -h, 0), glm::vec2(repeatFactorX, repeatFactorY), glm::vec3(0, 0, -1)),
+	};
+
+	unsigned int indices[] = {
+		0, 1, 2,
+		0, 2, 3,
+	};
+
+	Mesh* temp = new Mesh(vertices, sizeof(vertices) / sizeof(vertices[0]), indices, sizeof(indices) / sizeof(indices[0]));
+
+	return new GameObject(name, temp, texture, shader);
+}
+
 GameObject* GameObject::createCube(std::string name, float width, float height, float depth, float repeatFactorX, float repeatFactorY, Texture* texture, Shader* shader)
 {
 	//fvec3??????

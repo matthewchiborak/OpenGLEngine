@@ -19,6 +19,7 @@ public:
 	void setTransform(Vec9 change);
 	std::string getName();
 
+	static GameObject* createSquare(std::string name, float width, float height, float repeatFactorX, float repeatFactorY, Texture* texture, Shader* shader);
 	static GameObject* createCube(std::string name, float width, float height, float depth, float repeatFactorX, float repeatFactorY, Texture* texture, Shader* shader);
 
 private:
