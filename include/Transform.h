@@ -37,6 +37,26 @@ public:
 		scale.y = scaley;
 		scale.z = scalez;
 	}
+
+	Vec9 multiplyByScalar(float scalar)
+	{
+		Vec9 result;
+
+		result.pos.x = this->pos.x * scalar;
+		result.pos.y = this->pos.y * scalar;
+		result.pos.z = this->pos.z * scalar;
+
+		result.rot.x = this->rot.x * scalar;
+		result.rot.y = this->rot.y * scalar;
+		result.rot.z = this->rot.z * scalar;
+
+		result.scale.x = this->scale.x * scalar;
+		result.scale.y = this->scale.y * scalar;
+		result.scale.z = this->scale.z * scalar;
+
+		return result;
+	}
+
 	Vec9(int direction, float magnitude)
 	{
 		pos.x = 0;

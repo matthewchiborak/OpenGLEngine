@@ -7,6 +7,9 @@
 #include "Transform.h"
 #include "Display.h"
 #include "Camera.h"
+#include "Scene.h"
+
+class Scene;
 
 enum InputType
 {
@@ -32,6 +35,8 @@ public:
 	Input(int type, Camera* objectToAffect, int key, float magnitude);
 	Input(int type, Camera* objectToAffect);
 	void execute(Display* display);
+
+	void assignScene(Scene* myScene);
 private:
 	int type;
 	GameObject* gameObject;
@@ -39,6 +44,9 @@ private:
 	int key;
 	Vec9 transform;
 	float magnitude;
+	float speed; 
+	long deltaTime;
+	Scene* myScene;
 
 	void keyPressTransform(Display* display);
 	void keyPressDownTransform(Display* display);

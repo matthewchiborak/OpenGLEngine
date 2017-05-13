@@ -11,6 +11,9 @@
 #include "ShaderManager.h"
 #include "TextureManager.h"
 #include "Bitmap.h"
+#include "Time.h"
+
+class Input;
 
 class Scene
 {
@@ -29,12 +32,27 @@ public:
 	Camera* getCamera();
 	void setNewCamera(Camera* camera);
 
+	//Vec3 for each axis. 1 is theres a collision
+	glm::fvec3 checkCollisionCamera(Camera* camera, glm::fvec3 movement, float objectWidth, float objectHeight, float objectDepth);
+	glm::fvec3 rectCollide(glm::fvec3 oldPos, glm::fvec3 newPos, glm::fvec3 size1, glm::fvec3 size2, glm::fvec3 pos2);
+	glm::fvec3 checkCollisionCameraWalls(Camera* camera, glm::fvec3 movement, float objectWidth, float objectHeight, float objectDepth);
+
+	static float PLAYER_SIZE;
+
 private:
 	std::string name;
 	Camera* camera;
 	std::vector<GameObject*> gameObjects;
 	std::vector<Input*> inputs;
 	Bitmap* level;
+	long lastTimeUpdated;
+
+	const float SPOT_WIDTH = 1;
+	const float SPOT_HEIGHT = 1;
+	const float SPOT_DEPTH = 1;
+	static int NUM_TEX_EXP;
+	static int NUM_TEXTURES;
+	
 
 	void generateLevel(std::string fileName);
 };

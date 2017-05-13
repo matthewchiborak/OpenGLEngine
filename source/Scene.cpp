@@ -1,5 +1,9 @@
 #include "../include/Scene.h"
 
+float Scene::PLAYER_SIZE = 0.3f;
+int Scene::NUM_TEX_EXP = 4;
+int Scene::NUM_TEXTURES = pow(2, NUM_TEX_EXP);
+
 Scene::Scene(std::string name, float windowWidth, float windowHeight)
 {
 	this->name = name;
@@ -7,6 +11,7 @@ Scene::Scene(std::string name, float windowWidth, float windowHeight)
 	camera = new Camera(Vec9::createVec9(0, 1, -5, 0, 0, 1, 0, 1, 0), 70.0f, (float)windowWidth / (float)windowWidth, 0.01f, 1000.0f);
 
 	level = NULL;
+	lastTimeUpdated = Time::getTime();
 }
 
 Scene::Scene(std::string name, std::string fileName, float windowWidth, float windowHeight)
@@ -16,15 +21,17 @@ Scene::Scene(std::string name, std::string fileName, float windowWidth, float wi
 
 	//Read the bitmap and build the level around it
 	generateLevel(fileName);
+
+	lastTimeUpdated = Time::getTime();
 }
 
 void Scene::generateLevel(std::string fileName)
 {
-	const float SPOT_WIDTH = 1;
+	/*const float SPOT_WIDTH = 1;
 	const float SPOT_HEIGHT = 1;
 	const float SPOT_DEPTH = 1;
 	static int NUM_TEX_EXP = 4;
-	static int NUM_TEXTURES = pow(2, NUM_TEX_EXP);
+	static int NUM_TEXTURES = pow(2, NUM_TEX_EXP);*/
 
 	level = new Bitmap(".\\res\\Level1.png");
 	level->flipX();
@@ -145,6 +152,7 @@ void Scene::addGameObjectToScene(GameObject* object)
 void Scene::addInputToScene(Input* input)
 {
 	inputs.push_back(input);
+	input->assignScene(this);
 }
 
 GameObject* Scene::getGameObject(std::string name)
@@ -173,4 +181,102 @@ void Scene::update(Display* display)
 	{
 		gameObjects.at(i)->draw(camera);
 	}
+}
+
+glm::fvec3 Scene::checkCollisionCameraWalls(Camera* camera, glm::fvec3 movement, float objectWidth, float objectHeight, float objectDepth)
+{
+	//If a collision, change the result to 0;
+	glm::fvec3 collisionVector(1, 1, 1);
+
+	float offsetX = 0.5 * SPOT_WIDTH;
+	float offsetZ = 0.5 * SPOT_DEPTH;
+
+	if (movement.x < 0)
+	{
+		offsetX = 0;
+	}
+	if (movement.z < 0)
+	{
+		offsetZ = 0;
+	}
+
+	//Find the grid square the camera is trying to move into
+	int camInX = (camera->getPosition().x) / (SPOT_WIDTH);
+	int camInZ = (camera->getPosition().z) / (SPOT_DEPTH);
+	int camWantGoX = (camera->getPosition().x + movement.x + offsetX) / (SPOT_WIDTH);
+	int camWantGoZ = (camera->getPosition().z + movement.z + offsetZ) / (SPOT_DEPTH);
+
+	if (movement.x != 0)
+	{
+		if (level->getPixel(camWantGoX, camInZ).r == 0 && level->getPixel(camWantGoX, camInZ).g == 0 && level->getPixel(camWantGoX, camInZ).b == 0)
+		{
+			collisionVector.x = 0;
+		}
+	}
+	/*if (movement.y > 0)
+	{
+
+	}*/
+	if (movement.z != 0)
+	{
+		if (level->getPixel(camInX, camWantGoZ).r == 0 && level->getPixel(camInX, camWantGoZ).g == 0 && level->getPixel(camInX, camWantGoZ).b == 0)
+		{
+			collisionVector.z = 0;
+		}
+	}
+
+	return collisionVector;
+}
+
+glm::fvec3 Scene::checkCollisionCamera(Camera* camera, glm::fvec3 movement, float objectWidth, float objectHeight, float objectDepth)
+{
+	//If a collision, change the result to 0;
+	glm::fvec3 collisionVector(1, 1, 1);
+
+	if (movement.x != 0 || movement.y != 0 || movement.z != 0)
+	{
+		glm::fvec3 blockSize(SPOT_WIDTH, SPOT_HEIGHT, SPOT_DEPTH);
+		glm::fvec3 objectSize(objectWidth, objectHeight, objectDepth);
+		glm::fvec3 oldPos2(camera->getPosition());
+		glm::fvec3 newPos2(camera->getPosition() + movement);
+
+		int width = level->getWidth();
+		int depth = level->getHeight();
+
+		for (int i = 0; i < width; i++)
+		{
+			for (int j = 0; j < depth; j++)
+			{
+				if (level->getPixel(i,j).r == 0 && level->getPixel(i, j).g == 0 && level->getPixel(i, j).b == 0)
+				{
+					collisionVector *= rectCollide(oldPos2, newPos2, objectSize, blockSize, blockSize * glm::fvec3(i, 0, j));
+				}
+			}
+		}
+	}
+
+	return collisionVector;
+}
+
+glm::fvec3 Scene::rectCollide(glm::fvec3 oldPos, glm::fvec3 newPos, glm::fvec3 size1, glm::fvec3 size2, glm::fvec3 pos2)
+{
+	glm::fvec3 result(0, 0, 0);
+
+	if (newPos.x + size1.x + (size1.x / 2) < pos2.x ||
+		newPos.x - size1.x + (size1.x / 2) > pos2.x + size2.x * size2.x ||
+		oldPos.z + size1.z + (size1.x / 2) < pos2.z ||
+		oldPos.z - size1.z + (size1.x / 2) > pos2.z + size2.z * size2.z)
+	{
+		result.x = 1;
+	}
+
+	if (oldPos.x + size1.x + (size1.x/2) < pos2.x ||
+		oldPos.x - size1.x + (size1.x / 2) > pos2.x + size2.x * size2.x ||
+		newPos.z + size1.z + (size1.x / 2) < pos2.z ||
+		newPos.z - size1.z + (size1.x / 2) > pos2.z + size2.z * size2.z)
+	{
+		result.z = 1;
+	}
+
+	return result;
 }

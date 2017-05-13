@@ -21,8 +21,6 @@
 
 int main(int argc, char** argv)
 {
-	std::string TESTING = "IM TESTING MY SCRIPT";
-
 	Display display(WIDTH, HEIGHT, "Hello world!");
 
 	int currentScene = 0;
@@ -50,7 +48,9 @@ int main(int argc, char** argv)
 
 	scenes.push_back(new Scene("Main", ".\\res\\Level1.png", WIDTH, HEIGHT));
 
-	//scenes.at(currentScene)->resetCamera(Vec9::createVec9(0, 1, -2, 0, 0, 1, 0, 1, 0));
+	//Move the camera to start in the level
+	scenes.at(currentScene)->resetCamera(Vec9::createVec9(17, 0.5, 17, 0, 0, 1, 0, 1, 0));
+	//(Vec9::createVec9(0, 1, -5, 0, 0, 1, 0, 1, 0)
 
 	//Assign inputs to the gameobject
 	/*scenes.at(currentScene)->addInputToScene(new Input(KEY_PRESS_TRANSFORM, scenes.at(currentScene)->getGameObject("Arwing"), SDLK_w, Vec9::createVec9(Direction::MOVE_Y, 0.01)));
@@ -78,8 +78,8 @@ int main(int argc, char** argv)
 	scenes.at(currentScene)->addInputToScene(new Input(MOUSE_MOVE_X_TRANSFORM, scenes.at(currentScene)->getCamera()));
 	//scenes.at(currentScene)->addInputToScene(new Input(MOUSE_MOVE_Y_TRANSFORM, scenes.at(currentScene)->getCamera()));
 
-	scenes.at(currentScene)->addInputToScene(new Input(KEY_PRESS_CAMERA_TRANSFORM, scenes.at(currentScene)->getCamera(), SDLK_q, Vec9::createVec9(Direction::MOVE_Y, 0.1)));
-	scenes.at(currentScene)->addInputToScene(new Input(KEY_PRESS_CAMERA_TRANSFORM, scenes.at(currentScene)->getCamera(), SDLK_e, Vec9::createVec9(Direction::MOVE_Y, -0.1)));
+	//scenes.at(currentScene)->addInputToScene(new Input(KEY_PRESS_CAMERA_TRANSFORM, scenes.at(currentScene)->getCamera(), SDLK_q, Vec9::createVec9(Direction::MOVE_Y, 0.1)));
+	//scenes.at(currentScene)->addInputToScene(new Input(KEY_PRESS_CAMERA_TRANSFORM, scenes.at(currentScene)->getCamera(), SDLK_e, Vec9::createVec9(Direction::MOVE_Y, -0.1)));
 
 	//scenes.at(currentScene)->addInputToScene(new Input(KEY_PRESS_TRANSFORM, scenes.at(currentScene)->getGameObject("TestCube"), SDLK_f, Vec9::createVec9(Direction::ROT_Y, -0.01)));
 	//scenes.at(currentScene)->addInputToScene(new Input(KEY_PRESS_TRANSFORM, scenes.at(currentScene)->getGameObject("Ship"), SDLK_f, Vec9::createVec9(Direction::ROT_Y, -0.01)));

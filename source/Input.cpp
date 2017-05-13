@@ -135,9 +135,16 @@ void Input::keyPressForwardTransform(Display* display)
 {
 	if (display->checkKey(key))
 	{
-		glm::vec3 temp(cameraObject->getForward().x * magnitude, cameraObject->getForward().y * magnitude, cameraObject->getForward().z * magnitude);
+		glm::fvec3 movementAmount(cameraObject->getForward().x * magnitude, cameraObject->getForward().y * magnitude, cameraObject->getForward().z * magnitude);
+		//glm::fvec3 collisionResult = myScene->checkCollisionCamera(cameraObject, movementAmount, Scene::PLAYER_SIZE, Scene::PLAYER_SIZE, Scene::PLAYER_SIZE);
+		glm::fvec3 collisionResult = myScene->checkCollisionCameraWalls(cameraObject, movementAmount, Scene::PLAYER_SIZE, Scene::PLAYER_SIZE, Scene::PLAYER_SIZE);
 
-		cameraObject->movePosition(temp);
+		
+		movementAmount.x *= collisionResult.x;
+		movementAmount.y *= collisionResult.y;
+		movementAmount.z *= collisionResult.z;
+
+		cameraObject->movePosition(movementAmount);
 	}
 }
 void Input::keyPressLeftTransform(Display* display)
@@ -146,8 +153,20 @@ void Input::keyPressLeftTransform(Display* display)
 	{
 		glm::vec3 left = glm::cross(cameraObject->getForward(), cameraObject->getUp());
 
-		glm::vec3 temp(left.x * magnitude, left.y * magnitude, left.z * magnitude);
+		glm::fvec3 movementAmount(left.x * magnitude, left.y * magnitude, left.z * magnitude);
 
-		cameraObject->movePosition(temp);
+		//glm::fvec3 collisionResult = myScene->checkCollisionCamera(cameraObject, movementAmount, Scene::PLAYER_SIZE, Scene::PLAYER_SIZE, Scene::PLAYER_SIZE);
+		glm::fvec3 collisionResult = myScene->checkCollisionCameraWalls(cameraObject, movementAmount, Scene::PLAYER_SIZE, Scene::PLAYER_SIZE, Scene::PLAYER_SIZE);
+
+		movementAmount.x *= collisionResult.x;
+		movementAmount.y *= collisionResult.y;
+		movementAmount.z *= collisionResult.z;
+
+		cameraObject->movePosition(movementAmount);
 	}
+}
+
+void Input::assignScene(Scene* myScene)
+{
+	this->myScene = myScene;
 }
