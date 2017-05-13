@@ -114,3 +114,15 @@ void Bitmap::flipX()
 
 	pixels = temp;
 }
+
+void Bitmap::calcTexCoords(int value, int numTextures, int numTexExp, float* XLow, float* XHigh, float* YLow, float* YHigh)
+{
+	int texX = value / numTextures; //16 textures in the collection
+	int texY = texX % numTexExp;
+	texX /= numTexExp;
+
+	*XLow = (1.0f - (float)texX / (float)numTexExp) - (1.0f / (float)numTexExp);
+	*XHigh = 1.0f - (float)texX / (float)numTexExp;
+	*YLow = 1.0f - (float)texY / (float)numTexExp;
+	*YHigh = (1.0f - (float)texY / (float)numTexExp) - (1.0f / (float)numTexExp);
+}

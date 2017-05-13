@@ -35,6 +35,8 @@ private:
 	std::vector<GameObject*> gameObjects;
 	std::vector<Input*> inputs;
 	Bitmap* level;
+
+	void generateLevel(std::string fileName);
 };
 
 #endif

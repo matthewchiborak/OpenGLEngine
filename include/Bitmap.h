@@ -34,6 +34,8 @@ public:
 	void flipX();
 	void flipY();
 
+	void calcTexCoords(int value, int numTextures, int numTexExp, float* XLow, float* XHigh, float* YLow, float* YHigh);
+
 private:
 	int width;
 	int height;
