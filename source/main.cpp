@@ -21,7 +21,7 @@
 
 int main(int argc, char** argv)
 {
-	std::string test = "testtestest";
+	std::string test = "testtestest TESTING";
 
 	Display display(WIDTH, HEIGHT, "Hello world!");
 
