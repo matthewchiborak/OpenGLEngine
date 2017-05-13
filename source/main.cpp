@@ -21,6 +21,8 @@
 
 int main(int argc, char** argv)
 {
+	std::string TESTING = "IM TESTING MY SCRIPT";
+
 	Display display(WIDTH, HEIGHT, "Hello world!");
 
 	int currentScene = 0;
