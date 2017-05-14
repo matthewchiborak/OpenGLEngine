@@ -21,7 +21,7 @@
 
 int main(int argc, char** argv)
 {
-	std::string test = "testtestest TESTING";
+	std::string test = "one last test";
 
 	Display display(WIDTH, HEIGHT, "Hello world!");
 
