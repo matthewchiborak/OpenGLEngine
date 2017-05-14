@@ -2,6 +2,9 @@
 
 Door::Door(std::string name, float width, float height, float depth, float XLower, float XHigher, float YLower, float YHigher, Texture* texture, Shader* shader)
 {
+	isOpen = false;
+	isOpening = false;
+
 	float w = width / 2;
 	float h = height / 2;
 	float d = depth / 2;
@@ -74,8 +77,67 @@ Door::Door(std::string name, float width, float height, float depth, float XLowe
 	this->texture = texture;
 
 	this->mesh = new Mesh(vertices, sizeof(vertices) / sizeof(vertices[0]), indices, sizeof(indices) / sizeof(indices[0]));
+
+	dimensions.x = width;
+	dimensions.y = height;
+	dimensions.z = depth;
 }
 
 Door::~Door()
 {
+}
+
+void Door::open()
+{
+	if (!isOpening)
+	{
+		isOpening = true;
+		openingStartTime = Time::getRegularTime();
+		openTime = openingStartTime + TIME_TO_OPEN;
+		closingStartTime = openTime + CLOSE_DELAY;
+		closeTime = closingStartTime + TIME_TO_OPEN;
+	}
+}
+
+void Door::update()
+{
+	if (isOpening)
+	{
+		time_t time = Time::getRegularTime();
+
+		if (time < openTime)
+		{
+			transform.GetPos() = Vec9::lerp(closePosition, openPosition, static_cast<double>(time - openingStartTime) / TIME_TO_OPEN);
+		}
+		else if(time < closingStartTime)
+		{
+			transform.GetPos() = openPosition;
+			isOpen = true;
+		}
+		else if (time < closeTime)
+		{
+			transform.GetPos() = Vec9::lerp(openPosition, closePosition, static_cast<double>(time - closingStartTime) / TIME_TO_OPEN);
+			isOpen = false;
+		}
+		else
+		{
+			transform.GetPos() = closePosition;
+			isOpening = false;
+		}
+	}
+}
+
+void Door::init() 
+{
+	closePosition = transform.GetPos();
+	openPosition = transform.GetPos();
+
+	if (dimensions.x > dimensions.z)
+	{
+		openPosition.x += dimensions.x;
+	}
+	else
+	{
+		openPosition.z += dimensions.z;
+	}
 }

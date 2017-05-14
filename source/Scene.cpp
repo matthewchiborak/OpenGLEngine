@@ -39,11 +39,11 @@ void Scene::generateLevel(std::string fileName)
 
 	//TEST
 	float XLow, XHigh, YLow, YHigh;
-	level->calcTexCoords(79, NUM_TEXTURES, NUM_TEX_EXP, &XLow, &XHigh, &YLow, &YHigh);
+	/*level->calcTexCoords(79, NUM_TEXTURES, NUM_TEX_EXP, &XLow, &XHigh, &YLow, &YHigh);
 	Door* tempDoor = new Door("TestDoor", SPOT_WIDTH, SPOT_HEIGHT, 0.125f, XLow, XHigh, YLow, YHigh, TextureManager::getTextureManager()->getTexture("Wolf"), ShaderManager::getShaderManager()->getShader("Phong"));
 	addGameObjectToScene(tempDoor);
 	doors.push_back(tempDoor);
-	getGameObject("TestDoor")->setTransform(Vec9::createVec9(17 * SPOT_WIDTH, 0.5 * SPOT_HEIGHT, 19 * SPOT_DEPTH, 0, 0, 0, 1, 1, 1));
+	getGameObject("TestDoor")->setTransform(Vec9::createVec9(17 * SPOT_WIDTH, 0.5 * SPOT_HEIGHT, 19 * SPOT_DEPTH, 0, 0, 0, 1, 1, 1));*/
 	//TEST
 
 	for (int i = 0; i < level->getWidth(); i++)
@@ -55,6 +55,9 @@ void Scene::generateLevel(std::string fileName)
 				//Its a wall
 				continue;
 			}
+
+			//Add special components like the doors
+			addSpecial(level->getPixel(i, j).b, i, j);
 
 			//Floor
 			/*float XLow, XHigh, YLow, YHigh;*/
@@ -70,7 +73,7 @@ void Scene::generateLevel(std::string fileName)
 			getGameObject(name + "_Ceiling_" + std::to_string(i) + "_" + std::to_string(j))->setTransform(Vec9::createVec9(i * SPOT_WIDTH, SPOT_HEIGHT, j * SPOT_DEPTH, 0, 0, 0, 1, 1, 1));
 
 			////walls. Check if ajacent is a wall
-			level->calcTexCoords(level->getPixel(i, j).b, NUM_TEXTURES, NUM_TEX_EXP, &XLow, &XHigh, &YLow, &YHigh);
+			level->calcTexCoords(level->getPixel(i, j).r, NUM_TEXTURES, NUM_TEX_EXP, &XLow, &XHigh, &YLow, &YHigh);
 
 			if (level->getPixel(i, j - 1).r == 0 && level->getPixel(i, j - 1).g == 0 && level->getPixel(i, j - 1).b == 0)
 			{
@@ -93,6 +96,35 @@ void Scene::generateLevel(std::string fileName)
 				getGameObject(name + "_Wall_d_" + std::to_string(i) + "_" + std::to_string(j))->setTransform(Vec9::createVec9((i + 0.5) * SPOT_WIDTH, SPOT_HEIGHT / 2, (j)* SPOT_DEPTH, 0, 0, 0, 1, 1, 1));
 			}
 		}
+	}
+}
+
+void Scene::addSpecial(int blueValue, int x, int z)
+{
+	if (blueValue == 16)
+	{
+		float XLow, XHigh, YLow, YHigh;
+		level->calcTexCoords(79, NUM_TEXTURES, NUM_TEX_EXP, &XLow, &XHigh, &YLow, &YHigh);
+		Door* tempDoor;
+		
+		if ((level->getPixel(x + 1, z).r == 0 && level->getPixel(x + 1, z).g == 0 && level->getPixel(x + 1, z).b == 0) && (level->getPixel(x - 1, z).r == 0 && level->getPixel(x - 1, z).g == 0 && level->getPixel(x - 1, z).b == 0))
+		{
+			tempDoor = new Door("TestDoor_" + std::to_string(x) + "_" + std::to_string(z), SPOT_WIDTH, SPOT_HEIGHT, DOOR_THICKNESS, XLow, XHigh, YLow, YHigh, TextureManager::getTextureManager()->getTexture("Wolf"), ShaderManager::getShaderManager()->getShader("Phong"));
+		}
+		else if ((level->getPixel(x, z + 1).r == 0 && level->getPixel(x, z + 1).g == 0 && level->getPixel(x, z + 1).b == 0) && (level->getPixel(x, z - 1).r == 0 && level->getPixel(x, z - 1).g == 0 && level->getPixel(x, z - 1).b == 0))
+		{
+			tempDoor = new Door("TestDoor_" + std::to_string(x) + "_" + std::to_string(z), DOOR_THICKNESS, SPOT_HEIGHT, SPOT_DEPTH, XLow, XHigh, YLow, YHigh, TextureManager::getTextureManager()->getTexture("Wolf"), ShaderManager::getShaderManager()->getShader("Phong"));
+		}
+		else
+		{
+			std::cerr << "Failed to create door. Invalid location: " << x << " " << z << "\n";
+			return;
+		}
+
+		addGameObjectToScene(tempDoor);
+		doors.push_back(tempDoor);
+		getGameObject("TestDoor_" + std::to_string(x) + "_" + std::to_string(z))->setTransform(Vec9::createVec9(x * SPOT_WIDTH, 0.5 * SPOT_HEIGHT, z * SPOT_DEPTH, 0, 0, 0, 1, 1, 1));
+		getGameObject("TestDoor_" + std::to_string(x) + "_" + std::to_string(z))->init();
 	}
 }
 
@@ -188,6 +220,9 @@ void Scene::update(Display* display)
 	//Draw the objects
 	for (int i = 0; i < gameObjects.size(); i++)
 	{
+		//Update speical updates on the objects
+		gameObjects.at(i)->update();
+
 		gameObjects.at(i)->draw(camera);
 	}
 }
@@ -301,4 +336,9 @@ glm::fvec3 Scene::rectCollide(glm::fvec3 oldPos, glm::fvec3 newPos, glm::fvec3 s
 	}
 
 	return result;
+}
+
+std::vector<Door*>* Scene::getDoors()
+{
+	return &doors;
 }

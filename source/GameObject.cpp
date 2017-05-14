@@ -21,6 +21,15 @@ GameObject::GameObject(std::string name, Mesh* mesh, Texture* texture, Shader* s
 	this->shader = shader;
 }
 
+GameObject::GameObject(std::string name, Mesh* mesh, Texture* texture, Shader* shader, glm::fvec3 dimensions)
+{
+	this->name = name;
+	this->mesh = mesh;
+	this->texture = texture;
+	this->shader = shader;
+	this->dimensions = dimensions;
+}
+
 GameObject* GameObject::createSquare(std::string name, float width, float height, float depth, bool oppositeNormal, float repeatFactorX, float repeatFactorY, Texture* texture, Shader* shader)
 {
 	float w = width / 2;
@@ -118,7 +127,7 @@ GameObject* GameObject::createSquare(std::string name, float width, float height
 		}
 	}
 
-	return new GameObject(name, temp, texture, shader);
+	return new GameObject(name, temp, texture, shader, glm::fvec3(width, height, depth));
 }
 
 GameObject* GameObject::createSquarePartTexture(std::string name, float width, float height, float depth, bool oppositeNormal, float XLower, float XHigher, float YLower, float YHigher, Texture* texture, Shader* shader)
@@ -218,7 +227,7 @@ GameObject* GameObject::createSquarePartTexture(std::string name, float width, f
 		}
 	}
 
-	return new GameObject(name, temp, texture, shader);
+	return new GameObject(name, temp, texture, shader, glm::fvec3(width, height, depth));
 }
 
 GameObject* GameObject::createCube(std::string name, float width, float height, float depth, float repeatFactorX, float repeatFactorY, Texture* texture, Shader* shader)
@@ -283,7 +292,7 @@ GameObject* GameObject::createCube(std::string name, float width, float height, 
 
 	Mesh* temp = new Mesh(vertices, sizeof(vertices) / sizeof(vertices[0]), indices, sizeof(indices) / sizeof(indices[0]));
 
-	return new GameObject(name, temp, texture, shader);
+	return new GameObject(name, temp, texture, shader, glm::fvec3(width, height, depth));
 }
 
 GameObject* GameObject::createCubePartTexture(std::string name, float width, float height, float depth, float XLower, float XHigher, float YLower, float YHigher, Texture* texture, Shader* shader)
@@ -349,7 +358,7 @@ GameObject* GameObject::createCubePartTexture(std::string name, float width, flo
 
 	Mesh* temp = new Mesh(vertices, sizeof(vertices) / sizeof(vertices[0]), indices, sizeof(indices) / sizeof(indices[0]));
 
-	return new GameObject(name, temp, texture, shader);
+	return new GameObject(name, temp, texture, shader, glm::fvec3(width, height, depth));
 }
 
 GameObject::~GameObject()
@@ -403,4 +412,19 @@ std::string GameObject::getName()
 Transform* GameObject::getTransform()
 {
 	return &transform;
+}
+
+void GameObject::update()
+{
+
+}
+
+void GameObject::init()
+{
+
+}
+
+glm::fvec3 GameObject::getDimensions()
+{
+	return dimensions;
 }

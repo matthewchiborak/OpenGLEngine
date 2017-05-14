@@ -8,6 +8,7 @@
 #include "Display.h"
 #include "Camera.h"
 #include "Scene.h"
+#include "Door.h"
 
 class Scene;
 
@@ -24,7 +25,9 @@ enum InputType
 	MOUSE_MOVE_Y_TRANSFORM,
 
 	KEY_PRESS_FORWARD_CAMERA_TRANSFORM,
-	KEY_PRESS_LEFT_CAMERA_TRANSFORM
+	KEY_PRESS_LEFT_CAMERA_TRANSFORM,
+
+	KEY_PRESS_DOWN_DOOR_OPEN
 };
 
 class Input
@@ -34,6 +37,7 @@ public:
 	Input(int type, Camera* objectToAffect, int key, Vec9 transform);
 	Input(int type, Camera* objectToAffect, int key, float magnitude);
 	Input(int type, Camera* objectToAffect);
+	Input(int type, Camera* objectToAffect, int key, std::vector<Door*>* doors);
 	void execute(Display* display);
 
 	void assignScene(Scene* myScene);
@@ -47,6 +51,7 @@ private:
 	float speed; 
 	long deltaTime;
 	Scene* myScene;
+	std::vector<Door*>* doors;
 
 	void keyPressTransform(Display* display);
 	void keyPressDownTransform(Display* display);
@@ -59,6 +64,8 @@ private:
 
 	void keyPressForwardTransform(Display* display);
 	void keyPressLeftTransform(Display* display);
+
+	void keyPressDownDoorOpen(Display* display);
 };
 
 #endif

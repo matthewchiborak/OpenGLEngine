@@ -81,6 +81,7 @@ int main(int argc, char** argv)
 	scenes.at(currentScene)->addInputToScene(new Input(KEY_PRESS_CAMERA_TRANSFORM, scenes.at(currentScene)->getCamera(), SDLK_q, Vec9::createVec9(Direction::MOVE_Y, 0.1)));
 	scenes.at(currentScene)->addInputToScene(new Input(KEY_PRESS_CAMERA_TRANSFORM, scenes.at(currentScene)->getCamera(), SDLK_e, Vec9::createVec9(Direction::MOVE_Y, -0.1)));
 
+	scenes.at(currentScene)->addInputToScene(new Input(KEY_PRESS_DOWN_DOOR_OPEN, scenes.at(currentScene)->getCamera(), SDLK_f, scenes.at(currentScene)->getDoors()));
 	//scenes.at(currentScene)->addInputToScene(new Input(KEY_PRESS_TRANSFORM, scenes.at(currentScene)->getGameObject("TestCube"), SDLK_f, Vec9::createVec9(Direction::ROT_Y, -0.01)));
 	//scenes.at(currentScene)->addInputToScene(new Input(KEY_PRESS_TRANSFORM, scenes.at(currentScene)->getGameObject("Ship"), SDLK_f, Vec9::createVec9(Direction::ROT_Y, -0.01)));
 	

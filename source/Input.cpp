@@ -31,6 +31,16 @@ Input::Input(int type, Camera* objectToAffect, int key, float magnitude)
 	this->magnitude = magnitude;
 	cameraObject = objectToAffect;
 }
+Input::Input(int type, Camera* objectToAffect, int key, std::vector<Door*>* doors)
+{
+	//SHOULD REALLY MAKE THIS A DERIVED CLASS
+	this->type = type;
+	gameObject = NULL;
+	this->key = key;
+	this->magnitude = 0;
+	cameraObject = objectToAffect;
+	this->doors = doors;
+}
 
 void Input::execute(Display* display)
 {
@@ -73,6 +83,10 @@ void Input::execute(Display* display)
 	else if (type == KEY_PRESS_LEFT_CAMERA_TRANSFORM)
 	{
 		keyPressLeftTransform(display);
+	}
+	else if (type == KEY_PRESS_DOWN_DOOR_OPEN)
+	{
+		keyPressDownDoorOpen(display);
 	}
 }
 
@@ -169,4 +183,20 @@ void Input::keyPressLeftTransform(Display* display)
 void Input::assignScene(Scene* myScene)
 {
 	this->myScene = myScene;
+}
+
+void Input::keyPressDownDoorOpen(Display* display)
+{
+	if (display->checkKeyDown(key))
+	{
+		for (int i = 0; i < doors->size(); i++)
+		{
+			//If close to door and looking at it
+			if (abs(doors->at(i)->getTransform()->GetPos().x - cameraObject->getPosition().x) < doors->at(i)->DOOR_OPEN_RANGE &&
+				abs(doors->at(i)->getTransform()->GetPos().z - cameraObject->getPosition().z) < doors->at(i)->DOOR_OPEN_RANGE)
+			{
+				doors->at(i)->open();
+			}
+		}
+	}
 }

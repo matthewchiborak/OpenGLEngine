@@ -33,6 +33,8 @@ public:
 	Camera* getCamera();
 	void setNewCamera(Camera* camera);
 
+	std::vector<Door*>* getDoors();
+
 	//Vec3 for each axis. 1 is theres a collision
 	glm::fvec3 checkCollisionCamera(Camera* camera, glm::fvec3 movement, float objectWidth, float objectHeight, float objectDepth);
 	glm::fvec3 rectCollide(glm::fvec3 oldPos, glm::fvec3 newPos, glm::fvec3 size1, glm::fvec3 size2, glm::fvec3 pos2);
@@ -54,9 +56,12 @@ private:
 	const float SPOT_DEPTH = 1;
 	static int NUM_TEX_EXP;
 	static int NUM_TEXTURES;
+	const float DOOR_THICKNESS = 0.125f;
 	
 
 	void generateLevel(std::string fileName);
+
+	void addSpecial(int blueValue, int x, int z);
 };
 
 #endif

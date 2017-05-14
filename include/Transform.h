@@ -113,9 +113,9 @@ public:
 		}
 	}
 
-	glm::vec3 pos;
-	glm::vec3 rot;
-	glm::vec3 scale;
+	glm::fvec3 pos;
+	glm::fvec3 rot;
+	glm::fvec3 scale;
 
 	static Vec9 createVec9(float posx, float posy, float posz, float rotx, float roty, float rotz, float scalex, float scaley, float scalez)
 	{
@@ -127,16 +127,26 @@ public:
 		return Vec9(direction, magnitude);
 	}
 
-	static glm::vec3 rotate(float angle, glm::vec3 axis)
+	static glm::fvec3 rotate(float angle, glm::vec3 axis)
 	{
 		
+	}
+
+	static glm::fvec3 lerp(glm::fvec3 start, glm::fvec3 end, double lerpFactor)
+	{
+		glm::fvec3 result;
+		result.x = (1 - lerpFactor) * start.x + lerpFactor * end.x;
+		result.y = (1 - lerpFactor) * start.y + lerpFactor * end.y;
+		result.z = (1 - lerpFactor) * start.z + lerpFactor * end.z;
+
+		return result;
 	}
 };
 
 class Transform
 {
 public:
-	Transform(const glm::vec3& pos = glm::vec3(), const glm::vec3& rot = glm::vec3(), const glm::vec3& scale = glm::vec3(1.0f, 1.0f, 1.0f)) :
+	Transform(const glm::fvec3& pos = glm::fvec3(), const glm::fvec3& rot = glm::fvec3(), const glm::fvec3& scale = glm::fvec3(1.0f, 1.0f, 1.0f)) :
 		m_pos(pos),
 		m_rot(rot),
 		m_scale(scale) {}
@@ -160,17 +170,17 @@ public:
 		return posMatrix * rotMatrix * scaleMatrix;
 	}
 
-	inline glm::vec3& GetPos() { return m_pos; }
-	inline glm::vec3& GetRot() { return m_rot; }
-	inline glm::vec3& GetScale() { return m_scale; }
+	inline glm::fvec3& GetPos() { return m_pos; }
+	inline glm::fvec3& GetRot() { return m_rot; }
+	inline glm::fvec3& GetScale() { return m_scale; }
 
-	inline void SetPos(const glm::vec3& pos) { m_pos = pos; }
-	inline void SetRot(const glm::vec3& rot) { m_rot = rot; }
-	inline void SetScale(const glm::vec3& scale) { m_scale = scale; }
+	inline void SetPos(const glm::fvec3& pos) { m_pos = pos; }
+	inline void SetRot(const glm::fvec3& rot) { m_rot = rot; }
+	inline void SetScale(const glm::fvec3& scale) { m_scale = scale; }
 private:
-	glm::vec3 m_pos;
-	glm::vec3 m_rot;
-	glm::vec3 m_scale;
+	glm::fvec3 m_pos;
+	glm::fvec3 m_rot;
+	glm::fvec3 m_scale;
 };
 
 #endif

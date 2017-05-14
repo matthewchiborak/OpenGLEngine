@@ -13,6 +13,11 @@ public:
 	{
 		return time(NULL) * 1000000000;
 	}
+	
+	static long getRegularTime()
+	{
+		return time(NULL);
+	}
 
 	static double detDelta()
 	{
