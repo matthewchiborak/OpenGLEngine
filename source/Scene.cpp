@@ -37,6 +37,15 @@ void Scene::generateLevel(std::string fileName)
 	level->flipX();
 	level->flipY();
 
+	//TEST
+	float XLow, XHigh, YLow, YHigh;
+	level->calcTexCoords(79, NUM_TEXTURES, NUM_TEX_EXP, &XLow, &XHigh, &YLow, &YHigh);
+	Door* tempDoor = new Door("TestDoor", SPOT_WIDTH, SPOT_HEIGHT, 0.125f, XLow, XHigh, YLow, YHigh, TextureManager::getTextureManager()->getTexture("Wolf"), ShaderManager::getShaderManager()->getShader("Phong"));
+	addGameObjectToScene(tempDoor);
+	doors.push_back(tempDoor);
+	getGameObject("TestDoor")->setTransform(Vec9::createVec9(17 * SPOT_WIDTH, 0.5 * SPOT_HEIGHT, 19 * SPOT_DEPTH, 0, 0, 0, 1, 1, 1));
+	//TEST
+
 	for (int i = 0; i < level->getWidth(); i++)
 	{
 		for (int j = 0; j < level->getHeight(); j++)
@@ -48,7 +57,7 @@ void Scene::generateLevel(std::string fileName)
 			}
 
 			//Floor
-			float XLow, XHigh, YLow, YHigh;
+			/*float XLow, XHigh, YLow, YHigh;*/
 			level->calcTexCoords(level->getPixel(i, j).g, NUM_TEXTURES, NUM_TEX_EXP, &XLow, &XHigh, &YLow, &YHigh);
 
 			addGameObjectToScene(GameObject::createSquarePartTexture(name + "_Floor_" + std::to_string(i) + "_" + std::to_string(j), SPOT_WIDTH, 0, SPOT_DEPTH, false, XLow, XHigh, YLow, YHigh, TextureManager::getTextureManager()->getTexture("Wolf"), ShaderManager::getShaderManager()->getShader("Phong")));
@@ -201,10 +210,10 @@ glm::fvec3 Scene::checkCollisionCameraWalls(Camera* camera, glm::fvec3 movement,
 	}
 
 	//Find the grid square the camera is trying to move into
-	int camInX = (camera->getPosition().x) / (SPOT_WIDTH);
-	int camInZ = (camera->getPosition().z) / (SPOT_DEPTH);
-	int camWantGoX = (camera->getPosition().x + movement.x + offsetX) / (SPOT_WIDTH);
-	int camWantGoZ = (camera->getPosition().z + movement.z + offsetZ) / (SPOT_DEPTH);
+	int camInX = (camera->getPosition().x) / (SPOT_WIDTH) + 0.5 * SPOT_WIDTH;
+	int camInZ = (camera->getPosition().z) / (SPOT_DEPTH) + 0.5 * SPOT_DEPTH;
+	int camWantGoX = (camera->getPosition().x + movement.x + offsetX) / (SPOT_WIDTH) + 0.5 * SPOT_WIDTH;
+	int camWantGoZ = (camera->getPosition().z + movement.z + offsetZ) / (SPOT_DEPTH) + 0.5 * SPOT_DEPTH;
 
 	if (movement.x != 0)
 	{
@@ -220,6 +229,19 @@ glm::fvec3 Scene::checkCollisionCameraWalls(Camera* camera, glm::fvec3 movement,
 	if (movement.z != 0)
 	{
 		if (level->getPixel(camInX, camWantGoZ).r == 0 && level->getPixel(camInX, camWantGoZ).g == 0 && level->getPixel(camInX, camWantGoZ).b == 0)
+		{
+			collisionVector.z = 0;
+		}
+	}
+
+	//Check if collide with door
+	for (int i = 0; i < doors.size(); i++)
+	{
+		if (doors.at(i)->getTransform()->GetPos().x / (SPOT_WIDTH) == camWantGoX && doors.at(i)->getTransform()->GetPos().z / (SPOT_DEPTH) == camInZ)
+		{
+			collisionVector.x = 0;
+		}
+		if (doors.at(i)->getTransform()->GetPos().z / (SPOT_DEPTH) == camWantGoZ && doors.at(i)->getTransform()->GetPos().x / (SPOT_WIDTH) == camInX)
 		{
 			collisionVector.z = 0;
 		}

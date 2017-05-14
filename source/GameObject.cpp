@@ -1,5 +1,10 @@
 #include "../include/GameObject.h"
 
+GameObject::GameObject()
+{
+
+}
+
 GameObject::GameObject(std::string name, std::string meshFile, Texture* texture, Shader* shader)
 {
 	this->name = name;
@@ -393,4 +398,9 @@ void GameObject::setTransform(Vec9 change)
 std::string GameObject::getName()
 {
 	return name;
+}
+
+Transform* GameObject::getTransform()
+{
+	return &transform;
 }

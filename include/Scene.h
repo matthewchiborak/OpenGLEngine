@@ -12,6 +12,7 @@
 #include "TextureManager.h"
 #include "Bitmap.h"
 #include "Time.h"
+#include "Door.h"
 
 class Input;
 
@@ -44,6 +45,7 @@ private:
 	Camera* camera;
 	std::vector<GameObject*> gameObjects;
 	std::vector<Input*> inputs;
+	std::vector<Door*> doors;
 	Bitmap* level;
 	long lastTimeUpdated;
 
