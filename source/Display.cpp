@@ -38,6 +38,10 @@ Display::Display(int width, int height, const std::string& title)
 	//Enable zbuffering
 	glEnable(GL_DEPTH_TEST);
 
+	//Allow for transparencies
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 	//Prevent clip inside objects
 	glEnable(GL_DEPTH_CLAMP);
 

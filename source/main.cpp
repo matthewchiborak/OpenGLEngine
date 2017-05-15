@@ -45,6 +45,7 @@ int main(int argc, char** argv)
 	//shader.setSpotLight(0, glm::fvec3(-2, 0, 6), glm::fvec3(1, 1, 1), 0.4f, 20, 0, 0, 0.02f, glm::vec3(0, 0, 1), 0.7);
 
 	TextureManager::getTextureManager()->loadTexture("Wolf", ".\\res\\WolfCollection.png");
+	TextureManager::getTextureManager()->loadTexture("SSWVA1", ".\\res\\SSWVA1.png");
 
 	scenes.push_back(new Scene("Main", ".\\res\\Level1.png", WIDTH, HEIGHT));
 
@@ -109,7 +110,7 @@ int main(int argc, char** argv)
 		//Time::setDelta(frameTime);
 
 		//UPDATE GAME
-		display.clear(0.0f, 0.15f, 0.3f, 1.0f);
+		display.clear(0.0f, 0.0f, 0.0f, 0.0f);
 
 		ShaderManager::getShaderManager()->getShader("Phong")->setPointLight(0, scenes.at(currentScene)->getCamera()->getPosition(), glm::fvec3(1, 1, 1), 10.0f, 20, 0, 0, 1);
 

@@ -27,23 +27,16 @@ Scene::Scene(std::string name, std::string fileName, float windowWidth, float wi
 
 void Scene::generateLevel(std::string fileName)
 {
-	/*const float SPOT_WIDTH = 1;
-	const float SPOT_HEIGHT = 1;
-	const float SPOT_DEPTH = 1;
-	static int NUM_TEX_EXP = 4;
-	static int NUM_TEXTURES = pow(2, NUM_TEX_EXP);*/
-
 	level = new Bitmap(".\\res\\Level1.png");
 	level->flipX();
 	level->flipY();
 
 	//TEST
 	float XLow, XHigh, YLow, YHigh;
-	/*level->calcTexCoords(79, NUM_TEXTURES, NUM_TEX_EXP, &XLow, &XHigh, &YLow, &YHigh);
-	Door* tempDoor = new Door("TestDoor", SPOT_WIDTH, SPOT_HEIGHT, 0.125f, XLow, XHigh, YLow, YHigh, TextureManager::getTextureManager()->getTexture("Wolf"), ShaderManager::getShaderManager()->getShader("Phong"));
+	//level->calcTexCoords(79, NUM_TEXTURES, NUM_TEX_EXP, &XLow, &XHigh, &YLow, &YHigh);
+	Monster* tempDoor = new Monster("TestMob", Monster::SIZEX, Monster::SIZEY, 0, 0, 1, 0, 1, TextureManager::getTextureManager()->getTexture("SSWVA1"), ShaderManager::getShaderManager()->getShader("Phong"));
 	addGameObjectToScene(tempDoor);
-	doors.push_back(tempDoor);
-	getGameObject("TestDoor")->setTransform(Vec9::createVec9(17 * SPOT_WIDTH, 0.5 * SPOT_HEIGHT, 19 * SPOT_DEPTH, 0, 0, 0, 1, 1, 1));*/
+	getGameObject("TestMob")->setTransform(Vec9::createVec9(17 * SPOT_WIDTH, 0.5 * SPOT_HEIGHT - 0.25 * Monster::SIZEY, 19 * SPOT_DEPTH, 0, 0, 0, 1, 1, 1));
 	//TEST
 
 	for (int i = 0; i < level->getWidth(); i++)

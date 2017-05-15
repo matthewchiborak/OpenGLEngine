@@ -13,6 +13,7 @@
 #include "Bitmap.h"
 #include "Time.h"
 #include "Door.h"
+#include "Monster.h"
 
 class Input;
 
