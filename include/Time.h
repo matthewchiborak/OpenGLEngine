@@ -2,6 +2,7 @@
 #define __TIME_H
 
 #include <ctime>
+#include <chrono>
 
 class Time
 {
@@ -17,6 +18,11 @@ public:
 	static long getRegularTime()
 	{
 		return time(NULL);
+	}
+
+	static std::chrono::high_resolution_clock::time_point getTimeNanoseconds()
+	{
+		return std::chrono::high_resolution_clock::now();
 	}
 
 	static double detDelta()

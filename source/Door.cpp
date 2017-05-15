@@ -92,10 +92,14 @@ void Door::open()
 	if (!isOpening)
 	{
 		isOpening = true;
-		openingStartTime = Time::getRegularTime();
+		/*openingStartTime = Time::getRegularTime();
 		openTime = openingStartTime + TIME_TO_OPEN;
 		closingStartTime = openTime + CLOSE_DELAY;
-		closeTime = closingStartTime + TIME_TO_OPEN;
+		closeTime = closingStartTime + TIME_TO_OPEN;*/
+		openingStartTime = Time::getTimeNanoseconds();
+		openTime = openingStartTime + std::chrono::nanoseconds(TIME_TO_OPEN);
+		closingStartTime = openTime + std::chrono::nanoseconds(CLOSE_DELAY);
+		closeTime = closingStartTime + std::chrono::nanoseconds(TIME_TO_OPEN);
 	}
 }
 
@@ -103,11 +107,13 @@ void Door::update()
 {
 	if (isOpening)
 	{
-		time_t time = Time::getRegularTime();
+		//time_t time = Time::getRegularTime();
+		std::chrono::high_resolution_clock::time_point time = Time::getTimeNanoseconds();
 
 		if (time < openTime)
 		{
-			transform.GetPos() = Vec9::lerp(closePosition, openPosition, static_cast<double>(time - openingStartTime) / TIME_TO_OPEN);
+			//transform.GetPos() = Vec9::lerp(closePosition, openPosition, static_cast<double>(time - openingStartTime) / TIME_TO_OPEN);
+			transform.GetPos() = Vec9::lerp(closePosition, openPosition, (time - openingStartTime).count() / (double)TIME_TO_OPEN);
 		}
 		else if(time < closingStartTime)
 		{
@@ -116,7 +122,8 @@ void Door::update()
 		}
 		else if (time < closeTime)
 		{
-			transform.GetPos() = Vec9::lerp(openPosition, closePosition, static_cast<double>(time - closingStartTime) / TIME_TO_OPEN);
+			//transform.GetPos() = Vec9::lerp(openPosition, closePosition, static_cast<double>(time - closingStartTime) / TIME_TO_OPEN);
+			transform.GetPos() = Vec9::lerp(openPosition, closePosition, (time - closingStartTime).count() / (double)TIME_TO_OPEN);
 			isOpen = false;
 		}
 		else
