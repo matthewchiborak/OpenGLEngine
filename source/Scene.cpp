@@ -34,7 +34,7 @@ void Scene::generateLevel(std::string fileName)
 	//TEST
 	float XLow, XHigh, YLow, YHigh;
 	//level->calcTexCoords(79, NUM_TEXTURES, NUM_TEX_EXP, &XLow, &XHigh, &YLow, &YHigh);
-	Monster* tempDoor = new Monster("TestMob", Monster::SIZEX, Monster::SIZEY, 0, 0, 1, 0, 1, TextureManager::getTextureManager()->getTexture("SSWVA1"), ShaderManager::getShaderManager()->getShader("Phong"), camera);
+	Monster* tempDoor = new Monster("TestMob", Monster::SIZEX, Monster::SIZEY, 0, 0, 1, 0, 1, TextureManager::getTextureManager()->getTexture("SSWVA1"), ShaderManager::getShaderManager()->getShader("Phong"), camera, this);
 	addGameObjectToScene(tempDoor);
 	getGameObject("TestMob")->setTransform(Vec9::createVec9(17 * SPOT_WIDTH, 0.5 * SPOT_HEIGHT - 0.25 * Monster::SIZEY, 19 * SPOT_DEPTH, 0, 0, 0, 1, 1, 1));
 	//TEST
@@ -271,6 +271,66 @@ glm::fvec3 Scene::checkCollisionCameraWalls(Camera* camera, glm::fvec3 movement,
 		}
 		if (doors.at(i)->getTransform()->GetPos().z / (SPOT_DEPTH) == camWantGoZ && doors.at(i)->getTransform()->GetPos().x / (SPOT_WIDTH) == camInX)
 		{
+			collisionVector.z = 0;
+		}
+	}
+
+	return collisionVector;
+}
+
+glm::fvec3 Scene::checkCollisionEnemyWalls(Monster* monster, glm::fvec3 movement, float objectWidth, float objectHeight, float objectDepth)
+{
+	//If a collision, change the result to 0;
+	glm::fvec3 collisionVector(1, 1, 1);
+
+	float offsetX = 0.5 * SPOT_WIDTH;
+	float offsetZ = 0.5 * SPOT_DEPTH;
+
+	if (movement.x < 0)
+	{
+		offsetX = 0;
+	}
+	if (movement.z < 0)
+	{
+		offsetZ = 0;
+	}
+
+	//Find the grid square the camera is trying to move into
+	int camInX = (monster->getTransform()->GetPos().x) / (SPOT_WIDTH)+0.5 * SPOT_WIDTH;
+	int camInZ = (monster->getTransform()->GetPos().z) / (SPOT_DEPTH)+0.5 * SPOT_DEPTH;
+	int camWantGoX = (monster->getTransform()->GetPos().x + movement.x + offsetX) / (SPOT_WIDTH)+0.5 * SPOT_WIDTH;
+	int camWantGoZ = (monster->getTransform()->GetPos().z + movement.z + offsetZ) / (SPOT_DEPTH)+0.5 * SPOT_DEPTH;
+
+	if (movement.x != 0)
+	{
+		if (level->getPixel(camWantGoX, camInZ).r == 0 && level->getPixel(camWantGoX, camInZ).g == 0 && level->getPixel(camWantGoX, camInZ).b == 0)
+		{
+			collisionVector.x = 0;
+		}
+	}
+	/*if (movement.y > 0)
+	{
+
+	}*/
+	if (movement.z != 0)
+	{
+		if (level->getPixel(camInX, camWantGoZ).r == 0 && level->getPixel(camInX, camWantGoZ).g == 0 && level->getPixel(camInX, camWantGoZ).b == 0)
+		{
+			collisionVector.z = 0;
+		}
+	}
+
+	//Check if collide with door
+	for (int i = 0; i < doors.size(); i++)
+	{
+		if (doors.at(i)->getTransform()->GetPos().x / (SPOT_WIDTH) == camWantGoX && doors.at(i)->getTransform()->GetPos().z / (SPOT_DEPTH) == camInZ)
+		{
+			doors.at(i)->open();
+			collisionVector.x = 0;
+		}
+		if (doors.at(i)->getTransform()->GetPos().z / (SPOT_DEPTH) == camWantGoZ && doors.at(i)->getTransform()->GetPos().x / (SPOT_WIDTH) == camInX)
+		{
+			doors.at(i)->open();
 			collisionVector.z = 0;
 		}
 	}

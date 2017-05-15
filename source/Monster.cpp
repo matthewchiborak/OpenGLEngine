@@ -3,10 +3,12 @@
 float Monster::SIZEX = 0.35;
 float Monster::SIZEY = 0.7;
 
-Monster::Monster(std::string name, float width, float height, float depth, float XLower, float XHigher, float YLower, float YHigher, Texture* texture, Shader* shader, Camera* camera)
+Monster::Monster(std::string name, float width, float height, float depth, float XLower, float XHigher, float YLower, float YHigher, Texture* texture, Shader* shader, Camera* camera, Scene* myScene)
 {
-	currentState = IDLE;
+	//currentState = IDLE;
+	currentState = CHASE;
 	this->camera = camera;
+	this->myScene = myScene;
 
 	float w = width / 2;
 	float h = height / 2;
@@ -98,20 +100,12 @@ void Monster::update()
 	//Have the enemy always face the player
 	glm::fvec3 directToCam = transform.GetPos() - camera->getPosition();
 
-	//float parameter = (directToCam.z / directToCam.x)  * (3.1415 / 180);
-
 	float angleToFaceCam = atan((directToCam.z / directToCam.x));
 	
 	if (directToCam.x > 0)
 	{
 		angleToFaceCam += 3.1415;
 	}
-
-	//std::cout << transform.GetRot().y << " : " << angleToFaceCam << "\n";
-	
-	//transform.GetRot().y = angleToFaceCam + 90;
-	//transform.SetRot(glm::fvec3(0, angleToFaceCam, 0));
-
 
 	transform.SetRot(glm::fvec3(0, (angleToFaceCam + (3.1415/2)) * -1, 0));
 	
@@ -141,7 +135,25 @@ void Monster::idleUpdate()
 }
 void Monster::chaseUpdate()
 {
+	glm::fvec3 directionToCam = transform.GetPos() - camera->getPosition();
+	float distanceToCam = sqrtf(directionToCam.x * directionToCam.x + directionToCam.y * directionToCam.y + directionToCam.z * directionToCam.z);
 
+	//TODO factor in deltatime. 
+	if (distanceToCam > MOVEMENT_STOP_DISTANCE)
+	{
+		//glm::fvec3 movementVector(transform.GetPos().x - (directionToCam.x * MOVE_SPEED), 0, transform.GetPos().z - (directionToCam.z * MOVE_SPEED));
+		glm::fvec3 movementVector((directionToCam.x * MOVE_SPEED), 0, (directionToCam.z * MOVE_SPEED));
+		//glm::fvec3 moveNorm = glm::normalize(movementVector);
+
+		//Collision dectection
+		glm::fvec3 collisionResult = myScene->checkCollisionEnemyWalls(this, movementVector, Scene::PLAYER_SIZE, Scene::PLAYER_SIZE, Scene::PLAYER_SIZE);
+
+		movementVector.x *= collisionResult.x;
+		movementVector.y *= collisionResult.y;
+		movementVector.z *= collisionResult.z;
+
+		transform.GetPos() -= movementVector;
+	}
 }
 void Monster::attackUpdate()
 {

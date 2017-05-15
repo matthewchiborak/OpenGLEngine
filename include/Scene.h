@@ -16,6 +16,7 @@
 #include "Monster.h"
 
 class Input;
+class Monster;
 
 class Scene
 {
@@ -40,6 +41,8 @@ public:
 	glm::fvec3 checkCollisionCamera(Camera* camera, glm::fvec3 movement, float objectWidth, float objectHeight, float objectDepth);
 	glm::fvec3 rectCollide(glm::fvec3 oldPos, glm::fvec3 newPos, glm::fvec3 size1, glm::fvec3 size2, glm::fvec3 pos2);
 	glm::fvec3 checkCollisionCameraWalls(Camera* camera, glm::fvec3 movement, float objectWidth, float objectHeight, float objectDepth);
+
+	glm::fvec3 checkCollisionEnemyWalls(Monster* monster, glm::fvec3 movement, float objectWidth, float objectHeight, float objectDepth);
 
 	static float PLAYER_SIZE;
 
