@@ -3,8 +3,11 @@
 float Monster::SIZEX = 0.35;
 float Monster::SIZEY = 0.7;
 
-Monster::Monster(std::string name, float width, float height, float depth, float XLower, float XHigher, float YLower, float YHigher, Texture* texture, Shader* shader)
+Monster::Monster(std::string name, float width, float height, float depth, float XLower, float XHigher, float YLower, float YHigher, Texture* texture, Shader* shader, Camera* camera)
 {
+	currentState = IDLE;
+	this->camera = camera;
+
 	float w = width / 2;
 	float h = height / 2;
 	float d = depth / 2;
@@ -89,7 +92,68 @@ Monster::~Monster()
 
 void Monster::update()
 {
+	//All updates that affect all states
+	//Maybe should force on the ground?
+
+	//Have the enemy always face the player
+	glm::fvec3 directToCam = transform.GetPos() - camera->getPosition();
+
+	//float parameter = (directToCam.z / directToCam.x)  * (3.1415 / 180);
+
+	float angleToFaceCam = atan((directToCam.z / directToCam.x));
 	
+	if (directToCam.x > 0)
+	{
+		angleToFaceCam += 3.1415;
+	}
+
+	//std::cout << transform.GetRot().y << " : " << angleToFaceCam << "\n";
+	
+	//transform.GetRot().y = angleToFaceCam + 90;
+	//transform.SetRot(glm::fvec3(0, angleToFaceCam, 0));
+
+
+	transform.SetRot(glm::fvec3(0, (angleToFaceCam + (3.1415/2)) * -1, 0));
+	
+	switch (currentState)
+	{
+		case IDLE:
+			idleUpdate();
+			break;
+		case CHASE:
+			chaseUpdate();
+			break;
+		case ATTACK:
+			attackUpdate();
+			break;
+		case DYING:
+			dyingUpdate();
+			break;
+		case DEAD:
+			deadUpdate();
+			break;
+	}
+}
+
+void Monster::idleUpdate()
+{
+	
+}
+void Monster::chaseUpdate()
+{
+
+}
+void Monster::attackUpdate()
+{
+
+}
+void Monster::dyingUpdate()
+{
+
+}
+void Monster::deadUpdate()
+{
+
 }
 
 void Monster::init()

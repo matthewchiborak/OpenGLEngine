@@ -179,6 +179,7 @@ public:
 	inline void SetScale(const glm::fvec3& scale) { m_scale = scale; }
 private:
 	glm::fvec3 m_pos;
+	//VERY IMPORTANT. THIS IS IN RADIANS
 	glm::fvec3 m_rot;
 	glm::fvec3 m_scale;
 };

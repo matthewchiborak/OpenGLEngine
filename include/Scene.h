@@ -49,6 +49,7 @@ private:
 	std::vector<GameObject*> gameObjects;
 	std::vector<Input*> inputs;
 	std::vector<Door*> doors;
+
 	Bitmap* level;
 	long lastTimeUpdated;
 

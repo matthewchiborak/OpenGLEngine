@@ -34,7 +34,7 @@ void Scene::generateLevel(std::string fileName)
 	//TEST
 	float XLow, XHigh, YLow, YHigh;
 	//level->calcTexCoords(79, NUM_TEXTURES, NUM_TEX_EXP, &XLow, &XHigh, &YLow, &YHigh);
-	Monster* tempDoor = new Monster("TestMob", Monster::SIZEX, Monster::SIZEY, 0, 0, 1, 0, 1, TextureManager::getTextureManager()->getTexture("SSWVA1"), ShaderManager::getShaderManager()->getShader("Phong"));
+	Monster* tempDoor = new Monster("TestMob", Monster::SIZEX, Monster::SIZEY, 0, 0, 1, 0, 1, TextureManager::getTextureManager()->getTexture("SSWVA1"), ShaderManager::getShaderManager()->getShader("Phong"), camera);
 	addGameObjectToScene(tempDoor);
 	getGameObject("TestMob")->setTransform(Vec9::createVec9(17 * SPOT_WIDTH, 0.5 * SPOT_HEIGHT - 0.25 * Monster::SIZEY, 19 * SPOT_DEPTH, 0, 0, 0, 1, 1, 1));
 	//TEST
