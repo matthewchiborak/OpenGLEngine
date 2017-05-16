@@ -15,6 +15,8 @@
 #include "Door.h"
 #include "Monster.h"
 
+#include <D:/OpenGL2017/glm-0.9.8.4/glm-0.9.8.4/glm/glm.hpp>
+
 class Input;
 class Monster;
 
@@ -44,6 +46,14 @@ public:
 
 	glm::fvec3 checkCollisionEnemyWalls(Monster* monster, glm::fvec3 movement, float objectWidth, float objectHeight, float objectDepth);
 
+	glm::fvec2 checkIntersection(glm::fvec2 lineStart, glm::fvec2 lineEnd);
+	glm::fvec2 lineInterestRect(glm::fvec2 lineStart, glm::fvec2 lineEnd);
+	float getLineLength(glm::fvec2 line);
+
+	glm::fvec2 findNearestVector2(glm::fvec2 a, glm::fvec2 b, glm::fvec2 positionRelativeTo);
+
+	glm::fvec2 lineInterestRect(glm::fvec2 lineStart, glm::fvec2 lineEnd, glm::fvec2 pos, glm::fvec2 size);
+
 	static float PLAYER_SIZE;
 
 private:
@@ -62,11 +72,21 @@ private:
 	static int NUM_TEX_EXP;
 	static int NUM_TEXTURES;
 	const float DOOR_THICKNESS = 0.125f;
-	
+
+	//For line interestion
+	std::vector<glm::fvec2*> collisionPosStart;
+	std::vector<glm::fvec2*> collisionPosEnd;
 
 	void generateLevel(std::string fileName);
 
 	void addSpecial(int blueValue, int x, int z);
+
+	glm::fvec2 lineIntersect(glm::fvec2 lineStart1, glm::fvec2 lineEnd1, glm::fvec2 lineStart2, glm::fvec2 lineEnd2);
+
+	
+	float crossProduct(glm::fvec2 a, glm::fvec2 b);
+
+	
 };
 
 #endif

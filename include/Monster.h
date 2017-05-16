@@ -45,6 +45,8 @@ private:
 
 	const float MOVE_SPEED = 0.01;
 	const float MOVEMENT_STOP_DISTANCE = 1.5;
+	const float SHOOT_DISTANCE = 1000.0f;
+	int random;
 };
 
 #endif

@@ -6,7 +6,10 @@ float Monster::SIZEY = 0.7;
 Monster::Monster(std::string name, float width, float height, float depth, float XLower, float XHigher, float YLower, float YHigher, Texture* texture, Shader* shader, Camera* camera, Scene* myScene)
 {
 	//currentState = IDLE;
-	currentState = CHASE;
+	//currentState = CHASE;
+	random = rand();
+
+	currentState = ATTACK;
 	this->camera = camera;
 	this->myScene = myScene;
 
@@ -157,7 +160,40 @@ void Monster::chaseUpdate()
 }
 void Monster::attackUpdate()
 {
+	//Line from monster to player. See what parts of world it interests. See if hits player.
+	glm::fvec2 lineStart(transform.GetPos().x, transform.GetPos().z);
+	glm::fvec3 castDirectionInit(-camera->getPosition().x, 0, -camera->getPosition().z);
 
+	//glm::mat4 rotMatrix = glm::rotate((float)random, glm::vec3(0, 1, 0));
+	
+	glm::fvec2 castDirection(castDirectionInit.x, castDirectionInit.z);
+	glm::fvec2 lineEnd = lineStart + castDirection * SHOOT_DISTANCE;
+
+	//Check intersection of the 2 lines
+	glm::fvec2 collisionVector = myScene->checkIntersection(lineStart, lineEnd);
+
+	glm::fvec2 playerIntersectVector = myScene->lineInterestRect(lineStart, lineEnd);
+
+	if ((playerIntersectVector.x != 0 && playerIntersectVector.y != 0) && 
+		((collisionVector.x == 0 && collisionVector.y == 0) || (myScene->getLineLength(playerIntersectVector - lineStart) < myScene->getLineLength(collisionVector - lineStart))))
+	{
+		std::cout << "Hit Player\n";
+		currentState = CHASE;
+	}
+
+	if (collisionVector.x == 0 && collisionVector.y == 0)
+	{
+		//Missed
+		std::cout << "Miss\n";
+	}
+	else
+	{
+		//Hit something
+		std::cout << "Hit\n";
+	}
+
+	//Only attack once
+	
 }
 void Monster::dyingUpdate()
 {

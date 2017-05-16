@@ -70,21 +70,33 @@ void Scene::generateLevel(std::string fileName)
 
 			if (level->getPixel(i, j - 1).r == 0 && level->getPixel(i, j - 1).g == 0 && level->getPixel(i, j - 1).b == 0)
 			{
+				collisionPosStart.push_back(new glm::fvec2(i * SPOT_WIDTH, j * SPOT_DEPTH));
+				collisionPosEnd.push_back(new glm::fvec2((i + 1) * SPOT_WIDTH, j * SPOT_DEPTH));
+
 				addGameObjectToScene(GameObject::createCubePartTexture(name + "_Wall_a_" + std::to_string(i) + "_" + std::to_string(j), SPOT_WIDTH, SPOT_HEIGHT, 0, XLow, XHigh, YLow, YHigh, TextureManager::getTextureManager()->getTexture("Wolf"), ShaderManager::getShaderManager()->getShader("Phong")));
 				getGameObject(name + "_Wall_a_" + std::to_string(i) + "_" + std::to_string(j))->setTransform(Vec9::createVec9(i * SPOT_WIDTH, SPOT_HEIGHT / 2, (j - 0.5) * SPOT_DEPTH, 0, 0, 0, 1, 1, 1));
 			}
 			if (level->getPixel(i, j + 1).r == 0 && level->getPixel(i, j + 1).g == 0 && level->getPixel(i, j + 1).b == 0)
 			{
+				collisionPosStart.push_back(new glm::fvec2(i * SPOT_WIDTH, (j + 1) * SPOT_DEPTH));
+				collisionPosEnd.push_back(new glm::fvec2((i + 1) * SPOT_WIDTH, (j + 1) * SPOT_DEPTH));
+
 				addGameObjectToScene(GameObject::createCubePartTexture(name + "_Wall_b_" + std::to_string(i) + "_" + std::to_string(j), SPOT_WIDTH, SPOT_HEIGHT, 0, XLow, XHigh, YLow, YHigh, TextureManager::getTextureManager()->getTexture("Wolf"), ShaderManager::getShaderManager()->getShader("Phong")));
 				getGameObject(name + "_Wall_b_" + std::to_string(i) + "_" + std::to_string(j))->setTransform(Vec9::createVec9(i * SPOT_WIDTH, SPOT_HEIGHT / 2, (j + 0.5) * SPOT_DEPTH, 0, 0, 0, 1, 1, 1));
 			}
 			if (level->getPixel(i - 1, j).r == 0 && level->getPixel(i - 1, j).g == 0 && level->getPixel(i - 1, j).b == 0)
 			{
+				collisionPosStart.push_back(new glm::fvec2(i * SPOT_WIDTH, (j) * SPOT_DEPTH));
+				collisionPosEnd.push_back(new glm::fvec2((i) * SPOT_WIDTH, (j + 1) * SPOT_DEPTH));
+
 				addGameObjectToScene(GameObject::createCubePartTexture(name + "_Wall_c_" + std::to_string(i) + "_" + std::to_string(j), 0, SPOT_HEIGHT, SPOT_DEPTH, XLow, XHigh, YLow, YHigh, TextureManager::getTextureManager()->getTexture("Wolf"), ShaderManager::getShaderManager()->getShader("Phong")));
 				getGameObject(name + "_Wall_c_" + std::to_string(i) + "_" + std::to_string(j))->setTransform(Vec9::createVec9((i - 0.5) * SPOT_WIDTH, SPOT_HEIGHT / 2, (j)* SPOT_DEPTH, 0, 0, 0, 1, 1, 1));
 			}
 			if (level->getPixel(i + 1, j).r == 0 && level->getPixel(i + 1, j).g == 0 && level->getPixel(i + 1, j).b == 0)
 			{
+				collisionPosStart.push_back(new glm::fvec2((i + 1) * SPOT_WIDTH, (j) * SPOT_DEPTH));
+				collisionPosEnd.push_back(new glm::fvec2((i + 1) * SPOT_WIDTH, (j + 1) * SPOT_DEPTH));
+
 				addGameObjectToScene(GameObject::createCubePartTexture(name + "_Wall_d_" + std::to_string(i) + "_" + std::to_string(j), 0, SPOT_HEIGHT, SPOT_DEPTH, XLow, XHigh, YLow, YHigh, TextureManager::getTextureManager()->getTexture("Wolf"), ShaderManager::getShaderManager()->getShader("Phong")));
 				getGameObject(name + "_Wall_d_" + std::to_string(i) + "_" + std::to_string(j))->setTransform(Vec9::createVec9((i + 0.5) * SPOT_WIDTH, SPOT_HEIGHT / 2, (j)* SPOT_DEPTH, 0, 0, 0, 1, 1, 1));
 			}
@@ -164,6 +176,17 @@ Scene::~Scene()
 	{
 		if(gameObjects.at(i) != NULL)
 			delete gameObjects.at(i);
+	}
+
+	for (int i = 0; i < collisionPosStart.size(); i++)
+	{
+		if (collisionPosStart.at(i) != NULL)
+			delete collisionPosStart.at(i);
+	}
+	for (int i = 0; i < collisionPosEnd.size(); i++)
+	{
+		if (collisionPosEnd.at(i) != NULL)
+			delete collisionPosEnd.at(i);
 	}
 		
 	if(camera != NULL)
@@ -394,4 +417,162 @@ glm::fvec3 Scene::rectCollide(glm::fvec3 oldPos, glm::fvec3 newPos, glm::fvec3 s
 std::vector<Door*>* Scene::getDoors()
 {
 	return &doors;
+}
+
+glm::fvec2 Scene::checkIntersection(glm::fvec2 lineStart, glm::fvec2 lineEnd)
+{
+	//Find nearest intersection to the start of the line
+	glm::fvec2 nearestInterestion(0, 0);
+	bool foundOne = false;
+
+	for (int i = 0; i < collisionPosStart.size(); i++)
+	{
+		glm::fvec2 collisionVector = lineIntersect(lineStart, lineEnd, *collisionPosStart.at(i), *collisionPosEnd.at(i));
+
+		if ((!foundOne || (getLineLength(nearestInterestion - lineStart) > getLineLength(collisionVector - lineStart))) 
+			&& collisionVector.x != 0 && collisionVector.y != 0)
+		{
+			foundOne = true;
+			nearestInterestion = collisionVector;
+		}
+	}
+
+	for (int i = 0; i < doors.size(); i ++)
+	{
+		glm::fvec2 doorSize(SPOT_WIDTH, SPOT_DEPTH);
+		glm::fvec2 doorPos2f(doors.at(i)->getDimensions().x, doors.at(i)->getDimensions().z);
+		
+		glm::fvec2 collisionVector = lineInterestRect(lineStart, lineEnd, doorPos2f, doorSize);
+
+		nearestInterestion = findNearestVector2(nearestInterestion, collisionVector, lineStart);
+	}
+
+	return nearestInterestion;
+}
+
+float Scene::getLineLength(glm::fvec2 line)
+{
+	return sqrtf(line.x * line.x + line.y * line.y);
+}
+
+float Scene::crossProduct(glm::fvec2 a, glm::fvec2 b)
+{
+	return a.x * b.y - a.y * b.x;
+}
+
+glm::fvec2 Scene::lineIntersect(glm::fvec2 lineStart1, glm::fvec2 lineEnd1, glm::fvec2 lineStart2, glm::fvec2 lineEnd2)
+{
+	glm::fvec2 result(0, 0);
+	glm::fvec2 line1 = lineEnd1 - lineStart1;
+	glm::fvec2 line2 = lineEnd2 - lineStart2;
+
+	//lineStart1 + line1 * a == lineStart2 + line2 * b. If so, they intersect
+
+	float cross = crossProduct(line1, line2);
+
+	//Parallel
+	if (cross == 0)
+	{
+		return result;
+	}
+
+	glm::fvec2 distanceBetweenStarts = lineStart2 - lineStart1;
+
+	float a = crossProduct(distanceBetweenStarts, line2) / cross;
+	float b = crossProduct(distanceBetweenStarts, line1) / cross;
+
+	if (-0.01 < a && a < 1 && -0.01 < b && b < 1)
+	{
+		//Within range
+		result.x = line1.x + line1.x * a;
+		result.y = line1.y + line1.y * a;
+	}
+
+	return result;
+}
+
+glm::fvec2 Scene::lineInterestRect(glm::fvec2 lineStart, glm::fvec2 lineEnd)
+{
+	glm::fvec2 pos(camera->getPosition().x, camera->getPosition().z);
+	glm::fvec2 size(PLAYER_SIZE, PLAYER_SIZE);
+	glm::fvec2 posSize(pos.x + size.x, pos.y);
+	glm::fvec2 posSize2;
+
+	glm::fvec2 result(0, 0);
+
+	//Side 1
+	glm::fvec2 collisionVector = lineIntersect(lineStart, lineEnd, pos, posSize);
+	result = findNearestVector2(result, collisionVector, lineStart);
+
+	//2
+	posSize.x = pos.x;
+	posSize.y = pos.y + size.y;
+	collisionVector = lineIntersect(lineStart, lineEnd, pos, posSize);
+	result = findNearestVector2(result, collisionVector, lineStart);
+
+	//3
+	posSize2.x = pos.x;
+	posSize2.y = pos.y + size.y;
+	posSize.x = pos.x + size.x;
+	posSize.y = pos.y + size.y;
+	collisionVector = lineIntersect(lineStart, lineEnd, posSize2, posSize);
+	result = findNearestVector2(result, collisionVector, lineStart);
+
+	//4
+	posSize2.x = pos.x + size.x;
+	posSize2.y = pos.y;
+	collisionVector = lineIntersect(lineStart, lineEnd, posSize2, posSize);
+	result = findNearestVector2(result, collisionVector, lineStart);
+
+	return result;
+}
+
+glm::fvec2 Scene::lineInterestRect(glm::fvec2 lineStart, glm::fvec2 lineEnd, glm::fvec2 pos, glm::fvec2 size)
+{
+	glm::fvec2 posSize(pos.x + size.x, pos.y);
+	glm::fvec2 posSize2;
+
+	glm::fvec2 result(0, 0);
+
+	//Side 1
+	glm::fvec2 collisionVector = lineIntersect(lineStart, lineEnd, pos, posSize);
+	result = findNearestVector2(result, collisionVector, lineStart);
+
+	//2
+	posSize.x = pos.x;
+	posSize.y = pos.y + size.y;
+	collisionVector = lineIntersect(lineStart, lineEnd, pos, posSize);
+	result = findNearestVector2(result, collisionVector, lineStart);
+
+	//3
+	posSize2.x = pos.x;
+	posSize2.y = pos.y + size.y;
+	posSize.x = pos.x + size.x;
+	posSize.y = pos.y + size.y;
+	collisionVector = lineIntersect(lineStart, lineEnd, posSize2, posSize);
+	result = findNearestVector2(result, collisionVector, lineStart);
+
+	//4
+	posSize2.x = pos.x + size.x;
+	posSize2.y = pos.y;
+	collisionVector = lineIntersect(lineStart, lineEnd, posSize2, posSize);
+	result = findNearestVector2(result, collisionVector, lineStart);
+
+	return result;
+}
+
+glm::fvec2 Scene::findNearestVector2(glm::fvec2 a, glm::fvec2 b, glm::fvec2 positionRelativeTo)
+{
+	/*if (((getLineLength(a - positionRelativeTo) > getLineLength(a - positionRelativeTo)))
+		&& b.x != 0 && b.y != 0)
+	{
+		return a;
+	}*/
+	if ((b.x != 0 && b.y != 0) && ((a.x == 0 && a.y == 0) ||
+		(getLineLength(a - positionRelativeTo) > getLineLength(b - positionRelativeTo))))
+	{
+		return b;
+	}
+
+	return a;
 }
