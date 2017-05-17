@@ -9,8 +9,10 @@
 #include "Camera.h"
 #include "Scene.h"
 #include "Door.h"
+#include "Monster.h"
 
 class Scene;
+class Monster;
 
 enum InputType
 {
@@ -27,7 +29,9 @@ enum InputType
 	KEY_PRESS_FORWARD_CAMERA_TRANSFORM,
 	KEY_PRESS_LEFT_CAMERA_TRANSFORM,
 
-	KEY_PRESS_DOWN_DOOR_OPEN
+	KEY_PRESS_DOWN_DOOR_OPEN,
+
+	LEFT_CLICK_DOWN_SHOOT
 };
 
 class Input
@@ -38,6 +42,7 @@ public:
 	Input(int type, Camera* objectToAffect, int key, float magnitude);
 	Input(int type, Camera* objectToAffect);
 	Input(int type, Camera* objectToAffect, int key, std::vector<Door*>* doors);
+	Input(int type, Camera* objectToAffect, std::vector<Monster*>* monsters);
 	void execute(Display* display);
 
 	void assignScene(Scene* myScene);
@@ -52,6 +57,7 @@ private:
 	long deltaTime;
 	Scene* myScene;
 	std::vector<Door*>* doors;
+	std::vector<Monster*>* monsters;
 
 	void keyPressTransform(Display* display);
 	void keyPressDownTransform(Display* display);
@@ -66,6 +72,8 @@ private:
 	void keyPressLeftTransform(Display* display);
 
 	void keyPressDownDoorOpen(Display* display);
+
+	void leftClickDownShoot(Display* display);
 };
 
 #endif

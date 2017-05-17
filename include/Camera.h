@@ -20,6 +20,8 @@ public:
 		//m_forward = glm::vec3(0, 0, 1);
 		//m_up = glm::vec3(0, 1, 0);
 		sensitivity = 90.0f / 10000.0f;
+
+		health = MAX_HEALTH;
 	}
 
 	inline glm::mat4 GetViewProjection() const
@@ -27,47 +29,47 @@ public:
 		return m_perspective * glm::lookAt(m_position, m_position + m_forward, m_up);
 	}
 
-	void movePosition(glm::vec3 at)
+	void movePosition(glm::fvec3 at)
 	{
 		m_position += at;
 	}
-	void moveForward(glm::vec3 look)
+	void moveForward(glm::fvec3 look)
 	{
 		m_forward += look;
 	}
-	void moveUp(glm::vec3 up)
+	void moveUp(glm::fvec3 up)
 	{
 		m_up += up;
 	}
-	void setPosition(glm::vec3 at)
+	void setPosition(glm::fvec3 at)
 	{
 		m_position = at;
 	}
-	void setForward(glm::vec3 look)
+	void setForward(glm::fvec3 look)
 	{
 		m_forward = look;
 	}
-	void setUp(glm::vec3 up)
+	void setUp(glm::fvec3 up)
 	{
 		m_up = up;
 	}
-	glm::vec3 getPosition()
+	glm::fvec3 getPosition()
 	{
 		return m_position;
 	}
-	glm::vec3 getForward()
+	glm::fvec3 getForward()
 	{
 		return m_forward;
 	}
-	glm::vec3 getUp()
+	glm::fvec3 getUp()
 	{
 		return m_up;
 	}
-	glm::vec3 getLeft()
+	glm::fvec3 getLeft()
 	{
 		return glm::normalize(glm::cross(m_up, m_forward));
 	}
-	glm::vec3 getRight()
+	glm::fvec3 getRight()
 	{
 		return glm::normalize(glm::cross(m_forward, m_up));
 	}
@@ -90,8 +92,8 @@ public:
 
 	void rotateY(float angle)
 	{
-		glm::vec3 Haxis(1, 0, 0);
-		glm::vec3 Vaxis(0, 1, 0);
+		glm::fvec3 Haxis(1, 0, 0);
+		glm::fvec3 Vaxis(0, 1, 0);
 
 		//Forward rotate the angle around y axis. and normalize
 		float sinHalfAngle = (float)sin((angle / 2));
@@ -112,7 +114,7 @@ public:
 
 	void rotateX(float angle)
 	{
-		glm::vec3 Haxis(1, 0, 0);
+		glm::fvec3 Haxis(1, 0, 0);
 
 		//Forward rotate the angle around Haxis.
 		//MIGHT NEED TO CONVERT TO RADIANS
@@ -132,15 +134,39 @@ public:
 		m_up = glm::normalize(m_up);
 	}
 
+	const float SHOOT_DISTANCE = 100;
+	const int PLAYER_DAMAGE = 10;
+	const int MAX_HEALTH = 100;
+
+	void damage(int amt)
+	{
+		health -= amt;
+
+		if (health > MAX_HEALTH)
+		{
+			health = MAX_HEALTH;
+		}
+
+		if (health <= 0)
+		{
+			std::cout << "Game over\n";
+		}
+	}
+
+	float getHealth()
+	{
+		return health;
+	}
 
 private:
 	glm::mat4 m_perspective;
-	glm::vec3 m_position;
-	glm::vec3 m_forward;
-	glm::vec3 m_up;
+	glm::fvec3 m_position;
+	glm::fvec3 m_forward;
+	glm::fvec3 m_up;
 
 	//How much the camera moves with mouse input. Degrees per pixel
 	float sensitivity;
+	int health;
 };
 
 #endif

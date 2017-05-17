@@ -85,7 +85,7 @@ int main(int argc, char** argv)
 	scenes.at(currentScene)->addInputToScene(new Input(KEY_PRESS_DOWN_DOOR_OPEN, scenes.at(currentScene)->getCamera(), SDLK_f, scenes.at(currentScene)->getDoors()));
 	//scenes.at(currentScene)->addInputToScene(new Input(KEY_PRESS_TRANSFORM, scenes.at(currentScene)->getGameObject("TestCube"), SDLK_f, Vec9::createVec9(Direction::ROT_Y, -0.01)));
 	//scenes.at(currentScene)->addInputToScene(new Input(KEY_PRESS_TRANSFORM, scenes.at(currentScene)->getGameObject("Ship"), SDLK_f, Vec9::createVec9(Direction::ROT_Y, -0.01)));
-	
+	scenes.at(currentScene)->addInputToScene(new Input(LEFT_CLICK_DOWN_SHOOT, scenes.at(currentScene)->getCamera(), scenes.at(currentScene)->getMonsters()));
 
 	float counter = 0.0f;
 
@@ -110,7 +110,7 @@ int main(int argc, char** argv)
 		//Time::setDelta(frameTime);
 
 		//UPDATE GAME
-		display.clear(0.0f, 0.0f, 0.0f, 0.0f);
+		display.clear(0.0f, 0.0f, 1.0f, 0.0f);
 
 		ShaderManager::getShaderManager()->getShader("Phong")->setPointLight(0, scenes.at(currentScene)->getCamera()->getPosition(), glm::fvec3(1, 1, 1), 10.0f, 20, 0, 0, 1);
 
@@ -123,7 +123,7 @@ int main(int argc, char** argv)
 		//Output the framerate
 		if (frameCounter >= Time::SECOND)
 		{
-			std::cout << "FPS: " << frames << "\n";
+			std::cout << "FPS: " << frames << "   HP:"  << scenes.at(currentScene)->getCamera()->getHealth() << "\n";
 			frames = 0;
 			frameCounter = 0;
 		}

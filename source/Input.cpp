@@ -41,6 +41,15 @@ Input::Input(int type, Camera* objectToAffect, int key, std::vector<Door*>* door
 	cameraObject = objectToAffect;
 	this->doors = doors;
 }
+Input::Input(int type, Camera* objectToAffect, std::vector<Monster*>* monsters)
+{
+	this->type = type;
+	gameObject = NULL;
+	this->key = key;
+	this->magnitude = 0;
+	cameraObject = objectToAffect;
+	this->monsters = monsters;
+}
 
 void Input::execute(Display* display)
 {
@@ -87,6 +96,10 @@ void Input::execute(Display* display)
 	else if (type == KEY_PRESS_DOWN_DOOR_OPEN)
 	{
 		keyPressDownDoorOpen(display);
+	}
+	else if (type == LEFT_CLICK_DOWN_SHOOT)
+	{
+		leftClickDownShoot(display);
 	}
 }
 
@@ -198,5 +211,19 @@ void Input::keyPressDownDoorOpen(Display* display)
 				doors->at(i)->open();
 			}
 		}
+	}
+}
+
+void Input::leftClickDownShoot(Display* display)
+{
+	//Maybe should check if mouse if on screen
+	if (display->checkMouseDown(0))
+	{
+		glm::fvec2 lineStart(cameraObject->getPosition().x, cameraObject->getPosition().z);
+		glm::fvec2 castDirection(cameraObject->getForward().x, cameraObject->getForward().z);
+		castDirection = glm::normalize(castDirection);
+		glm::fvec2 lineEnd = lineStart + castDirection * cameraObject->SHOOT_DISTANCE;
+
+		myScene->checkIntersection(lineStart, lineEnd, true);
 	}
 }

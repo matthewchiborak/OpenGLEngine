@@ -3,6 +3,7 @@
 float Scene::PLAYER_SIZE = 0.3f;
 int Scene::NUM_TEX_EXP = 4;
 int Scene::NUM_TEXTURES = pow(2, NUM_TEX_EXP);
+bool Scene::isRunning = true;
 
 Scene::Scene(std::string name, float windowWidth, float windowHeight)
 {
@@ -37,6 +38,7 @@ void Scene::generateLevel(std::string fileName)
 	Monster* tempDoor = new Monster("TestMob", Monster::SIZEX, Monster::SIZEY, 0, 0, 1, 0, 1, TextureManager::getTextureManager()->getTexture("SSWVA1"), ShaderManager::getShaderManager()->getShader("Phong"), camera, this);
 	addGameObjectToScene(tempDoor);
 	getGameObject("TestMob")->setTransform(Vec9::createVec9(17 * SPOT_WIDTH, 0.5 * SPOT_HEIGHT - 0.25 * Monster::SIZEY, 19 * SPOT_DEPTH, 0, 0, 0, 1, 1, 1));
+	monsters.push_back(tempDoor);
 	//TEST
 
 	for (int i = 0; i < level->getWidth(); i++)
@@ -227,10 +229,20 @@ GameObject* Scene::getGameObject(std::string name)
 
 void Scene::update(Display* display)
 {
+	if (camera->getHealth() <= 0)
+	{
+		isRunning = false;
+	}
+
 	//Check player input
 	for (int i = 0; i < inputs.size(); i++)
 	{
 		inputs.at(i)->execute(display);
+	}
+
+	if (!isRunning)
+	{
+		return;
 	}
 
 	//Draw the objects
@@ -419,7 +431,7 @@ std::vector<Door*>* Scene::getDoors()
 	return &doors;
 }
 
-glm::fvec2 Scene::checkIntersection(glm::fvec2 lineStart, glm::fvec2 lineEnd)
+glm::fvec2 Scene::checkIntersection(glm::fvec2 lineStart, glm::fvec2 lineEnd, bool hurtMonsters)
 {
 	//Find nearest intersection to the start of the line
 	glm::fvec2 nearestInterestion(0, 0);
@@ -440,11 +452,41 @@ glm::fvec2 Scene::checkIntersection(glm::fvec2 lineStart, glm::fvec2 lineEnd)
 	for (int i = 0; i < doors.size(); i ++)
 	{
 		glm::fvec2 doorSize(SPOT_WIDTH, SPOT_DEPTH);
-		glm::fvec2 doorPos2f(doors.at(i)->getDimensions().x, doors.at(i)->getDimensions().z);
+		//glm::fvec2 doorPos2f(doors.at(i)->getDimensions().x, doors.at(i)->getDimensions().z);
+		glm::fvec2 doorPos2f(doors.at(i)->getTransform()->GetPos().x, doors.at(i)->getTransform()->GetPos().z);
 		
 		glm::fvec2 collisionVector = lineInterestRect(lineStart, lineEnd, doorPos2f, doorSize);
 
 		nearestInterestion = findNearestVector2(nearestInterestion, collisionVector, lineStart);
+	}
+
+	if (hurtMonsters)
+	{
+		glm::fvec2 neareastMonsterIntersect(0, 0);
+		Monster* nearestMonster = nullptr;
+
+		//Find a monster it is hitting
+		for (int i = 0; i < monsters.size(); i++)
+		{
+			glm::fvec2 doorSize(monsters.at(i)->getDimensions().x, monsters.at(i)->getDimensions().z);
+			glm::fvec2 doorPos2f(monsters.at(i)->getTransform()->GetPos().x, monsters.at(i)->getTransform()->GetPos().z);
+
+			glm::fvec2 collisionVector = lineInterestRect(lineStart, lineEnd, doorPos2f, doorSize);
+
+			glm::fvec2 lastInter = neareastMonsterIntersect;
+			neareastMonsterIntersect = findNearestVector2(nearestInterestion, collisionVector, lineStart);
+
+			if (lastInter != neareastMonsterIntersect)
+			{
+				nearestMonster = monsters.at(i);
+			}
+		}
+
+		if (nearestMonster != nullptr)
+		{
+			std::cout << "Monster hit\n";
+			nearestMonster->damage(camera->PLAYER_DAMAGE);
+		}
 	}
 
 	return nearestInterestion;
@@ -575,4 +617,14 @@ glm::fvec2 Scene::findNearestVector2(glm::fvec2 a, glm::fvec2 b, glm::fvec2 posi
 	}
 
 	return a;
+}
+
+std::vector<Monster*>* Scene::getMonsters()
+{
+	return &monsters;
+}
+
+void Scene::setIsRunning(bool value)
+{
+	isRunning = value;
 }

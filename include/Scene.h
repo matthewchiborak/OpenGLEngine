@@ -38,6 +38,7 @@ public:
 	void setNewCamera(Camera* camera);
 
 	std::vector<Door*>* getDoors();
+	std::vector<Monster*>* getMonsters();
 
 	//Vec3 for each axis. 1 is theres a collision
 	glm::fvec3 checkCollisionCamera(Camera* camera, glm::fvec3 movement, float objectWidth, float objectHeight, float objectDepth);
@@ -46,7 +47,7 @@ public:
 
 	glm::fvec3 checkCollisionEnemyWalls(Monster* monster, glm::fvec3 movement, float objectWidth, float objectHeight, float objectDepth);
 
-	glm::fvec2 checkIntersection(glm::fvec2 lineStart, glm::fvec2 lineEnd);
+	glm::fvec2 checkIntersection(glm::fvec2 lineStart, glm::fvec2 lineEnd, bool hurtMonsters);
 	glm::fvec2 lineInterestRect(glm::fvec2 lineStart, glm::fvec2 lineEnd);
 	float getLineLength(glm::fvec2 line);
 
@@ -56,12 +57,17 @@ public:
 
 	static float PLAYER_SIZE;
 
+	static void setIsRunning(bool value);
+
 private:
+	static bool isRunning;
+
 	std::string name;
 	Camera* camera;
 	std::vector<GameObject*> gameObjects;
 	std::vector<Input*> inputs;
 	std::vector<Door*> doors;
+	std::vector<Monster*> monsters;
 
 	Bitmap* level;
 	long lastTimeUpdated;

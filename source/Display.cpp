@@ -57,6 +57,13 @@ Display::Display(int width, int height, const std::string& title)
 		KEYUP[i] = false;
 	}
 
+	MOUSE_CLICK[0] = false;
+	MOUSE_CLICK[1] = false;
+	MOUSE_CLICK_DOWN[0] = false;
+	MOUSE_CLICK_DOWN[1] = false;
+	MOUSE_CLICK_UP[0] = false;
+	MOUSE_CLICK_UP[1] = false;;
+
 	//SDL_EnableKeyRepeat(0, 0); // you can configure this how you want, but it makes it nice for when you want to register a key continuously being held down
 }
 
@@ -100,6 +107,30 @@ void Display::Update()
 				mousePrevY = mouseY;
 				mouseX = e.button.x;
 				mouseY = e.button.y;
+				break;
+			case SDL_MOUSEBUTTONDOWN:
+				if (e.button.type == SDL_BUTTON_LEFT)
+				{
+					MOUSE_CLICK[0] = true;
+					MOUSE_CLICK_UP[0] = false;
+				}
+				else if (e.button.type == SDL_BUTTON_RIGHT)
+				{
+					MOUSE_CLICK[1] = true;
+					MOUSE_CLICK_UP[1] = false;
+				}
+				break;
+			case SDL_MOUSEBUTTONUP:
+				if (e.button.type == SDL_BUTTON_LEFT)
+				{
+					MOUSE_CLICK[0] = false;
+					MOUSE_CLICK_DOWN[0] = false;
+				}
+				else if (e.button.type == SDL_BUTTON_RIGHT)
+				{
+					MOUSE_CLICK[1] = false;
+					MOUSE_CLICK_DOWN[1] = false;
+				}
 				break;
 			default:
 			break;
@@ -160,6 +191,31 @@ bool Display::checkKeyUp(int key)
 	if (!KEYS[key] && !KEYUP[key])
 	{
 		KEYUP[key] = true;
+		return true;
+	}
+
+	return false;
+}
+
+bool Display::checkMouse(int key)
+{
+	return MOUSE_CLICK[key];
+}
+bool Display::checkMouseDown(int key)
+{
+	if (MOUSE_CLICK[key] && !MOUSE_CLICK_DOWN[key])
+	{
+		MOUSE_CLICK_DOWN[key] = true;
+		return true;
+	}
+
+	return false;
+}
+bool Display::checkMouseUp(int key)
+{
+	if (!MOUSE_CLICK[key] && !MOUSE_CLICK_UP[key])
+	{
+		MOUSE_CLICK_UP[key] = true;
 		return true;
 	}
 

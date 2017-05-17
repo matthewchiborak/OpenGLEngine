@@ -19,6 +19,10 @@ public:
 	bool checkKeyDown(int key);
 	bool checkKeyUp(int key);
 
+	bool checkMouse(int key);
+	bool checkMouseDown(int key);
+	bool checkMouseUp(int key);
+
 	int getMouseDifX();
 	int getMouseDifY();
 
@@ -40,6 +44,10 @@ private:
 	int mouseY;
 	int mousePrevX;
 	int mousePrevY;
+
+	bool MOUSE_CLICK[2];
+	bool MOUSE_CLICK_DOWN[2];
+	bool MOUSE_CLICK_UP[2];
 };
 
 #endif
