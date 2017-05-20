@@ -5,8 +5,8 @@ float Monster::SIZEY = 0.7;
 
 Monster::Monster(std::string name, float width, float height, float depth, float XLower, float XHigher, float YLower, float YHigher, Texture* texture, Shader* shader, Camera* camera, Scene* myScene)
 {
-	//currentState = IDLE;
-	currentState = CHASE;
+	currentState = IDLE;
+	//currentState = CHASE;
 	random = rand();
 
 	health = MAX_HEALTH;
@@ -154,7 +154,7 @@ void Monster::idleUpdate()
 			//-------
 			//Line from monster to player. See what parts of world it interests. See if hits player.
 			glm::fvec2 lineStart(transform.GetPos().x, transform.GetPos().z);
-			glm::fvec3 castDirectionInit(-camera->getPosition().x, 0, -camera->getPosition().z);
+			glm::fvec3 castDirectionInit(-1 * (transform.GetPos().x - camera->getPosition().x), 0, -1 * (transform.GetPos().z - camera->getPosition().z));
 
 			//glm::mat4 rotMatrix = glm::rotate((float)random, glm::vec3(0, 1, 0));
 
