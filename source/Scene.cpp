@@ -431,20 +431,22 @@ std::vector<Door*>* Scene::getDoors()
 	return &doors;
 }
 
-glm::fvec2 Scene::checkIntersection(glm::fvec2 lineStart, glm::fvec2 lineEnd, bool hurtMonsters)
+bool Scene::checkIntersection(glm::fvec2* result, glm::fvec2 lineStart, glm::fvec2 lineEnd, bool hurtMonsters)
 {
 	//Find nearest intersection to the start of the line
 	glm::fvec2 nearestInterestion(0, 0);
 	bool foundOne = false;
+	bool collides;
 
 	for (int i = 0; i < collisionPosStart.size(); i++)
 	{
-		glm::fvec2 collisionVector = lineIntersect(lineStart, lineEnd, *collisionPosStart.at(i), *collisionPosEnd.at(i));
+		glm::fvec2 collisionVector;
+		collides = lineIntersect(&collisionVector, lineStart, lineEnd, *collisionPosStart.at(i), *collisionPosEnd.at(i));
 
-		if ((!foundOne || (getLineLength(nearestInterestion - lineStart) > getLineLength(collisionVector - lineStart))) 
-			&& collisionVector.x != 0 && collisionVector.y != 0)
+		if (((!foundOne && collides) || (collides && (getLineLength(nearestInterestion - lineStart) > getLineLength(collisionVector - lineStart)))))
 		{
 			foundOne = true;
+			//std::cout << i << ": " << collisionVector.x << " : " << collisionVector.y << " \n";
 			nearestInterestion = collisionVector;
 		}
 	}
@@ -455,9 +457,26 @@ glm::fvec2 Scene::checkIntersection(glm::fvec2 lineStart, glm::fvec2 lineEnd, bo
 		//glm::fvec2 doorPos2f(doors.at(i)->getDimensions().x, doors.at(i)->getDimensions().z);
 		glm::fvec2 doorPos2f(doors.at(i)->getTransform()->GetPos().x, doors.at(i)->getTransform()->GetPos().z);
 		
-		glm::fvec2 collisionVector = lineInterestRect(lineStart, lineEnd, doorPos2f, doorSize);
+		glm::fvec2 collisionVector;
+		bool intersects = lineInterestRect(&collisionVector, lineStart, lineEnd, doorPos2f, doorSize);
 
-		nearestInterestion = findNearestVector2(nearestInterestion, collisionVector, lineStart);
+		if (intersects)
+		{
+			if (!foundOne)
+			{
+				nearestInterestion = collisionVector;
+				foundOne = true;
+			}
+			else
+			{
+				nearestInterestion = findNearestVector2(nearestInterestion, collisionVector, lineStart);
+			}
+		}
+	}
+
+	if (!foundOne)
+	{
+		return false;
 	}
 
 	if (hurtMonsters)
@@ -471,12 +490,13 @@ glm::fvec2 Scene::checkIntersection(glm::fvec2 lineStart, glm::fvec2 lineEnd, bo
 			glm::fvec2 doorSize(monsters.at(i)->getDimensions().x, monsters.at(i)->getDimensions().z);
 			glm::fvec2 doorPos2f(monsters.at(i)->getTransform()->GetPos().x, monsters.at(i)->getTransform()->GetPos().z);
 
-			glm::fvec2 collisionVector = lineInterestRect(lineStart, lineEnd, doorPos2f, doorSize);
+			glm::fvec2 collisionVector;
+			bool didCollide = lineInterestRect(&collisionVector, lineStart, lineEnd, doorPos2f, doorSize);
 
 			glm::fvec2 lastInter = neareastMonsterIntersect;
 			neareastMonsterIntersect = findNearestVector2(nearestInterestion, collisionVector, lineStart);
 
-			if (lastInter != neareastMonsterIntersect)
+			if (didCollide && lastInter != neareastMonsterIntersect)
 			{
 				nearestMonster = monsters.at(i);
 			}
@@ -489,7 +509,10 @@ glm::fvec2 Scene::checkIntersection(glm::fvec2 lineStart, glm::fvec2 lineEnd, bo
 		}
 	}
 
-	return nearestInterestion;
+	result->x = nearestInterestion.x;
+	result->y = nearestInterestion.y;
+	return true;
+	//return nearestInterestion;
 }
 
 float Scene::getLineLength(glm::fvec2 line)
@@ -502,7 +525,7 @@ float Scene::crossProduct(glm::fvec2 a, glm::fvec2 b)
 	return a.x * b.y - a.y * b.x;
 }
 
-glm::fvec2 Scene::lineIntersect(glm::fvec2 lineStart1, glm::fvec2 lineEnd1, glm::fvec2 lineStart2, glm::fvec2 lineEnd2)
+bool Scene::lineIntersect(glm::fvec2* resultStore, glm::fvec2 lineStart1, glm::fvec2 lineEnd1, glm::fvec2 lineStart2, glm::fvec2 lineEnd2)
 {
 	glm::fvec2 result(0, 0);
 	glm::fvec2 line1 = lineEnd1 - lineStart1;
@@ -515,7 +538,7 @@ glm::fvec2 Scene::lineIntersect(glm::fvec2 lineStart1, glm::fvec2 lineEnd1, glm:
 	//Parallel
 	if (cross == 0)
 	{
-		return result;
+		return false;
 	}
 
 	glm::fvec2 distanceBetweenStarts = lineStart2 - lineStart1;
@@ -526,14 +549,16 @@ glm::fvec2 Scene::lineIntersect(glm::fvec2 lineStart1, glm::fvec2 lineEnd1, glm:
 	if (-0.01 < a && a < 1 && -0.01 < b && b < 1)
 	{
 		//Within range
-		result.x = line1.x + line1.x * a;
-		result.y = line1.y + line1.y * a;
+		resultStore->x = lineStart1.x + line1.x * a;
+		resultStore->y = lineStart1.y + line1.y * a;
+		return true;
 	}
 
-	return result;
+
+	return false;
 }
 
-glm::fvec2 Scene::lineInterestRect(glm::fvec2 lineStart, glm::fvec2 lineEnd)
+bool Scene::lineInterestRect(glm::fvec2* resultStore, glm::fvec2 lineStart, glm::fvec2 lineEnd)
 {
 	glm::fvec2 pos(camera->getPosition().x, camera->getPosition().z);
 	glm::fvec2 size(PLAYER_SIZE, PLAYER_SIZE);
@@ -541,66 +566,178 @@ glm::fvec2 Scene::lineInterestRect(glm::fvec2 lineStart, glm::fvec2 lineEnd)
 	glm::fvec2 posSize2;
 
 	glm::fvec2 result(0, 0);
+	bool hitSomething = false;
 
 	//Side 1
-	glm::fvec2 collisionVector = lineIntersect(lineStart, lineEnd, pos, posSize);
-	result = findNearestVector2(result, collisionVector, lineStart);
+	glm::fvec2 collisionVector;
+	bool intersects = lineIntersect(&collisionVector, lineStart, lineEnd, pos, posSize);
+
+	if (intersects)
+	{
+		if (!hitSomething)
+		{
+			result = collisionVector;
+		}
+		else
+		{
+			result = findNearestVector2(result, collisionVector, lineStart);
+		}
+		
+		hitSomething = true;
+	}
 
 	//2
 	posSize.x = pos.x;
 	posSize.y = pos.y + size.y;
-	collisionVector = lineIntersect(lineStart, lineEnd, pos, posSize);
-	result = findNearestVector2(result, collisionVector, lineStart);
+	intersects = lineIntersect(&collisionVector, lineStart, lineEnd, pos, posSize);
 
+	if (intersects)
+	{
+		if (!hitSomething)
+		{
+			result = collisionVector;
+		}
+		else
+		{
+			result = findNearestVector2(result, collisionVector, lineStart);
+		}
+		hitSomething = true;
+	}
+	
 	//3
 	posSize2.x = pos.x;
 	posSize2.y = pos.y + size.y;
 	posSize.x = pos.x + size.x;
 	posSize.y = pos.y + size.y;
-	collisionVector = lineIntersect(lineStart, lineEnd, posSize2, posSize);
-	result = findNearestVector2(result, collisionVector, lineStart);
+	intersects = lineIntersect(&collisionVector, lineStart, lineEnd, posSize2, posSize);
 
+	if (intersects)
+	{
+		if (!hitSomething)
+		{
+			result = collisionVector;
+		}
+		else
+		{
+			result = findNearestVector2(result, collisionVector, lineStart);
+		}
+		hitSomething = true;
+	}
+	
 	//4
 	posSize2.x = pos.x + size.x;
 	posSize2.y = pos.y;
-	collisionVector = lineIntersect(lineStart, lineEnd, posSize2, posSize);
-	result = findNearestVector2(result, collisionVector, lineStart);
+	intersects = lineIntersect(&collisionVector, lineStart, lineEnd, posSize2, posSize);
 
-	return result;
+	if (intersects)
+	{
+		if (!hitSomething)
+		{
+			result = collisionVector;
+		}
+		else
+		{
+			result = findNearestVector2(result, collisionVector, lineStart);
+		}
+		hitSomething = true;
+	}
+	
+	if (hitSomething)
+	{
+		resultStore->x = result.x;
+		resultStore->y = result.y;
+		return true;
+	}
+
+	return false;
 }
 
-glm::fvec2 Scene::lineInterestRect(glm::fvec2 lineStart, glm::fvec2 lineEnd, glm::fvec2 pos, glm::fvec2 size)
+bool Scene::lineInterestRect(glm::fvec2* resultStore, glm::fvec2 lineStart, glm::fvec2 lineEnd, glm::fvec2 pos, glm::fvec2 size)
 {
 	glm::fvec2 posSize(pos.x + size.x, pos.y);
 	glm::fvec2 posSize2;
 
 	glm::fvec2 result(0, 0);
+	bool hitSomething = false;
 
 	//Side 1
-	glm::fvec2 collisionVector = lineIntersect(lineStart, lineEnd, pos, posSize);
-	result = findNearestVector2(result, collisionVector, lineStart);
+	glm::fvec2 collisionVector;
+	bool intersects = lineIntersect(&collisionVector, lineStart, lineEnd, pos, posSize);
+
+	if (intersects)
+	{
+		if (!hitSomething)
+		{
+			result = collisionVector;
+		}
+		else
+		{
+			result = findNearestVector2(result, collisionVector, lineStart);
+		}
+		hitSomething = true;
+	}
 
 	//2
 	posSize.x = pos.x;
 	posSize.y = pos.y + size.y;
-	collisionVector = lineIntersect(lineStart, lineEnd, pos, posSize);
-	result = findNearestVector2(result, collisionVector, lineStart);
+	intersects = lineIntersect(&collisionVector, lineStart, lineEnd, pos, posSize);
+	if (intersects)
+	{
+		if (!hitSomething)
+		{
+			result = collisionVector;
+		}
+		else
+		{
+			result = findNearestVector2(result, collisionVector, lineStart);
+		}
+		hitSomething = true;
+	}
 
 	//3
 	posSize2.x = pos.x;
 	posSize2.y = pos.y + size.y;
 	posSize.x = pos.x + size.x;
 	posSize.y = pos.y + size.y;
-	collisionVector = lineIntersect(lineStart, lineEnd, posSize2, posSize);
-	result = findNearestVector2(result, collisionVector, lineStart);
+	intersects = lineIntersect(&collisionVector, lineStart, lineEnd, posSize2, posSize);
+	if (intersects)
+	{
+		if (!hitSomething)
+		{
+			result = collisionVector;
+		}
+		else
+		{
+			result = findNearestVector2(result, collisionVector, lineStart);
+		}
+		hitSomething = true;
+	}
 
 	//4
 	posSize2.x = pos.x + size.x;
 	posSize2.y = pos.y;
-	collisionVector = lineIntersect(lineStart, lineEnd, posSize2, posSize);
-	result = findNearestVector2(result, collisionVector, lineStart);
+	intersects = lineIntersect(&collisionVector, lineStart, lineEnd, posSize2, posSize);
+	if (intersects)
+	{
+		if (!hitSomething)
+		{
+			result = collisionVector;
+		}
+		else
+		{
+			result = findNearestVector2(result, collisionVector, lineStart);
+		}
+		hitSomething = true;
+	}
 
-	return result;
+	if (hitSomething)
+	{
+		resultStore->x = result.x;
+		resultStore->y = result.y;
+		return true;
+	}
+
+	return false;
 }
 
 glm::fvec2 Scene::findNearestVector2(glm::fvec2 a, glm::fvec2 b, glm::fvec2 positionRelativeTo)

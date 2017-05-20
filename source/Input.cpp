@@ -224,6 +224,7 @@ void Input::leftClickDownShoot(Display* display)
 		castDirection = glm::normalize(castDirection);
 		glm::fvec2 lineEnd = lineStart + castDirection * cameraObject->SHOOT_DISTANCE;
 
-		myScene->checkIntersection(lineStart, lineEnd, true);
+		glm::fvec2 collisionVector;
+		bool hitSomething = myScene->checkIntersection(&collisionVector, lineStart, lineEnd, true);
 	}
 }
