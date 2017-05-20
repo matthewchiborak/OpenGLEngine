@@ -142,6 +142,10 @@ void Monster::idleUpdate()
 	
 	if ((timeChrono - lastIdle).count() > 5000000000)
 	{
+		//Animation
+		//this->texture = TextureManager::getTextureManager()->getTexture("SSWVA1");
+		this->texture = textures.at(0);
+
 		canLook = true;
 
 		//Reset the last time
@@ -149,6 +153,8 @@ void Monster::idleUpdate()
 	}
 	else
 	{
+		this->texture = textures.at(1);
+
 		if (canLook)
 		{
 			//-------
@@ -182,6 +188,33 @@ void Monster::idleUpdate()
 }
 void Monster::chaseUpdate()
 {
+	std::chrono::high_resolution_clock::time_point timeChrono = Time::getTimeNanoseconds();
+
+	if ((timeChrono - lastChase).count() < 250000000)
+	{
+		//Animation
+		//this->texture = TextureManager::getTextureManager()->getTexture("SSWVA1");
+		this->texture = textures.at(0);
+	}
+	else if((timeChrono - lastChase).count() < 500000000)
+	{
+		this->texture = textures.at(1);
+	}
+	else if ((timeChrono - lastChase).count() < 750000000)
+	{
+		this->texture = textures.at(2);
+	}
+	else if((timeChrono - lastChase).count() < 100000000)
+	{
+		this->texture = textures.at(3);
+
+	}
+	else
+	{
+		//Reset the last time
+		lastChase = timeChrono;
+	}
+
 	glm::fvec3 directionToCam = transform.GetPos() - camera->getPosition();
 	float distanceToCam = sqrtf(directionToCam.x * directionToCam.x + directionToCam.y * directionToCam.y + directionToCam.z * directionToCam.z);
 
@@ -209,66 +242,108 @@ void Monster::chaseUpdate()
 	else
 	{
 		currentState = ATTACK;
+		lastAttackStart = Time::getTimeNanoseconds();
 	}
 }
 void Monster::attackUpdate()
 {
 	std::chrono::high_resolution_clock::time_point timeChrono = Time::getTimeNanoseconds();
 
-	if ((timeChrono - lastAttackStart).count() > 5000000000)
+	if ((timeChrono - lastAttackStart).count() < 250000000)
+	{
+		this->texture = textures.at(4);
+	}
+	else if ((timeChrono - lastAttackStart).count() < 500000000)
 	{
 		canAttack = true;
-
+		this->texture = textures.at(5);
 		//Reset the last time
-		lastAttackStart = timeChrono;
+		//lastAttackStart = timeChrono;
 	}
-	else if(canAttack)
+	else
 	{
-		//Line from monster to player. See what parts of world it interests. See if hits player.
-		glm::fvec2 lineStart(transform.GetPos().x, transform.GetPos().z);
-		glm::fvec3 castDirectionInit(-1 * (transform.GetPos().x - camera->getPosition().x), 0, -1 * (transform.GetPos().z - camera->getPosition().z));
-
-		//glm::mat4 rotMatrix = glm::rotate((float)random, glm::vec3(0, 1, 0));
-
-		glm::fvec2 castDirection(castDirectionInit.x, castDirectionInit.z);
-		glm::fvec2 lineEnd = lineStart + castDirection * SHOOT_DISTANCE;
-
-		//Check intersection of the 2 lines
-		glm::fvec2 collisionVector;
-		bool hitSomething = myScene->checkIntersection(&collisionVector, lineStart, lineEnd, false);
-
-		glm::fvec2 playerIntersectVector;
-		bool foundPlayer = myScene->lineInterestRect(&playerIntersectVector, lineStart, lineEnd);
-
-		if (hitSomething && foundPlayer && (myScene->getLineLength(playerIntersectVector - lineStart) < myScene->getLineLength(collisionVector - lineStart)))
+		this->texture = textures.at(6);
+		if (canAttack)
 		{
-			std::cout << "Hit Player\n";
-			camera->damage(MONSTER_DAMAGE);
+			//Line from monster to player. See what parts of world it interests. See if hits player.
+			glm::fvec2 lineStart(transform.GetPos().x, transform.GetPos().z);
+			glm::fvec3 castDirectionInit(-1 * (transform.GetPos().x - camera->getPosition().x), 0, -1 * (transform.GetPos().z - camera->getPosition().z));
+
+			//glm::mat4 rotMatrix = glm::rotate((float)random, glm::vec3(0, 1, 0));
+
+			glm::fvec2 castDirection(castDirectionInit.x, castDirectionInit.z);
+			glm::fvec2 lineEnd = lineStart + castDirection * SHOOT_DISTANCE;
+
+			//Check intersection of the 2 lines
+			glm::fvec2 collisionVector;
+			bool hitSomething = myScene->checkIntersection(&collisionVector, lineStart, lineEnd, false);
+
+			glm::fvec2 playerIntersectVector;
+			bool foundPlayer = myScene->lineInterestRect(&playerIntersectVector, lineStart, lineEnd);
+
+			if (hitSomething && foundPlayer && (myScene->getLineLength(playerIntersectVector - lineStart) < myScene->getLineLength(collisionVector - lineStart)))
+			{
+				std::cout << "Hit Player\n";
+				camera->damage(MONSTER_DAMAGE);
+			}
+
+			if (!hitSomething)
+			{
+				//Missed
+				std::cout << "Miss\n";
+			}
+			else
+			{
+				//Hit something
+				std::cout << "Hit\n";
+			}
+
+			//Only attack once
+			currentState = CHASE;
+			canAttack = false;
+			lastAttackStart = timeChrono;
 		}
 
-		if (!hitSomething)
-		{
-			//Missed
-			std::cout << "Miss\n";
-		}
-		else
-		{
-			//Hit something
-			std::cout << "Hit\n";
-		}
-
-		//Only attack once
-		currentState = CHASE;
-		canAttack = false;
+		this->texture = textures.at(5);
 	}
 }
 void Monster::dyingUpdate()
 {
-	currentState = DEAD;
+	//Scale to match the texture
+	std::chrono::high_resolution_clock::time_point timeChrono = Time::getTimeNanoseconds();
+
+	if ((timeChrono - dyingTime).count() < 100000000)
+	{
+		this->texture = textures.at(8);
+		transform.SetScale(glm::fvec3(1, 0.96428571428571428571428571428571f, 1));
+	}
+	else if ((timeChrono - dyingTime).count() < 300000000)
+	{
+		this->texture = textures.at(9);
+		transform.SetScale(glm::fvec3(1.7f, 0.9f, 1));
+	}
+	else if ((timeChrono - dyingTime).count() < 450000000)
+	{
+		this->texture = textures.at(10);
+		transform.SetScale(glm::fvec3(1.7f, 0.9f, 1));
+	}
+	else if ((timeChrono - dyingTime).count() < 600000000)
+	{
+		this->texture = textures.at(11);
+		transform.SetScale(glm::fvec3(1.7f, 0.5f, 1));
+		transform.GetPos().y = 0.5 * 0.25 * myScene->SPOT_HEIGHT;
+	}
+	else
+	{
+		currentState = DEAD;
+		transform.SetScale(glm::fvec3(1.7586206896551724137931034482759f, 0.28571428571428571428571428571429f, 1));
+		transform.GetPos().y = 0.25 * (0.28571428571428571428571428571429) * myScene->SPOT_HEIGHT;
+	}
+	//
 }
 void Monster::deadUpdate()
 {
-	std::cout << "Im dead.\n";
+	this->texture = textures.at(12);
 }
 
 void Monster::init()
@@ -288,5 +363,11 @@ void Monster::damage(int amt)
 	if (health <= 0)
 	{
 		currentState = DYING;
+		dyingTime = Time::getTimeNanoseconds();
 	}
+}
+
+void Monster::addTexture(Texture* texture)
+{
+	textures.push_back(texture);
 }

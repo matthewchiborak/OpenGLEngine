@@ -46,6 +46,21 @@ int main(int argc, char** argv)
 
 	TextureManager::getTextureManager()->loadTexture("Wolf", ".\\res\\WolfCollection.png");
 	TextureManager::getTextureManager()->loadTexture("SSWVA1", ".\\res\\SSWVA1.png");
+	TextureManager::getTextureManager()->loadTexture("SSWVB1", ".\\res\\SSWVB1.png");
+	TextureManager::getTextureManager()->loadTexture("SSWVC1", ".\\res\\SSWVC1.png");
+	TextureManager::getTextureManager()->loadTexture("SSWVD1", ".\\res\\SSWVD1.png");
+	TextureManager::getTextureManager()->loadTexture("SSWVE0", ".\\res\\SSWVE0.png");
+	TextureManager::getTextureManager()->loadTexture("SSWVF0", ".\\res\\SSWVF0.png");
+	TextureManager::getTextureManager()->loadTexture("SSWVG0", ".\\res\\SSWVG0.png");
+	TextureManager::getTextureManager()->loadTexture("SSWVH0", ".\\res\\SSWVH0.png");
+	TextureManager::getTextureManager()->loadTexture("SSWVI0", ".\\res\\SSWVI0.png");
+	TextureManager::getTextureManager()->loadTexture("SSWVJ0", ".\\res\\SSWVJ0.png");
+	TextureManager::getTextureManager()->loadTexture("SSWVK0", ".\\res\\SSWVK0.png");
+	TextureManager::getTextureManager()->loadTexture("SSWVL0", ".\\res\\SSWVL0.png");
+	TextureManager::getTextureManager()->loadTexture("SSWVM0", ".\\res\\SSWVM0.png");
+
+	TextureManager::getTextureManager()->loadTexture("Gun0", ".\\res\\PISGB0.png");
+	TextureManager::getTextureManager()->loadTexture("Gun1", ".\\res\\PISFA0.png");
 
 	scenes.push_back(new Scene("Main", ".\\res\\Level1.png", WIDTH, HEIGHT));
 

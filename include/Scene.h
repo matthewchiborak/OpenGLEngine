@@ -59,11 +59,16 @@ public:
 
 	static void setIsRunning(bool value);
 
+	const float SPOT_WIDTH = 1;
+	const float SPOT_HEIGHT = 1;
+	const float SPOT_DEPTH = 1;
+
 private:
 	static bool isRunning;
 
 	std::string name;
 	Camera* camera;
+	GameObject* HUD;
 	std::vector<GameObject*> gameObjects;
 	std::vector<Input*> inputs;
 	std::vector<Door*> doors;
@@ -72,9 +77,6 @@ private:
 	Bitmap* level;
 	long lastTimeUpdated;
 
-	const float SPOT_WIDTH = 1;
-	const float SPOT_HEIGHT = 1;
-	const float SPOT_DEPTH = 1;
 	static int NUM_TEX_EXP;
 	static int NUM_TEXTURES;
 	const float DOOR_THICKNESS = 0.125f;

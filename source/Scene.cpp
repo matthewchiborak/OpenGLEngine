@@ -39,7 +39,24 @@ void Scene::generateLevel(std::string fileName)
 	addGameObjectToScene(tempDoor);
 	getGameObject("TestMob")->setTransform(Vec9::createVec9(17 * SPOT_WIDTH, 0.5 * SPOT_HEIGHT - 0.25 * Monster::SIZEY, 19 * SPOT_DEPTH, 0, 0, 0, 1, 1, 1));
 	monsters.push_back(tempDoor);
+	tempDoor->addTexture(TextureManager::getTextureManager()->getTexture("SSWVA1"));
+	tempDoor->addTexture(TextureManager::getTextureManager()->getTexture("SSWVB1"));
+	tempDoor->addTexture(TextureManager::getTextureManager()->getTexture("SSWVC1"));
+	tempDoor->addTexture(TextureManager::getTextureManager()->getTexture("SSWVD1"));
+	tempDoor->addTexture(TextureManager::getTextureManager()->getTexture("SSWVE0"));
+	tempDoor->addTexture(TextureManager::getTextureManager()->getTexture("SSWVF0"));
+	tempDoor->addTexture(TextureManager::getTextureManager()->getTexture("SSWVG0"));
+	tempDoor->addTexture(TextureManager::getTextureManager()->getTexture("SSWVH0"));
+	tempDoor->addTexture(TextureManager::getTextureManager()->getTexture("SSWVI0"));
+	tempDoor->addTexture(TextureManager::getTextureManager()->getTexture("SSWVJ0"));
+	tempDoor->addTexture(TextureManager::getTextureManager()->getTexture("SSWVK0"));
+	tempDoor->addTexture(TextureManager::getTextureManager()->getTexture("SSWVL0"));
+	tempDoor->addTexture(TextureManager::getTextureManager()->getTexture("SSWVM0"));
 	//TEST
+
+	//HUD = GameObject::createSquarePartTexture("HUD", 0.2, 0.2, 0.2, false, 0, 1, 0, 1, TextureManager::getTextureManager()->getTexture("Gun0"), ShaderManager::getShaderManager()->getShader("Phong"));
+	HUD = GameObject::createCubePartTexture("HUD", 0.2, 0.2, 0, 0, 1, 1, 0, TextureManager::getTextureManager()->getTexture("Gun0"), ShaderManager::getShaderManager()->getShader("Phong"));
+	HUD->getTransform()->SetPos(glm::fvec3(17, 0.2 * SPOT_HEIGHT, 17));
 
 	for (int i = 0; i < level->getWidth(); i++)
 	{
@@ -253,6 +270,24 @@ void Scene::update(Display* display)
 
 		gameObjects.at(i)->draw(camera);
 	}
+
+	//HUD Update. TODO make a class to handle this
+	//Have the HUD always face the player
+	glm::fvec3 directToCam = HUD->getTransform()->GetPos() - camera->getPosition();
+
+	float angleToFaceCam = atan((directToCam.z / directToCam.x));
+
+	if (directToCam.x > 0)
+	{
+		angleToFaceCam += 3.1415;
+	}
+
+	HUD->getTransform()->SetRot(glm::fvec3(0, (angleToFaceCam + (3.1415 / 2)) * -1, 0));
+
+	HUD->getTransform()->GetPos().x = camera->getPosition().x + camera->getForward().x * 1;
+	HUD->getTransform()->GetPos().z = camera->getPosition().z + camera->getForward().z * 1;
+
+	HUD->draw(camera);
 }
 
 glm::fvec3 Scene::checkCollisionCameraWalls(Camera* camera, glm::fvec3 movement, float objectWidth, float objectHeight, float objectDepth)

@@ -1,6 +1,7 @@
 #ifndef __MONSTER_H
 #define __MONSTER_H
 
+#include <vector>
 #include "GameObject.h"
 #include "Scene.h"
 
@@ -18,6 +19,8 @@ public:
 	void init();
 
 	void damage(int amt);
+
+	void addTexture(Texture* texture);
 
 	static float SIZEX;
 	static float SIZEY;
@@ -52,12 +55,16 @@ private:
 	bool canLook;
 	std::chrono::high_resolution_clock::time_point lastIdle;
 	std::chrono::high_resolution_clock::time_point lastAttack;
+	std::chrono::high_resolution_clock::time_point lastChase;
+	std::chrono::high_resolution_clock::time_point dyingTime;
 	const float attackConstant = 5;
 	std::chrono::high_resolution_clock::time_point lastAttackStart;
 	bool canAttack;
 	int health;
 	const int MAX_HEALTH = 100;
 	const int MONSTER_DAMAGE = 10;
+
+	std::vector<Texture*> textures;
 };
 
 #endif

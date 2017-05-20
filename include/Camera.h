@@ -158,6 +158,8 @@ public:
 		return health;
 	}
 
+	
+
 private:
 	glm::mat4 m_perspective;
 	glm::fvec3 m_position;
