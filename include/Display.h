@@ -36,6 +36,8 @@ private:
 	SDL_GLContext m_glContext;
 	bool m_isClosed;
 
+	const int NUM_KEYS = 322;
+
 	bool KEYS[322];  // 322 is the number of SDLK_DOWN events
 	bool KEYDOWN[322]; //Keeps track of if the key press has been handled
 	bool KEYUP[322]; //Keeps track of if the key release has been handled
@@ -48,6 +50,9 @@ private:
 	bool MOUSE_CLICK[2];
 	bool MOUSE_CLICK_DOWN[2];
 	bool MOUSE_CLICK_UP[2];
+
+	int windowWidth;
+	int windowHeight;
 };
 
 #endif

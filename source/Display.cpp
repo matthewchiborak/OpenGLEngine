@@ -65,6 +65,13 @@ Display::Display(int width, int height, const std::string& title)
 	MOUSE_CLICK_UP[1] = false;;
 
 	//SDL_EnableKeyRepeat(0, 0); // you can configure this how you want, but it makes it nice for when you want to register a key continuously being held down
+	
+	//Lock mouse to center of window
+	//SDL_SetRelativeMouseMode(SDL_TRUE);
+	SDL_WarpMouseInWindow(m_window, width/2, height/2);
+	//SDL_WarpMouseGlobal(width, height);
+	windowWidth = width;
+	windowHeight = height;
 }
 
 Display::~Display()
@@ -93,40 +100,55 @@ void Display::Update()
 				m_isClosed = true;
 				break;
 			case SDL_KEYDOWN:
+				
+				if (e.key.keysym.sym >= NUM_KEYS)
+				{
+					break;
+				}
 				KEYS[e.key.keysym.sym] = true;
 				KEYUP[e.key.keysym.sym] = false;
 				break;
 			case SDL_KEYUP:
+				if (e.key.keysym.sym >= NUM_KEYS)
+				{
+					break;
+				}
 				KEYS[e.key.keysym.sym] = false;
 				KEYDOWN[e.key.keysym.sym] = false;
 				//Reset the keydown bool
 				break;
 			case SDL_MOUSEMOTION:
 				//Store the new mouse position
+				/*mousePrevX = mouseX;
+				mousePrevY = mouseY;
+				mouseX = e.button.x;
+				mouseY = e.button.y;*/
 				mousePrevX = mouseX;
 				mousePrevY = mouseY;
 				mouseX = e.button.x;
 				mouseY = e.button.y;
+				//Reset mouse position
+				SDL_WarpMouseInWindow(m_window, windowWidth / 2, windowHeight / 2);
 				break;
 			case SDL_MOUSEBUTTONDOWN:
-				if (e.button.type == SDL_BUTTON_LEFT)
+				if (e.button.button == SDL_BUTTON_LEFT)
 				{
 					MOUSE_CLICK[0] = true;
 					MOUSE_CLICK_UP[0] = false;
 				}
-				else if (e.button.type == SDL_BUTTON_RIGHT)
+				else if (e.button.button == SDL_BUTTON_RIGHT)
 				{
 					MOUSE_CLICK[1] = true;
 					MOUSE_CLICK_UP[1] = false;
 				}
 				break;
 			case SDL_MOUSEBUTTONUP:
-				if (e.button.type == SDL_BUTTON_LEFT)
+				if (e.button.button == SDL_BUTTON_LEFT)
 				{
 					MOUSE_CLICK[0] = false;
 					MOUSE_CLICK_DOWN[0] = false;
 				}
-				else if (e.button.type == SDL_BUTTON_RIGHT)
+				else if (e.button.button == SDL_BUTTON_RIGHT)
 				{
 					MOUSE_CLICK[1] = false;
 					MOUSE_CLICK_DOWN[1] = false;
@@ -145,7 +167,7 @@ int Display::getMouseDifX()
 	//Event has been handled
 	mousePrevX = mouseX;
 
-	return result;
+	return -1 * result;
 }
 int Display::getMouseDifY()
 {
@@ -154,7 +176,7 @@ int Display::getMouseDifY()
 	//Event has been handled
 	mousePrevY = mouseY;
 
-	return result;
+	return -1 * result;
 }
 
 bool Display::isClosed()
