@@ -171,10 +171,12 @@ void Monster::idleUpdate()
 			glm::fvec2 collisionVector;
 			bool foundOne = myScene->checkIntersection(&collisionVector, lineStart, lineEnd, false);
 
-			glm::fvec2 playerIntersectVector;
-			bool foundPlayer = myScene->lineInterestRect(&playerIntersectVector, lineStart, lineEnd);
+			//glm::fvec2 playerIntersectVector;
+			//bool foundPlayer = myScene->lineInterestRect(&playerIntersectVector, lineStart, lineEnd);
+			glm::fvec2 playerIntersectVector(camera->getPosition().x, camera->getPosition().z);
 
-			if (foundOne && foundPlayer && (myScene->getLineLength(playerIntersectVector - lineStart) < myScene->getLineLength(collisionVector - lineStart)))
+			//if (foundOne && foundPlayer && (myScene->getLineLength(playerIntersectVector - lineStart) < myScene->getLineLength(collisionVector - lineStart)))
+			if (foundOne && (myScene->getLineLength(playerIntersectVector - lineStart) < myScene->getLineLength(collisionVector - lineStart)))
 			{
 				std::cout << "We've seen the player\n";
 				currentState = CHASE;

@@ -135,7 +135,7 @@ public:
 	}
 
 	const float SHOOT_DISTANCE = 100;
-	const int PLAYER_DAMAGE = 10;
+	const int PLAYER_DAMAGE = 100;
 	const int MAX_HEALTH = 100;
 
 	void damage(int amt)

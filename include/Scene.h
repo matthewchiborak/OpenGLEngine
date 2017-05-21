@@ -14,11 +14,13 @@
 #include "Time.h"
 #include "Door.h"
 #include "Monster.h"
+#include "Medkit.h"
 
 #include <D:/OpenGL2017/glm-0.9.8.4/glm-0.9.8.4/glm/glm.hpp>
 
 class Input;
 class Monster;
+class Medkit;
 
 class Scene
 {
@@ -39,6 +41,9 @@ public:
 
 	std::vector<Door*>* getDoors();
 	std::vector<Monster*>* getMonsters();
+	std::vector<glm::vec2*> exits;
+
+	bool isAtExit();
 
 	//Vec3 for each axis. 1 is theres a collision
 	glm::fvec3 checkCollisionCamera(Camera* camera, glm::fvec3 movement, float objectWidth, float objectHeight, float objectDepth);
@@ -63,6 +68,9 @@ public:
 	const float SPOT_HEIGHT = 1;
 	const float SPOT_DEPTH = 1;
 
+	void finishLevel();
+	bool isFinished();
+
 private:
 	static bool isRunning;
 
@@ -73,6 +81,7 @@ private:
 	std::vector<Input*> inputs;
 	std::vector<Door*> doors;
 	std::vector<Monster*> monsters;
+	std::vector<Medkit*> medkits;
 
 	Bitmap* level;
 	long lastTimeUpdated;
@@ -94,7 +103,7 @@ private:
 	
 	float crossProduct(glm::fvec2 a, glm::fvec2 b);
 
-	
+	bool loadNextLevel;
 };
 
 #endif

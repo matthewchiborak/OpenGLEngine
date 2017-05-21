@@ -13,6 +13,7 @@ Scene::Scene(std::string name, float windowWidth, float windowHeight)
 
 	level = NULL;
 	lastTimeUpdated = Time::getTime();
+	loadNextLevel = false;
 }
 
 Scene::Scene(std::string name, std::string fileName, float windowWidth, float windowHeight)
@@ -24,38 +25,40 @@ Scene::Scene(std::string name, std::string fileName, float windowWidth, float wi
 	generateLevel(fileName);
 
 	lastTimeUpdated = Time::getTime();
+	loadNextLevel = false;
 }
 
 void Scene::generateLevel(std::string fileName)
 {
-	level = new Bitmap(".\\res\\Level1.png");
+	//level = new Bitmap(".\\res\\Level1.png");
+	level = new Bitmap(fileName);
 	level->flipX();
 	level->flipY();
 
 	//TEST
 	float XLow, XHigh, YLow, YHigh;
-	//level->calcTexCoords(79, NUM_TEXTURES, NUM_TEX_EXP, &XLow, &XHigh, &YLow, &YHigh);
-	Monster* tempDoor = new Monster("TestMob", Monster::SIZEX, Monster::SIZEY, 0, 0, 1, 0, 1, TextureManager::getTextureManager()->getTexture("SSWVA1"), ShaderManager::getShaderManager()->getShader("Phong"), camera, this);
-	addGameObjectToScene(tempDoor);
-	getGameObject("TestMob")->setTransform(Vec9::createVec9(17 * SPOT_WIDTH, 0.5 * SPOT_HEIGHT - 0.25 * Monster::SIZEY, 19 * SPOT_DEPTH, 0, 0, 0, 1, 1, 1));
-	monsters.push_back(tempDoor);
-	tempDoor->addTexture(TextureManager::getTextureManager()->getTexture("SSWVA1"));
-	tempDoor->addTexture(TextureManager::getTextureManager()->getTexture("SSWVB1"));
-	tempDoor->addTexture(TextureManager::getTextureManager()->getTexture("SSWVC1"));
-	tempDoor->addTexture(TextureManager::getTextureManager()->getTexture("SSWVD1"));
-	tempDoor->addTexture(TextureManager::getTextureManager()->getTexture("SSWVE0"));
-	tempDoor->addTexture(TextureManager::getTextureManager()->getTexture("SSWVF0"));
-	tempDoor->addTexture(TextureManager::getTextureManager()->getTexture("SSWVG0"));
-	tempDoor->addTexture(TextureManager::getTextureManager()->getTexture("SSWVH0"));
-	tempDoor->addTexture(TextureManager::getTextureManager()->getTexture("SSWVI0"));
-	tempDoor->addTexture(TextureManager::getTextureManager()->getTexture("SSWVJ0"));
-	tempDoor->addTexture(TextureManager::getTextureManager()->getTexture("SSWVK0"));
-	tempDoor->addTexture(TextureManager::getTextureManager()->getTexture("SSWVL0"));
-	tempDoor->addTexture(TextureManager::getTextureManager()->getTexture("SSWVM0"));
+	////level->calcTexCoords(79, NUM_TEXTURES, NUM_TEX_EXP, &XLow, &XHigh, &YLow, &YHigh);
+	//Monster* tempDoor = new Monster("TestMob", Monster::SIZEX, Monster::SIZEY, 0, 0, 1, 0, 1, TextureManager::getTextureManager()->getTexture("SSWVA1"), ShaderManager::getShaderManager()->getShader("Phong"), camera, this);
+	//addGameObjectToScene(tempDoor);
+	//getGameObject("TestMob")->setTransform(Vec9::createVec9(17 * SPOT_WIDTH, 0.5 * SPOT_HEIGHT - 0.25 * Monster::SIZEY, 19 * SPOT_DEPTH, 0, 0, 0, 1, 1, 1));
+	//monsters.push_back(tempDoor);
+	//tempDoor->addTexture(TextureManager::getTextureManager()->getTexture("SSWVA1"));
+	//tempDoor->addTexture(TextureManager::getTextureManager()->getTexture("SSWVB1"));
+	//tempDoor->addTexture(TextureManager::getTextureManager()->getTexture("SSWVC1"));
+	//tempDoor->addTexture(TextureManager::getTextureManager()->getTexture("SSWVD1"));
+	//tempDoor->addTexture(TextureManager::getTextureManager()->getTexture("SSWVE0"));
+	//tempDoor->addTexture(TextureManager::getTextureManager()->getTexture("SSWVF0"));
+	//tempDoor->addTexture(TextureManager::getTextureManager()->getTexture("SSWVG0"));
+	//tempDoor->addTexture(TextureManager::getTextureManager()->getTexture("SSWVH0"));
+	//tempDoor->addTexture(TextureManager::getTextureManager()->getTexture("SSWVI0"));
+	//tempDoor->addTexture(TextureManager::getTextureManager()->getTexture("SSWVJ0"));
+	//tempDoor->addTexture(TextureManager::getTextureManager()->getTexture("SSWVK0"));
+	//tempDoor->addTexture(TextureManager::getTextureManager()->getTexture("SSWVL0"));
+	//tempDoor->addTexture(TextureManager::getTextureManager()->getTexture("SSWVM0"));
 	//TEST
 
 	//HUD = GameObject::createSquarePartTexture("HUD", 0.2, 0.2, 0.2, false, 0, 1, 0, 1, TextureManager::getTextureManager()->getTexture("Gun0"), ShaderManager::getShaderManager()->getShader("Phong"));
-	HUD = GameObject::createCubePartTexture("HUD", 0.2, 0.2, 0, 0, 1, 1, 0, TextureManager::getTextureManager()->getTexture("Gun0"), ShaderManager::getShaderManager()->getShader("Basic"));
+	HUD = GameObject::createCubePartTexture("HUD", 0.2, 0.2, 0, 1, 0, 1, 0, TextureManager::getTextureManager()->getTexture("Gun0"), ShaderManager::getShaderManager()->getShader("Basic"));
 	HUD->getTransform()->SetPos(glm::fvec3(17, 0.12 * SPOT_HEIGHT, 17));
 
 	for (int i = 0; i < level->getWidth(); i++)
@@ -79,7 +82,7 @@ void Scene::generateLevel(std::string fileName)
 			getGameObject(name + "_Floor_" + std::to_string(i) + "_" + std::to_string(j))->setTransform(Vec9::createVec9(i * SPOT_WIDTH, 0, j * SPOT_DEPTH, 0, 0, 0, 1, 1, 1));
 
 			//Ceiling
-			level->calcTexCoords(level->getPixel(i, j).r, NUM_TEXTURES, NUM_TEX_EXP, &XLow, &XHigh, &YLow, &YHigh);
+			level->calcTexCoords(level->getPixel(i, j).g, NUM_TEXTURES, NUM_TEX_EXP, &XLow, &XHigh, &YLow, &YHigh);
 
 			addGameObjectToScene(GameObject::createSquarePartTexture(name + "_Ceiling_" + std::to_string(i) + "_" + std::to_string(j), SPOT_WIDTH, 0, SPOT_DEPTH, true, XLow, XHigh, YLow, YHigh, TextureManager::getTextureManager()->getTexture("Wolf"), ShaderManager::getShaderManager()->getShader("Phong")));
 			getGameObject(name + "_Ceiling_" + std::to_string(i) + "_" + std::to_string(j))->setTransform(Vec9::createVec9(i * SPOT_WIDTH, SPOT_HEIGHT, j * SPOT_DEPTH, 0, 0, 0, 1, 1, 1));
@@ -125,6 +128,7 @@ void Scene::generateLevel(std::string fileName)
 
 void Scene::addSpecial(int blueValue, int x, int z)
 {
+	//Add door
 	if (blueValue == 16)
 	{
 		float XLow, XHigh, YLow, YHigh;
@@ -149,6 +153,49 @@ void Scene::addSpecial(int blueValue, int x, int z)
 		doors.push_back(tempDoor);
 		getGameObject("TestDoor_" + std::to_string(x) + "_" + std::to_string(z))->setTransform(Vec9::createVec9(x * SPOT_WIDTH, 0.5 * SPOT_HEIGHT, z * SPOT_DEPTH, 0, 0, 0, 1, 1, 1));
 		getGameObject("TestDoor_" + std::to_string(x) + "_" + std::to_string(z))->init();
+	}
+
+	if (blueValue == 1)
+	{
+		//Set the starting position.
+		camera->setPosition(glm::fvec3(x * SPOT_WIDTH, 0.5 * SPOT_HEIGHT, z * SPOT_DEPTH));
+	}
+	if (blueValue == 128)
+	{
+		//Add a monster
+		float XLow, XHigh, YLow, YHigh;
+		//level->calcTexCoords(79, NUM_TEXTURES, NUM_TEX_EXP, &XLow, &XHigh, &YLow, &YHigh);
+		Monster* tempDoor = new Monster("Monster" + std::to_string(x) + "_" + std::to_string(z), Monster::SIZEX, Monster::SIZEY, 0, 0, 1, 0, 1, TextureManager::getTextureManager()->getTexture("SSWVA1"), ShaderManager::getShaderManager()->getShader("Phong"), camera, this);
+		addGameObjectToScene(tempDoor);
+		getGameObject("Monster" + std::to_string(x) + "_" + std::to_string(z))->setTransform(Vec9::createVec9(x * SPOT_WIDTH, 0.5 * SPOT_HEIGHT - 0.25 * Monster::SIZEY, z * SPOT_DEPTH, 0, 0, 0, 1, 1, 1));
+		monsters.push_back(tempDoor);
+		tempDoor->addTexture(TextureManager::getTextureManager()->getTexture("SSWVA1"));
+		tempDoor->addTexture(TextureManager::getTextureManager()->getTexture("SSWVB1"));
+		tempDoor->addTexture(TextureManager::getTextureManager()->getTexture("SSWVC1"));
+		tempDoor->addTexture(TextureManager::getTextureManager()->getTexture("SSWVD1"));
+		tempDoor->addTexture(TextureManager::getTextureManager()->getTexture("SSWVE0"));
+		tempDoor->addTexture(TextureManager::getTextureManager()->getTexture("SSWVF0"));
+		tempDoor->addTexture(TextureManager::getTextureManager()->getTexture("SSWVG0"));
+		tempDoor->addTexture(TextureManager::getTextureManager()->getTexture("SSWVH0"));
+		tempDoor->addTexture(TextureManager::getTextureManager()->getTexture("SSWVI0"));
+		tempDoor->addTexture(TextureManager::getTextureManager()->getTexture("SSWVJ0"));
+		tempDoor->addTexture(TextureManager::getTextureManager()->getTexture("SSWVK0"));
+		tempDoor->addTexture(TextureManager::getTextureManager()->getTexture("SSWVL0"));
+		tempDoor->addTexture(TextureManager::getTextureManager()->getTexture("SSWVM0"));
+	}
+	if (blueValue == 192)
+	{
+		//Add a medkit
+		float XLow, XHigh, YLow, YHigh;
+		//level->calcTexCoords(79, NUM_TEXTURES, NUM_TEX_EXP, &XLow, &XHigh, &YLow, &YHigh);
+		Medkit* tempDoor = new Medkit("Medkit" + std::to_string(x) + "_" + std::to_string(z), Medkit::SIZEX, Medkit::SIZEY, 0, 0, 1, 0, 1, TextureManager::getTextureManager()->getTexture("Medkit"), ShaderManager::getShaderManager()->getShader("Phong"), camera, this);
+		addGameObjectToScene(tempDoor);
+		getGameObject("Medkit" + std::to_string(x) + "_" + std::to_string(z))->setTransform(Vec9::createVec9(x * SPOT_WIDTH, 0.5 * Medkit::SIZEY, z * SPOT_DEPTH, 0, 0, 0, 1, 1, 1));
+		medkits.push_back(tempDoor);
+	}
+	if (blueValue == 97)
+	{
+		exits.push_back(new glm::vec2(x, z));
 	}
 }
 
@@ -206,6 +253,13 @@ Scene::~Scene()
 	{
 		if (collisionPosEnd.at(i) != NULL)
 			delete collisionPosEnd.at(i);
+	}
+	for (int i = 0; i < exits.size(); i++)
+	{
+		if (exits.at(i) != NULL)
+		{
+			delete exits.at(i);
+		}
 	}
 		
 	if(camera != NULL)
@@ -265,10 +319,13 @@ void Scene::update(Display* display)
 	//Draw the objects
 	for (int i = 0; i < gameObjects.size(); i++)
 	{
-		//Update speical updates on the objects
-		gameObjects.at(i)->update();
+		if (gameObjects.at(i)->isEnabled())
+		{
+			//Update speical updates on the objects
+			gameObjects.at(i)->update();
 
-		gameObjects.at(i)->draw(camera);
+			gameObjects.at(i)->draw(camera);
+		}
 	}
 
 	//HUD Update. TODO make a class to handle this
@@ -800,4 +857,27 @@ std::vector<Monster*>* Scene::getMonsters()
 void Scene::setIsRunning(bool value)
 {
 	isRunning = value;
+}
+
+bool Scene::isAtExit()
+{
+	for (int i = 0; i < exits.size(); i++)
+	{
+		if (((int)camera->getPosition().x / SPOT_WIDTH) == exits.at(i)->x &&
+			((int)camera->getPosition().z / SPOT_DEPTH) == exits.at(i)->y)
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
+void Scene::finishLevel()
+{
+	loadNextLevel = true;
+}
+bool Scene::isFinished()
+{
+	return loadNextLevel;
 }

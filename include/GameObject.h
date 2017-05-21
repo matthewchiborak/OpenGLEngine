@@ -26,6 +26,8 @@ public:
 
 	glm::fvec3 getDimensions();
 
+	bool isEnabled();
+
 	static GameObject* createSquare(std::string name, float width, float height, float depth, bool oppositeNormal,  float repeatFactorX, float repeatFactorY, Texture* texture, Shader* shader);
 	static GameObject* createCube(std::string name, float width, float height, float depth, float repeatFactorX, float repeatFactorY, Texture* texture, Shader* shader);
 	static GameObject* createSquarePartTexture(std::string name, float width, float height, float depth, bool oppositeNormal, float XLower, float XHigher, float YLower, float YHigher, Texture* texture, Shader* shader);
@@ -39,6 +41,7 @@ protected:
 	Transform transform;
 
 	glm::fvec3 dimensions;
+	bool enabled;
 };
 
 #endif

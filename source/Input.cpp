@@ -202,6 +202,12 @@ void Input::keyPressDownDoorOpen(Display* display)
 {
 	if (display->checkKeyDown(key))
 	{
+		if (myScene->isAtExit())
+		{
+			myScene->finishLevel();
+			return;
+		}
+
 		for (int i = 0; i < doors->size(); i++)
 		{
 			//If close to door and looking at it

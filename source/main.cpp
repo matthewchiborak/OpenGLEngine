@@ -70,45 +70,28 @@ int main(int argc, char** argv)
 	TextureManager::getTextureManager()->loadTexture("Gun0", ".\\res\\PISGB0.png");
 	TextureManager::getTextureManager()->loadTexture("Gun1", ".\\res\\PISFA0.png");
 
+	TextureManager::getTextureManager()->loadTexture("Medkit", ".\\res\\MEDIA0.png");
+
 	scenes.push_back(new Scene("Main", ".\\res\\Level1.png", WIDTH, HEIGHT));
+	//scenes.push_back(new Scene("Main", ".\\res\\Level2.png", WIDTH, HEIGHT));
+	//scenes.push_back(new Scene("Main", ".\\res\\Level3.png", WIDTH, HEIGHT));
 
 	//Move the camera to start in the level
-	scenes.at(currentScene)->resetCamera(Vec9::createVec9(17, 0.5, 17, 0, 0, 1, 0, 1, 0));
+	//scenes.at(currentScene)->resetCamera(Vec9::createVec9(17, 0.5, 17, 0, 0, 1, 0, 1, 0));
 	//(Vec9::createVec9(0, 1, -5, 0, 0, 1, 0, 1, 0)
 
 	//Assign inputs to the gameobject
-	/*scenes.at(currentScene)->addInputToScene(new Input(KEY_PRESS_TRANSFORM, scenes.at(currentScene)->getGameObject("Arwing"), SDLK_w, Vec9::createVec9(Direction::MOVE_Y, 0.01)));
-	scenes.at(currentScene)->addInputToScene(new Input(KEY_PRESS_TRANSFORM, scenes.at(currentScene)->getGameObject("Arwing"), SDLK_a, Vec9::createVec9(Direction::MOVE_X, 0.01)));
-	scenes.at(currentScene)->addInputToScene(new Input(KEY_PRESS_TRANSFORM, scenes.at(currentScene)->getGameObject("Arwing"), SDLK_s, Vec9::createVec9(Direction::MOVE_Y, -0.01)));
-	scenes.at(currentScene)->addInputToScene(new Input(KEY_PRESS_TRANSFORM, scenes.at(currentScene)->getGameObject("Arwing"), SDLK_d, Vec9::createVec9(Direction::MOVE_X, -0.01)));
+	for (int i = 0; i < 1; i++)
+	{
+		scenes.at(i)->addInputToScene(new Input(KEY_PRESS_FORWARD_CAMERA_TRANSFORM, scenes.at(i)->getCamera(), SDLK_w, 0.1));
+		scenes.at(i)->addInputToScene(new Input(KEY_PRESS_FORWARD_CAMERA_TRANSFORM, scenes.at(i)->getCamera(), SDLK_s, -0.1));
+		scenes.at(i)->addInputToScene(new Input(KEY_PRESS_LEFT_CAMERA_TRANSFORM, scenes.at(i)->getCamera(), SDLK_d, 0.1));
+		scenes.at(i)->addInputToScene(new Input(KEY_PRESS_LEFT_CAMERA_TRANSFORM, scenes.at(i)->getCamera(), SDLK_a, -0.1));
+		scenes.at(i)->addInputToScene(new Input(MOUSE_MOVE_X_TRANSFORM, scenes.at(i)->getCamera()));
 
-	scenes.at(currentScene)->addInputToScene(new Input(KEY_PRESS_TRANSFORM, scenes.at(currentScene)->getGameObject("Arwing"), SDLK_q, Vec9::createVec9(Direction::ROT_Y, 0.01)));
-	scenes.at(currentScene)->addInputToScene(new Input(KEY_PRESS_TRANSFORM, scenes.at(currentScene)->getGameObject("Arwing"), SDLK_e, Vec9::createVec9(Direction::ROT_Y, -0.01)));
-
-	scenes.at(currentScene)->addInputToScene(new Input(KEY_PRESS_TRANSFORM, scenes.at(currentScene)->getGameObject("Monkey"), SDLK_e, Vec9::createVec9(Direction::ROT_Y, -0.01)));
-	scenes.at(currentScene)->addInputToScene(new Input(KEY_PRESS_TRANSFORM, scenes.at(currentScene)->getGameObject("Monkey"), SDLK_r, Vec9::createVec9(Direction::MOVE_Y, 0.01)));*/
-	//scenes.at(currentScene)->addInputToScene(new Input(KEY_PRESS_UP_TRANSFORM, scenes.at(currentScene)->getGameObject("Arwing"), SDLK_w, Vec9::createVec9(Direction::MOVE_Y, 1)));
-	//scenes.at(currentScene)->addInputToScene(new Input(KEY_PRESS_UP_TRANSFORM, scenes.at(currentScene)->getGameObject("Arwing"), SDLK_s, Vec9::createVec9(Direction::MOVE_Y, -1)));
-	//scenes.at(currentScene)->addInputToScene(new Input(KEY_PRESS_CAMERA_TRANSFORM, scenes.at(currentScene)->getCamera(), SDLK_w, Vec9::createVec9(Direction::MOVE_Z, 0.1)));
-	//scenes.at(currentScene)->addInputToScene(new Input(KEY_PRESS_CAMERA_TRANSFORM, scenes.at(currentScene)->getCamera(), SDLK_s, Vec9::createVec9(Direction::MOVE_Z, -0.1)));
-	scenes.at(currentScene)->addInputToScene(new Input(KEY_PRESS_FORWARD_CAMERA_TRANSFORM, scenes.at(currentScene)->getCamera(), SDLK_w, 0.1));
-	scenes.at(currentScene)->addInputToScene(new Input(KEY_PRESS_FORWARD_CAMERA_TRANSFORM, scenes.at(currentScene)->getCamera(), SDLK_s, -0.1));
-	scenes.at(currentScene)->addInputToScene(new Input(KEY_PRESS_LEFT_CAMERA_TRANSFORM, scenes.at(currentScene)->getCamera(), SDLK_d, 0.1));
-	scenes.at(currentScene)->addInputToScene(new Input(KEY_PRESS_LEFT_CAMERA_TRANSFORM, scenes.at(currentScene)->getCamera(), SDLK_a, -0.1));
-	//scenes.at(currentScene)->addInputToScene(new Input(KEY_PRESS_CAMERA_TRANSFORM, scenes.at(currentScene)->getCamera(), SDLK_s, Vec9::createVec9(Direction::MOVE_Z, -0.1)));
-	//scenes.at(currentScene)->addInputToScene(new Input(KEY_PRESS_CAMERA_TRANSFORM, scenes.at(currentScene)->getCamera(), SDLK_s, Vec9::createVec9(Direction::MOVE_Z, -0.1)));
-	//scenes.at(currentScene)->addInputToScene(new Input(KEY_PRESS_CAMERA_TRANSFORM, scenes.at(currentScene)->getCamera(), SDLK_a, Vec9::createVec9(Direction::MOVE_X, 0.1)));
-	//scenes.at(currentScene)->addInputToScene(new Input(KEY_PRESS_CAMERA_TRANSFORM, scenes.at(currentScene)->getCamera(), SDLK_d, Vec9::createVec9(Direction::MOVE_X, -0.1)));
-	scenes.at(currentScene)->addInputToScene(new Input(MOUSE_MOVE_X_TRANSFORM, scenes.at(currentScene)->getCamera()));
-	//scenes.at(currentScene)->addInputToScene(new Input(MOUSE_MOVE_Y_TRANSFORM, scenes.at(currentScene)->getCamera()));
-
-	scenes.at(currentScene)->addInputToScene(new Input(KEY_PRESS_CAMERA_TRANSFORM, scenes.at(currentScene)->getCamera(), SDLK_q, Vec9::createVec9(Direction::MOVE_Y, 0.1)));
-	scenes.at(currentScene)->addInputToScene(new Input(KEY_PRESS_CAMERA_TRANSFORM, scenes.at(currentScene)->getCamera(), SDLK_e, Vec9::createVec9(Direction::MOVE_Y, -0.1)));
-
-	scenes.at(currentScene)->addInputToScene(new Input(KEY_PRESS_DOWN_DOOR_OPEN, scenes.at(currentScene)->getCamera(), SDLK_f, scenes.at(currentScene)->getDoors()));
-	//scenes.at(currentScene)->addInputToScene(new Input(KEY_PRESS_TRANSFORM, scenes.at(currentScene)->getGameObject("TestCube"), SDLK_f, Vec9::createVec9(Direction::ROT_Y, -0.01)));
-	//scenes.at(currentScene)->addInputToScene(new Input(KEY_PRESS_TRANSFORM, scenes.at(currentScene)->getGameObject("Ship"), SDLK_f, Vec9::createVec9(Direction::ROT_Y, -0.01)));
-	scenes.at(currentScene)->addInputToScene(new Input(LEFT_CLICK_DOWN_SHOOT, scenes.at(currentScene)->getCamera(), scenes.at(currentScene)->getMonsters()));
+		scenes.at(i)->addInputToScene(new Input(KEY_PRESS_DOWN_DOOR_OPEN, scenes.at(i)->getCamera(), SDLK_f, scenes.at(i)->getDoors()));
+		scenes.at(i)->addInputToScene(new Input(LEFT_CLICK_DOWN_SHOOT, scenes.at(i)->getCamera(), scenes.at(i)->getMonsters()));
+	}
 
 	float counter = 0.0f;
 
@@ -131,6 +114,22 @@ int main(int argc, char** argv)
 		lastTime = startTime;
 		frameCounter += passedTime;
 		//Time::setDelta(frameTime);
+
+		//Check if finished the level
+		if (scenes.at(currentScene)->isFinished())
+		{
+			delete scenes.at(currentScene);
+			currentScene++;
+			scenes.push_back(new Scene("Main", ".\\res\\Level2.png", WIDTH, HEIGHT));
+			scenes.at(currentScene)->addInputToScene(new Input(KEY_PRESS_FORWARD_CAMERA_TRANSFORM, scenes.at(currentScene)->getCamera(), SDLK_w, 0.1));
+			scenes.at(currentScene)->addInputToScene(new Input(KEY_PRESS_FORWARD_CAMERA_TRANSFORM, scenes.at(currentScene)->getCamera(), SDLK_s, -0.1));
+			scenes.at(currentScene)->addInputToScene(new Input(KEY_PRESS_LEFT_CAMERA_TRANSFORM, scenes.at(currentScene)->getCamera(), SDLK_d, 0.1));
+			scenes.at(currentScene)->addInputToScene(new Input(KEY_PRESS_LEFT_CAMERA_TRANSFORM, scenes.at(currentScene)->getCamera(), SDLK_a, -0.1));
+			scenes.at(currentScene)->addInputToScene(new Input(MOUSE_MOVE_X_TRANSFORM, scenes.at(currentScene)->getCamera()));
+
+			scenes.at(currentScene)->addInputToScene(new Input(KEY_PRESS_DOWN_DOOR_OPEN, scenes.at(currentScene)->getCamera(), SDLK_f, scenes.at(currentScene)->getDoors()));
+			scenes.at(currentScene)->addInputToScene(new Input(LEFT_CLICK_DOWN_SHOOT, scenes.at(currentScene)->getCamera(), scenes.at(currentScene)->getMonsters()));
+		}
 
 		//UPDATE GAME
 		display.clear(0.0f, 0.0f, 1.0f, 0.0f);

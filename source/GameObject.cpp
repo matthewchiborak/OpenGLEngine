@@ -2,7 +2,7 @@
 
 GameObject::GameObject()
 {
-
+	enabled = true;
 }
 
 GameObject::GameObject(std::string name, std::string meshFile, Texture* texture, Shader* shader)
@@ -11,6 +11,7 @@ GameObject::GameObject(std::string name, std::string meshFile, Texture* texture,
 	mesh = new Mesh(meshFile);
 	this->texture = texture;
 	this->shader = shader;
+	enabled = true;
 }
 
 GameObject::GameObject(std::string name, Mesh* mesh, Texture* texture, Shader* shader)
@@ -19,6 +20,7 @@ GameObject::GameObject(std::string name, Mesh* mesh, Texture* texture, Shader* s
 	this->mesh = mesh;
 	this->texture = texture;
 	this->shader = shader;
+	enabled = true;
 }
 
 GameObject::GameObject(std::string name, Mesh* mesh, Texture* texture, Shader* shader, glm::fvec3 dimensions)
@@ -28,6 +30,7 @@ GameObject::GameObject(std::string name, Mesh* mesh, Texture* texture, Shader* s
 	this->texture = texture;
 	this->shader = shader;
 	this->dimensions = dimensions;
+	enabled = true;
 }
 
 GameObject* GameObject::createSquare(std::string name, float width, float height, float depth, bool oppositeNormal, float repeatFactorX, float repeatFactorY, Texture* texture, Shader* shader)
@@ -427,4 +430,9 @@ void GameObject::init()
 glm::fvec3 GameObject::getDimensions()
 {
 	return dimensions;
+}
+
+bool GameObject::isEnabled()
+{
+	return enabled;
 }
