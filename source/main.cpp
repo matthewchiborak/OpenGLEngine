@@ -27,19 +27,27 @@ int main(int argc, char** argv)
 	std::vector<Scene*> scenes;
 
 	ShaderManager::getShaderManager()->loadShader("Phong", ".\\res\\PhongShader");
+	ShaderManager::getShaderManager()->loadShader("Basic", ".\\res\\basicShader");
 
 	ShaderManager::getShaderManager()->getShader("Phong")->setAmbientLight(glm::fvec3(0.1f,0.1f,0.1f));
 	ShaderManager::getShaderManager()->getShader("Phong")->setBaseColor(glm::fvec3(1.0f, 1.0f, 1.0f));
 	ShaderManager::getShaderManager()->getShader("Phong")->setDirectionalDirection(glm::fvec3(0, 1, 0));
 	ShaderManager::getShaderManager()->getShader("Phong")->setDirectionalBase(glm::fvec3(0, 0, 0), 0);
+	ShaderManager::getShaderManager()->getShader("Basic")->setAmbientLight(glm::fvec3(0.1f, 0.1f, 0.1f));
+	ShaderManager::getShaderManager()->getShader("Basic")->setBaseColor(glm::fvec3(1.0f, 1.0f, 1.0f));
+	ShaderManager::getShaderManager()->getShader("Basic")->setDirectionalDirection(glm::fvec3(0, 1, 0));
+	ShaderManager::getShaderManager()->getShader("Basic")->setDirectionalBase(glm::fvec3(0, 0, 0), 0);
 	//Note to self. Having directional color to white but intensity to 0 causes the specular reflection to give a flashlight effect
 
 	ShaderManager::getShaderManager()->getShader("Phong")->setSpecularIntensity(2);
 	ShaderManager::getShaderManager()->getShader("Phong")->setSpecularExponent(32);
+	ShaderManager::getShaderManager()->getShader("Basic")->setSpecularIntensity(2);
+	ShaderManager::getShaderManager()->getShader("Basic")->setSpecularExponent(32);
 
 	/*shader.setPointLight(0, glm::fvec3(-2, 0, 6), glm::fvec3(1, 0, 0), 10.0f, 0, 0, 1);
 	shader.setPointLight(1, glm::fvec3(2, 0, 7), glm::fvec3(0,0, 1), 10, 0, 0, 1);*/
 	ShaderManager::getShaderManager()->getShader("Phong")->setPointLight(0, glm::fvec3(-2, 0, 6), glm::fvec3(1, 1, 1), 10.0f, 20, 0, 0, 1);
+	ShaderManager::getShaderManager()->getShader("Basic")->setPointLight(0, glm::fvec3(-2, 0, 6), glm::fvec3(1, 1, 1), 10.0f, 20, 0, 0, 1);
 	//shader.setPointLight(1, glm::fvec3(2, 0, 7), glm::fvec3(1, 1, 1), 10, 20, 0, 0, 1);
 
 	//shader.setSpotLight(0, glm::fvec3(-2, 0, 6), glm::fvec3(1, 1, 1), 0.4f, 20, 0, 0, 0.02f, glm::vec3(0, 0, 1), 0.7);

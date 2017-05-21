@@ -1,14 +1,72 @@
-#version 120
+#version 330
+
+const int MAX_POINT_LIGHTS = 4; //Don't want it too high. Gets expensive if too many calcs
+const int MAX_SPOT_LIGHTS = 4;
 
 varying vec2 texCoord0;
 varying vec3 normal0;
+varying vec3 worldPos0;
+
+struct BaseLight
+{
+	vec3 color;
+	float intensity;
+};
+
+struct DirectionalLight
+{
+	BaseLight base;
+	vec3 direction;
+};
+
+struct Attenuation
+{
+	//How quickly point light fades off
+	//Describe a quadratic equation
+	float constant;
+	float linear;
+	float exponent;
+};
+
+struct PointLight
+{
+	BaseLight base;
+	Attenuation atten;
+	vec3 position;
+	float range;
+};
+
+struct SpotLight
+{
+	PointLight pointLight;
+	vec3 direction;
+	float cutoff;
+};
 
 uniform sampler2D diffuse;
+uniform vec3 baseColor;
+uniform vec3 ambientLight;
+uniform DirectionalLight directionalLight;
+
+uniform float specularIntensity;
+uniform float specularExponent;
+uniform vec3 eyePos;
+
+uniform PointLight pointLights[MAX_POINT_LIGHTS];
+uniform SpotLight spotLights[MAX_SPOT_LIGHTS];
 
 void main()
 {
-	gl_FragColor = texture2D(diffuse, texCoord0)
-		* clamp(dot(-vec3(0,0,1), normal0), 0.0, 1.0);
+	vec4 tc = texture2D(diffuse, texCoord0);
+	if(tc.a < 0.5)
+	{
+		discard;
+	}
+	
+	gl_FragColor = tc;
+
+	//gl_FragColor = texture2D(diffuse, texCoord0);
+		//* clamp(dot(-vec3(0,0,1), normal0), 0.0, 1.0);
 		//* clamp(dot(-lightDirection, normal0), 0.0, 1.0);
 		//Lamberian shading
 		

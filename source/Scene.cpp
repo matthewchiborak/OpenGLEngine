@@ -55,8 +55,8 @@ void Scene::generateLevel(std::string fileName)
 	//TEST
 
 	//HUD = GameObject::createSquarePartTexture("HUD", 0.2, 0.2, 0.2, false, 0, 1, 0, 1, TextureManager::getTextureManager()->getTexture("Gun0"), ShaderManager::getShaderManager()->getShader("Phong"));
-	HUD = GameObject::createCubePartTexture("HUD", 0.2, 0.2, 0, 0, 1, 1, 0, TextureManager::getTextureManager()->getTexture("Gun0"), ShaderManager::getShaderManager()->getShader("Phong"));
-	HUD->getTransform()->SetPos(glm::fvec3(17, 0.2 * SPOT_HEIGHT, 17));
+	HUD = GameObject::createCubePartTexture("HUD", 0.2, 0.2, 0, 0, 1, 1, 0, TextureManager::getTextureManager()->getTexture("Gun0"), ShaderManager::getShaderManager()->getShader("Basic"));
+	HUD->getTransform()->SetPos(glm::fvec3(17, 0.12 * SPOT_HEIGHT, 17));
 
 	for (int i = 0; i < level->getWidth(); i++)
 	{
@@ -284,8 +284,9 @@ void Scene::update(Display* display)
 
 	HUD->getTransform()->SetRot(glm::fvec3(0, (angleToFaceCam + (3.1415 / 2)) * -1, 0));
 
-	HUD->getTransform()->GetPos().x = camera->getPosition().x + camera->getForward().x * 1;
-	HUD->getTransform()->GetPos().z = camera->getPosition().z + camera->getForward().z * 1;
+	HUD->getTransform()->GetPos().x = camera->getPosition().x + camera->getForward().x;// * 1.25;// * 0.25;
+	//HUD->getTransform()->GetPos().y = camera->getPosition().y;
+	HUD->getTransform()->GetPos().z = camera->getPosition().z + camera->getForward().z; //*1.25; //* 0.25;
 
 	HUD->draw(camera);
 }

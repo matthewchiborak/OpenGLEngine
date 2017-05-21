@@ -1,4 +1,4 @@
-#version 120
+#version 330
 
 attribute vec3 position;
 attribute vec2 texCoord;
@@ -6,12 +6,20 @@ attribute vec3 normal;
 
 varying vec2 texCoord0;
 varying vec3 normal0;
+varying vec3 worldPos0;
 
 uniform mat4 transform;
+uniform mat4 transformProjected;
 
 void main()
 {
-	gl_Position = transform * vec4(position, 1.0);
+	gl_Position = transformProjected * vec4(position, 1.0);
 	texCoord0 = texCoord;
+	//normal0 = normal;
 	normal0 = (transform * vec4(normal, 0.0)).xyz; //So no translation is performed on the normal
+	worldPos0 = (transform * vec4(position, 1.0)).xyz;
+
+	//gl_Position = transform * vec4(position, 1.0);
+	//texCoord0 = texCoord;
+	//normal0 = (transform * vec4(normal, 0.0)).xyz; //So no translation is performed on the normal
 }
