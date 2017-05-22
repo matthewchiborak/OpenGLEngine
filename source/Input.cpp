@@ -160,37 +160,37 @@ void Input::mouseMoveYTransform(Display* display)
 
 void Input::keyPressForwardTransform(Display* display)
 {
-	if (display->checkKey(key))
-	{
-		glm::fvec3 movementAmount(cameraObject->getForward().x * magnitude, cameraObject->getForward().y * magnitude, cameraObject->getForward().z * magnitude);
-		//glm::fvec3 collisionResult = myScene->checkCollisionCamera(cameraObject, movementAmount, Scene::PLAYER_SIZE, Scene::PLAYER_SIZE, Scene::PLAYER_SIZE);
-		glm::fvec3 collisionResult = myScene->checkCollisionCameraWalls(cameraObject, movementAmount, Scene::PLAYER_SIZE, Scene::PLAYER_SIZE, Scene::PLAYER_SIZE);
+	//if (display->checkKey(key))
+	//{
+	//	glm::fvec3 movementAmount(cameraObject->getForward().x * magnitude, cameraObject->getForward().y * magnitude, cameraObject->getForward().z * magnitude);
+	//	//glm::fvec3 collisionResult = myScene->checkCollisionCamera(cameraObject, movementAmount, Scene::PLAYER_SIZE, Scene::PLAYER_SIZE, Scene::PLAYER_SIZE);
+	//	glm::fvec3 collisionResult = myScene->checkCollisionCameraWalls(cameraObject, movementAmount, Scene::PLAYER_SIZE, Scene::PLAYER_SIZE, Scene::PLAYER_SIZE);
 
-		
-		movementAmount.x *= collisionResult.x;
-		movementAmount.y *= collisionResult.y;
-		movementAmount.z *= collisionResult.z;
+	//	
+	//	movementAmount.x *= collisionResult.x;
+	//	movementAmount.y *= collisionResult.y;
+	//	movementAmount.z *= collisionResult.z;
 
-		cameraObject->movePosition(movementAmount);
-	}
+	//	cameraObject->movePosition(movementAmount);
+	//}
 }
 void Input::keyPressLeftTransform(Display* display)
 {
-	if (display->checkKey(key))
-	{
-		glm::vec3 left = glm::cross(cameraObject->getForward(), cameraObject->getUp());
+	//if (display->checkKey(key))
+	//{
+	//	glm::vec3 left = glm::cross(cameraObject->getForward(), cameraObject->getUp());
 
-		glm::fvec3 movementAmount(left.x * magnitude, left.y * magnitude, left.z * magnitude);
+	//	glm::fvec3 movementAmount(left.x * magnitude, left.y * magnitude, left.z * magnitude);
 
-		//glm::fvec3 collisionResult = myScene->checkCollisionCamera(cameraObject, movementAmount, Scene::PLAYER_SIZE, Scene::PLAYER_SIZE, Scene::PLAYER_SIZE);
-		glm::fvec3 collisionResult = myScene->checkCollisionCameraWalls(cameraObject, movementAmount, Scene::PLAYER_SIZE, Scene::PLAYER_SIZE, Scene::PLAYER_SIZE);
+	//	//glm::fvec3 collisionResult = myScene->checkCollisionCamera(cameraObject, movementAmount, Scene::PLAYER_SIZE, Scene::PLAYER_SIZE, Scene::PLAYER_SIZE);
+	//	glm::fvec3 collisionResult = myScene->checkCollisionCameraWalls(cameraObject, movementAmount, Scene::PLAYER_SIZE, Scene::PLAYER_SIZE, Scene::PLAYER_SIZE);
 
-		movementAmount.x *= collisionResult.x;
-		movementAmount.y *= collisionResult.y;
-		movementAmount.z *= collisionResult.z;
+	//	movementAmount.x *= collisionResult.x;
+	//	movementAmount.y *= collisionResult.y;
+	//	movementAmount.z *= collisionResult.z;
 
-		cameraObject->movePosition(movementAmount);
-	}
+	//	cameraObject->movePosition(movementAmount);
+	//}
 }
 
 void Input::assignScene(Scene* myScene)
@@ -200,30 +200,30 @@ void Input::assignScene(Scene* myScene)
 
 void Input::keyPressDownDoorOpen(Display* display)
 {
-	if (display->checkKeyDown(key))
-	{
-		if (myScene->isAtExit())
-		{
-			myScene->finishLevel();
-			return;
-		}
+	//if (display->checkKeyDown(key))
+	//{
+	//	if (myScene->isAtExit())
+	//	{
+	//		myScene->finishLevel();
+	//		return;
+	//	}
 
-		for (int i = 0; i < doors->size(); i++)
-		{
-			//If close to door and looking at it
-			if (abs(doors->at(i)->getTransform()->GetPos().x - cameraObject->getPosition().x) < doors->at(i)->DOOR_OPEN_RANGE &&
-				abs(doors->at(i)->getTransform()->GetPos().z - cameraObject->getPosition().z) < doors->at(i)->DOOR_OPEN_RANGE)
-			{
-				doors->at(i)->open();
-			}
-		}
-	}
+	//	for (int i = 0; i < doors->size(); i++)
+	//	{
+	//		//If close to door and looking at it
+	//		if (abs(doors->at(i)->getTransform()->GetPos().x - cameraObject->getPosition().x) < doors->at(i)->DOOR_OPEN_RANGE &&
+	//			abs(doors->at(i)->getTransform()->GetPos().z - cameraObject->getPosition().z) < doors->at(i)->DOOR_OPEN_RANGE)
+	//		{
+	//			doors->at(i)->open();
+	//		}
+	//	}
+	//}
 }
 
 void Input::leftClickDownShoot(Display* display)
 {
 	//Maybe should check if mouse if on screen
-	if (display->checkMouseDown(0))
+	/*if (display->checkMouseDown(0))
 	{
 		glm::fvec2 lineStart(cameraObject->getPosition().x, cameraObject->getPosition().z);
 		glm::fvec2 castDirection(cameraObject->getForward().x, cameraObject->getForward().z);
@@ -232,5 +232,5 @@ void Input::leftClickDownShoot(Display* display)
 
 		glm::fvec2 collisionVector;
 		bool hitSomething = myScene->checkIntersection(&collisionVector, lineStart, lineEnd, true);
-	}
+	}*/
 }

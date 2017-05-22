@@ -4,7 +4,7 @@ float Medkit::SIZEY = 0.3;
 float Medkit::SIZEX = 0.3;
 int Medkit::healAmount = 25;
 
-Medkit::Medkit(std::string name, float width, float height, float depth, float XLower, float XHigher, float YLower, float YHigher, Texture* texture, Shader* shader, Camera* camera, Scene* myScene)
+Medkit::Medkit(std::string name, float width, float height, float depth, float XLower, float XHigher, float YLower, float YHigher, Texture* texture, Shader* shader, Camera* camera, TestScene* myScene)
 {
 	this->camera = camera;
 	this->myScene = myScene;

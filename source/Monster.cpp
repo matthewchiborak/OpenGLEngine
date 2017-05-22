@@ -3,7 +3,7 @@
 float Monster::SIZEX = 0.35;
 float Monster::SIZEY = 0.7;
 
-Monster::Monster(std::string name, float width, float height, float depth, float XLower, float XHigher, float YLower, float YHigher, Texture* texture, Shader* shader, Camera* camera, Scene* myScene)
+Monster::Monster(std::string name, float width, float height, float depth, float XLower, float XHigher, float YLower, float YHigher, Texture* texture, Shader* shader, Camera* camera, TestScene* myScene)
 {
 	currentState = IDLE;
 	//currentState = CHASE;
