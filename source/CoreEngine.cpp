@@ -45,7 +45,7 @@ void CoreEngine::loadScene(std::string name, std::string fileName)
 void CoreEngine::loadScene(Scene* newScene, std::string name, std::string fileName)
 {
 	scenes.push_back(newScene);
-	newScene->baseInit(name, fileName, width, height);
+	//newScene->baseInit(name, fileName, width, height);
 }
 
 Scene* CoreEngine::getScene(std::string name)
@@ -88,7 +88,7 @@ void CoreEngine::run()
 		//UPDATE GAME
 		display->clear(0.0f, 0.0f, 0.0f, 0.0f);
 
-		scenes.at(currentScene)->baseUpdate(display);
+		scenes.at(currentScene)->update(display);
 		display->Update();
 
 		counter += 0.01f;

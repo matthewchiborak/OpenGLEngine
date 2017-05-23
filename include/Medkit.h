@@ -2,16 +2,14 @@
 #define __MEDKIT_H
 
 #include "GameObject.h"
-//#include "Scene.h"
-#include "TestScene.h"
+#include "Scene.h"
 
-//class Scene;
-class TestScene;
+class Scene;
 
 class Medkit : public GameObject
 {
 public:
-	Medkit(std::string name, float width, float height, float depth, float XLower, float XHigher, float YLower, float YHigher, Texture* texture, Shader* shader, Camera* camera, TestScene* myScene);
+	Medkit(std::string name, float width, float height, float depth, float XLower, float XHigher, float YLower, float YHigher, Texture* texture, Shader* shader, Camera* camera, Scene* myScene);
 	~Medkit();
 	void update();
 
@@ -24,7 +22,7 @@ public:
 
 private:
 	Camera* camera;
-	TestScene* myScene;
+	Scene* myScene;
 };
 
 #endif

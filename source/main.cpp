@@ -72,8 +72,9 @@ int main(int argc, char** argv)
 	TextureManager::getTextureManager()->loadTexture("Medkit", ".\\res\\MEDIA0.png");
 
 	//CoreEngine::getCoreEngine()->loadScene("Main", ".\\res\\Level1.png");
-	TestScene testScene;
-	CoreEngine::getCoreEngine()->loadScene(&testScene, "Main", ".\\res\\Level1.png");
+	//TestScene testScene;
+	//Scene testScene;
+	CoreEngine::getCoreEngine()->loadScene("Main", ".\\res\\Level1.png");
 
 	//Scene* tempScene = CoreEngine::getCoreEngine()->getScene("Main");
 	/*tempScene->addInputToScene(new Input(KEY_PRESS_FORWARD_CAMERA_TRANSFORM, tempScene->getCamera(), SDLK_w, 0.1));
