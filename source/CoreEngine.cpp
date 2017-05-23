@@ -39,7 +39,9 @@ void CoreEngine::init(int width, int height, double frameRate, Game* game, std::
 
 void CoreEngine::loadScene(std::string name, std::string fileName)
 {
-	scenes.push_back(new Scene(name, fileName, width, height));
+	Scene* newScene = new Scene(name, fileName, width, height);
+	scenes.push_back(newScene);
+	newScene->init();
 }
 
 void CoreEngine::loadScene(Scene* newScene, std::string name, std::string fileName)

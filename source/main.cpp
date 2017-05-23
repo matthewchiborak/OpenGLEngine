@@ -36,11 +36,11 @@ int main(int argc, char** argv)
 	ShaderManager::getShaderManager()->getShader("Phong")->setAmbientLight(glm::fvec3(0.1f,0.1f,0.1f));
 	ShaderManager::getShaderManager()->getShader("Phong")->setBaseColor(glm::fvec3(1.0f, 1.0f, 1.0f));
 	ShaderManager::getShaderManager()->getShader("Phong")->setDirectionalDirection(glm::fvec3(0, 1, 0));
-	ShaderManager::getShaderManager()->getShader("Phong")->setDirectionalBase(glm::fvec3(0, 0, 0), 0);
+	ShaderManager::getShaderManager()->getShader("Phong")->setDirectionalBase(glm::fvec3(1, 1, 1), 1);
 	ShaderManager::getShaderManager()->getShader("Basic")->setAmbientLight(glm::fvec3(0.1f, 0.1f, 0.1f));
 	ShaderManager::getShaderManager()->getShader("Basic")->setBaseColor(glm::fvec3(1.0f, 1.0f, 1.0f));
 	ShaderManager::getShaderManager()->getShader("Basic")->setDirectionalDirection(glm::fvec3(0, 1, 0));
-	ShaderManager::getShaderManager()->getShader("Basic")->setDirectionalBase(glm::fvec3(0, 0, 0), 0);
+	ShaderManager::getShaderManager()->getShader("Basic")->setDirectionalBase(glm::fvec3(1, 1, 1), 1);
 	//Note to self. Having directional color to white but intensity to 0 causes the specular reflection to give a flashlight effect
 
 	ShaderManager::getShaderManager()->getShader("Phong")->setSpecularIntensity(2);
@@ -71,20 +71,12 @@ int main(int argc, char** argv)
 
 	TextureManager::getTextureManager()->loadTexture("Medkit", ".\\res\\MEDIA0.png");
 
+	TextureManager::getTextureManager()->loadTexture("Arwing", ".\\res\\body.png");
+
 	//CoreEngine::getCoreEngine()->loadScene("Main", ".\\res\\Level1.png");
 	//TestScene testScene;
 	//Scene testScene;
 	CoreEngine::getCoreEngine()->loadScene("Main", ".\\res\\Level1.png");
-
-	//Scene* tempScene = CoreEngine::getCoreEngine()->getScene("Main");
-	/*tempScene->addInputToScene(new Input(KEY_PRESS_FORWARD_CAMERA_TRANSFORM, tempScene->getCamera(), SDLK_w, 0.1));
-	tempScene->addInputToScene(new Input(KEY_PRESS_FORWARD_CAMERA_TRANSFORM, tempScene->getCamera(), SDLK_s, -0.1));
-	tempScene->addInputToScene(new Input(KEY_PRESS_LEFT_CAMERA_TRANSFORM, tempScene->getCamera(), SDLK_d, 0.1));
-	tempScene->addInputToScene(new Input(KEY_PRESS_LEFT_CAMERA_TRANSFORM, tempScene->getCamera(), SDLK_a, -0.1));
-	tempScene->addInputToScene(new Input(MOUSE_MOVE_X_TRANSFORM, tempScene->getCamera()));
-
-	tempScene->addInputToScene(new Input(KEY_PRESS_DOWN_DOOR_OPEN, tempScene->getCamera(), SDLK_f, tempScene->getDoors()));
-	tempScene->addInputToScene(new Input(LEFT_CLICK_DOWN_SHOOT, tempScene->getCamera(), tempScene->getMonsters()));*/
 
 	CoreEngine::getCoreEngine()->run();
 	

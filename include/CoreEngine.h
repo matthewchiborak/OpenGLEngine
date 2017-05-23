@@ -7,20 +7,6 @@
 
 #include "Display.h"
 #include "Scene.h"
-//#include "GameObject.h"
-//#include "Shader.h"
-//#include "Mesh.h"
-//#include "Texture.h"
-//#include "Transform.h"
-
-//#include "Camera.h"
-//#include "Time.h"
-
-//#include "Input.h"
-
-//#include "Bitmap.h"
-//#include "TextureManager.h"
-//#include "ShaderManager.h"
 #include "Game.h"
 
 
