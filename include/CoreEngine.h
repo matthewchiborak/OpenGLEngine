@@ -9,6 +9,8 @@
 #include "Scene.h"
 #include "Game.h"
 
+#include "TestScene.h"
+
 
 class CoreEngine
 {
@@ -19,6 +21,8 @@ public:
 	static CoreEngine* getCoreEngine();
 
 	void init(int width, int height, double frameRate, Game* game, std::string name);
+
+	void loadSceneTest(std::string name, std::string fileName);
 
 	void loadScene(std::string name, std::string fileName);
 	void loadScene(Scene* newScene, std::string name, std::string fileName);

@@ -36,9 +36,11 @@ public:
 	const float SPOT_HEIGHT = 1;
 	const float SPOT_DEPTH = 1;
 
-	void init();
+	virtual void init();
 
-private:
+	void assignInfo(std::string name, int width, int height);
+
+protected:
 	std::string name;
 	Camera* camera;
 	GameObject* HUD;
@@ -50,10 +52,11 @@ private:
 	static int NUM_TEXTURES;
 
 	
-	void earlyUpdate();
-	void input(Display* display);
+	
+	virtual void earlyUpdate();
+	virtual void input(Display* display);
 	void render();
-	void lateUpdate();
+	virtual void lateUpdate();
 };
 
 #endif

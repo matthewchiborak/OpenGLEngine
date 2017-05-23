@@ -12,7 +12,7 @@ Scene::Scene(std::string name, float windowWidth, float windowHeight)
 {
 	this->name = name;
 
-	camera = new Camera(Vec9::createVec9(0, 1, -5, 0, 0, 1, 0, 1, 0), 70.0f, (float)windowWidth / (float)windowWidth, 0.01f, 1000.0f);
+	camera = new Camera(Vec9::createVec9(0, 1, -5, 0, 0, 1, 0, 1, 0), 70.0f, (float)windowWidth / (float)windowHeight, 0.01f, 1000.0f);
 
 	lastTimeUpdated = Time::getTime();
 }
@@ -20,7 +20,16 @@ Scene::Scene(std::string name, float windowWidth, float windowHeight)
 Scene::Scene(std::string name, std::string fileName, float windowWidth, float windowHeight)
 {
 	this->name = name;
-	camera = new Camera(Vec9::createVec9(0, 1, -5, 0, 0, 1, 0, 1, 0), 70.0f, (float)windowWidth / (float)windowWidth, 0.01f, 1000.0f);
+	camera = new Camera(Vec9::createVec9(0, 1, -5, 0, 0, 1, 0, 1, 0), 70.0f, (float)windowWidth / (float)windowHeight, 0.01f, 1000.0f);
+
+	lastTimeUpdated = Time::getTime();
+}
+
+void Scene::assignInfo(std::string name, int width, int height)
+{
+	this->name = name;
+
+	camera = new Camera(Vec9::createVec9(0, 1, -5, 0, 0, 1, 0, 1, 0), 70.0f, (float)width / (float)height, 0.01f, 1000.0f);
 
 	lastTimeUpdated = Time::getTime();
 }

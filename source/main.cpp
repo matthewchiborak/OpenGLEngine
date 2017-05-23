@@ -76,7 +76,8 @@ int main(int argc, char** argv)
 	//CoreEngine::getCoreEngine()->loadScene("Main", ".\\res\\Level1.png");
 	//TestScene testScene;
 	//Scene testScene;
-	CoreEngine::getCoreEngine()->loadScene("Main", ".\\res\\Level1.png");
+	//CoreEngine::getCoreEngine()->loadScene("Main", ".\\res\\Level1.png");
+	CoreEngine::getCoreEngine()->loadSceneTest("Main", "Test");
 
 	CoreEngine::getCoreEngine()->run();
 	
