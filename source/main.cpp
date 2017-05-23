@@ -3,23 +3,7 @@
 #include <D:/OpenGL2017/SDL2-devel-2.0.5-VC/SDL2-2.0.5/include/SDL.h>
 
 #include "../include/CoreEngine.h"
-//#include "../include/Display.h"
-//#include "../include/Shader.h"
-//#include "../include/Mesh.h"
-//#include "../include/Texture.h"
-//#include "../include/Transform.h"
-//#include "../include/Camera.h"
-//#include "../include/Time.h"
-//#include "../include/GameObject.h"
-//#include "../include/Input.h"
-//#include "../include/Scene.h"
-//#include "../include/Bitmap.h"
-//#include "../include/TextureManager.h"
-//#include "../include/ShaderManager.h"
-//
-//#include "../include/Game.h"
-//
-//#include "../include/TestScene.h"
+#include "../include/TestScene.h"
 
 #define WIDTH 800
 #define HEIGHT 600
@@ -73,11 +57,9 @@ int main(int argc, char** argv)
 
 	TextureManager::getTextureManager()->loadTexture("Arwing", ".\\res\\body.png");
 
-	//CoreEngine::getCoreEngine()->loadScene("Main", ".\\res\\Level1.png");
-	//TestScene testScene;
-	//Scene testScene;
-	//CoreEngine::getCoreEngine()->loadScene("Main", ".\\res\\Level1.png");
-	CoreEngine::getCoreEngine()->loadSceneTest("Main", "Test");
+	
+	Scene* testScene = new TestScene();
+	CoreEngine::getCoreEngine()->loadScene(testScene, "Test", "Test");
 
 	CoreEngine::getCoreEngine()->run();
 	

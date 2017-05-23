@@ -37,7 +37,6 @@ void Scene::assignInfo(std::string name, int width, int height)
 //MODIFIABLE
 void Scene::init()
 {
-	addGameObjectToScene(new GameObject("Ship", ".\\res\\arwing.obj", TextureManager::getTextureManager()->getTexture("Arwing"), ShaderManager::getShaderManager()->getShader("Phong")));
 }
 void Scene::earlyUpdate()
 {
@@ -45,36 +44,7 @@ void Scene::earlyUpdate()
 }
 void Scene::input(Display* display)
 {
-	if (display->checkKey(SDLK_w))
-	{
-		/*glm::fvec3 movementAmount(camera->getForward().x * 0.1, camera->getForward().y * 0.1, camera->getForward().z * 0.1);
-		glm::fvec3 collisionResult = checkCollisionCameraWalls(camera, movementAmount, Scene::PLAYER_SIZE, Scene::PLAYER_SIZE, Scene::PLAYER_SIZE);
-
-		movementAmount.x *= collisionResult.x;
-		movementAmount.y *= collisionResult.y;
-		movementAmount.z *= collisionResult.z;
-
-		camera->movePosition(movementAmount);*/
-	}
-	if (display->checkKey(SDLK_s))
-	{
-		
-	}
-	if (display->checkKey(SDLK_d))
-	{
-		
-	}
-	if (display->checkKey(SDLK_a))
-	{
-		
-	}
-
-	camera->rotateY(camera->getSensitivity() * display->getMouseDifX());
-
-	if (display->checkMouseDown(0))
-	{
-		
-	}
+	
 }
 void Scene::lateUpdate()
 {

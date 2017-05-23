@@ -11,7 +11,7 @@ TestScene::~TestScene()
 
 void TestScene::init()
 {
-	addGameObjectToScene(new GameObject("Ship", ".\\res\\monkey3.obj", TextureManager::getTextureManager()->getTexture("Arwing"), ShaderManager::getShaderManager()->getShader("Phong")));
+	addGameObjectToScene(new GameObject("Ship", ".\\res\\arwing.obj", TextureManager::getTextureManager()->getTexture("Arwing"), ShaderManager::getShaderManager()->getShader("Phong")));
 }
 
 void TestScene::earlyUpdate()
@@ -28,7 +28,7 @@ void TestScene::input(Display* display)
 {
 	if (display->checkKey(SDLK_a))
 	{
-		std::cout << "Test\n";
+		getGameObject("Ship")->getTransform()->GetRot().y += 0.1;
 	}
 
 	camera->rotateY(camera->getSensitivity() * display->getMouseDifX());
