@@ -8,7 +8,7 @@ GameObject::GameObject()
 GameObject::GameObject(std::string name, std::string meshFile, Texture* texture, Shader* shader)
 {
 	this->name = name;
-	mesh = new Mesh(meshFile);
+	//mesh = new Mesh(meshFile);
 	this->texture = texture;
 	this->shader = shader;
 	enabled = true;
@@ -17,7 +17,7 @@ GameObject::GameObject(std::string name, std::string meshFile, Texture* texture,
 GameObject::GameObject(std::string name, Mesh* mesh, Texture* texture, Shader* shader)
 {
 	this->name = name;
-	this->mesh = mesh;
+	//this->mesh = mesh;
 	this->texture = texture;
 	this->shader = shader;
 	enabled = true;
@@ -26,7 +26,7 @@ GameObject::GameObject(std::string name, Mesh* mesh, Texture* texture, Shader* s
 GameObject::GameObject(std::string name, Mesh* mesh, Texture* texture, Shader* shader, glm::fvec3 dimensions)
 {
 	this->name = name;
-	this->mesh = mesh;
+	//this->mesh = mesh;
 	this->texture = texture;
 	this->shader = shader;
 	this->dimensions = dimensions;
@@ -369,22 +369,22 @@ GameObject::~GameObject()
 	texture = NULL;
 	shader = NULL;
 
-	if (mesh!=NULL)
+	/*if (mesh!=NULL)
 	{
 		delete mesh;
-	}
+	}*/
 }
 
-void GameObject::draw(Camera* camera)
-{
-	shader->bind();
-
-	texture->bind(0);
-
-	shader->update(transform, *camera);
-
-	mesh->draw();
-}
+//void GameObject::draw(Camera* camera)
+//{
+//	shader->bind();
+//
+//	texture->bind(0);
+//
+//	shader->update(transform, *camera);
+//
+//	mesh->draw();
+//}
 
 void GameObject::move(Vec9 change)
 {
@@ -417,15 +417,7 @@ Transform* GameObject::getTransform()
 	return &transform;
 }
 
-void GameObject::update()
-{
 
-}
-
-void GameObject::init()
-{
-
-}
 
 glm::fvec3 GameObject::getDimensions()
 {
@@ -435,4 +427,64 @@ glm::fvec3 GameObject::getDimensions()
 bool GameObject::isEnabled()
 {
 	return enabled;
+}
+
+
+void GameObject::addChild(GameObject* newChild)
+{
+	children.push_back(newChild);
+}
+
+void GameObject::addComponent(GameComponent* newComponent)
+{
+	newComponent->setGameObject(this);
+	components.push_back(newComponent);
+}
+
+/////////////////////////
+
+void GameObject::render(Camera* camera)
+{
+	//draw(camera);
+
+	for (int i = 0; i < components.size(); i++)
+	{
+		components.at(i)->render(camera);
+	}
+
+	for (int i = 0; i < children.size(); i++)
+	{
+		children.at(i)->render(camera);
+	}
+}
+
+void GameObject::input() 
+{
+	for (int i = 0; i < components.size(); i++)
+	{
+		components.at(i)->input();
+	}
+
+	for (int i = 0; i < children.size(); i++)
+	{
+		children.at(i)->input();
+	}
+}
+
+void GameObject::update()
+{
+	for (int i = 0; i < components.size(); i++)
+	{
+		components.at(i)->update();
+	}
+
+	for (int i = 0; i < children.size(); i++)
+	{
+		children.at(i)->update();
+	}
+}
+
+void GameObject::init()
+{
+
 }

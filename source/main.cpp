@@ -32,7 +32,7 @@ int main(int argc, char** argv)
 	ShaderManager::getShaderManager()->getShader("Basic")->setSpecularIntensity(2);
 	ShaderManager::getShaderManager()->getShader("Basic")->setSpecularExponent(32);
 
-	ShaderManager::getShaderManager()->getShader("Phong")->setPointLight(0, glm::fvec3(17, 0.5, 13), glm::fvec3(1, 1, 1), 10.0f, 20, 0, 0, 1);
+	ShaderManager::getShaderManager()->getShader("Phong")->setPointLight(0, glm::fvec3(0, 0, 0), glm::fvec3(1, 1, 1), 10.0f, 20, 0, 0, 1);
 	ShaderManager::getShaderManager()->getShader("Basic")->setPointLight(0, glm::fvec3(17, 0.5, 13), glm::fvec3(1, 1, 1), 10.0f, 20, 0, 0, 1);
 
 	TextureManager::getTextureManager()->loadTexture("Wolf", ".\\res\\WolfCollection.png");

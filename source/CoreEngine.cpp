@@ -48,7 +48,7 @@ void CoreEngine::loadScene(Scene* newScene, std::string name, std::string fileNa
 {
 	newScene->assignInfo(name, width, height);
 	scenes.push_back(newScene);
-	newScene->init();
+	//newScene->init();
 	//newScene->baseInit(name, fileName, width, height);
 }
 
@@ -80,6 +80,9 @@ void CoreEngine::run()
 	//double frameTime = 1.0 / FRAME_CAP;
 	int frames = 0;
 	long frameCounter = 0;
+
+	//Start the scene
+	scenes.at(currentScene)->init();
 
 	while (!display->isClosed() && isRunning)
 	{

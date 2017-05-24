@@ -3,6 +3,8 @@
 
 #include "Scene.h"
 
+#include "MeshRenderer.h"
+
 class TestScene : public Scene
 {
 public:
@@ -16,6 +18,7 @@ private:
 	void earlyUpdate();
 	void lateUpdate();
 	void input(Display* display);
+	void render();
 };
 
 #endif

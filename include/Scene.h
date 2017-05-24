@@ -51,11 +51,11 @@ protected:
 	static int NUM_TEX_EXP;
 	static int NUM_TEXTURES;
 
-	
+	GameObject root;
 	
 	virtual void earlyUpdate();
 	virtual void input(Display* display);
-	void render();
+	virtual void render();
 	virtual void lateUpdate();
 };
 

@@ -55,16 +55,17 @@ void Scene::lateUpdate()
 void Scene::render()
 {
 	//Draw the objects
-	for (int i = 0; i < gameObjects.size(); i++)
-	{
-		if (gameObjects.at(i)->isEnabled())
-		{
-			//Update speical updates on the objects
-			gameObjects.at(i)->update();
+	//for (int i = 0; i < gameObjects.size(); i++)
+	//{
+	//	if (gameObjects.at(i)->isEnabled())
+	//	{
+	//		//Update speical updates on the objects
+	//		gameObjects.at(i)->update();
 
-			gameObjects.at(i)->draw(camera);
-		}
-	}
+	//		//gameObjects.at(i)->draw(camera);
+	//		gameObjects.at(i)->render(camera);
+	//	}
+	//}
 }
 
 void Scene::moveCamera(Vec9 atLookUp)
@@ -106,6 +107,8 @@ Scene::~Scene()
 		if (gameObjects.at(i) != NULL)
 			delete gameObjects.at(i);
 	}
+
+	//TODO CLEAN UP THE SCENE GRAPH
 
 	if (camera != NULL)
 		delete camera;
