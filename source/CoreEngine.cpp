@@ -111,7 +111,7 @@ void CoreEngine::run()
 		//Output the framerate
 		if (frameCounter >= Time::SECOND)
 		{
-			std::cout << "FPS: " << frames << "   HP:" << scenes.at(currentScene)->getCamera()->getHealth() << "\n";
+			std::cout << "FPS: " << frames << "\n";
 			frames = 0;
 			frameCounter = 0;
 		}

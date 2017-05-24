@@ -20,8 +20,6 @@ public:
 		//m_forward = glm::vec3(0, 0, 1);
 		//m_up = glm::vec3(0, 1, 0);
 		sensitivity = 90.0f / 10000.0f;
-
-		health = MAX_HEALTH;
 	}
 
 	inline glm::mat4 GetViewProjection() const
@@ -134,32 +132,6 @@ public:
 		m_up = glm::normalize(m_up);
 	}
 
-	const float SHOOT_DISTANCE = 100;
-	const int PLAYER_DAMAGE = 100;
-	const int MAX_HEALTH = 100;
-
-	void damage(int amt)
-	{
-		health -= amt;
-
-		if (health > MAX_HEALTH)
-		{
-			health = MAX_HEALTH;
-		}
-
-		if (health <= 0)
-		{
-			std::cout << "Game over\n";
-		}
-	}
-
-	float getHealth()
-	{
-		return health;
-	}
-
-	
-
 private:
 	glm::mat4 m_perspective;
 	glm::fvec3 m_position;
@@ -168,7 +140,6 @@ private:
 
 	//How much the camera moves with mouse input. Degrees per pixel
 	float sensitivity;
-	int health;
 };
 
 #endif
