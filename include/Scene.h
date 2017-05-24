@@ -25,7 +25,7 @@ public:
 	void addGameObjectToScene(GameObject* object);
 
 	GameObject* getGameObject(std::string name);
-	void update(Display* display);
+	//void baseUpdate();
 	void moveCamera(Vec9 atLookUp);
 	void resetCamera(Vec9 atLookUp);
 	void setPerspective(float fov, float aspect, float zNear, float zFar);
@@ -40,6 +40,13 @@ public:
 
 	void assignInfo(std::string name, int width, int height);
 
+	//void baseInput(Display* display);
+	//void baseRender();
+
+	GameObject* getRootObject();
+	void update();
+	void input(Display* display);
+
 protected:
 	std::string name;
 	Camera* camera;
@@ -53,10 +60,10 @@ protected:
 
 	GameObject root;
 	
-	virtual void earlyUpdate();
+	/*virtual void update();
 	virtual void input(Display* display);
-	virtual void render();
-	virtual void lateUpdate();
+	virtual void render();*/
+	
 };
 
 #endif

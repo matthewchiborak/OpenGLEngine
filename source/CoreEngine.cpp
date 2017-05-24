@@ -14,6 +14,11 @@ CoreEngine::~CoreEngine()
 	{
 		delete display;
 	}
+
+	if (s_instance)
+	{
+		delete s_instance;
+	}
 }
 
 CoreEngine * CoreEngine::getCoreEngine()
@@ -95,7 +100,9 @@ void CoreEngine::run()
 		//UPDATE GAME
 		display->clear(0.0f, 0.0f, 0.0f, 0.0f);
 
-		scenes.at(currentScene)->update(display);
+		scenes.at(currentScene)->update();
+		scenes.at(currentScene)->input(display);
+		RenderingEngine::getRenderingEngine()->render(scenes.at(currentScene)->getRootObject(), scenes.at(currentScene)->getCamera());
 		display->Update();
 
 		counter += 0.01f;

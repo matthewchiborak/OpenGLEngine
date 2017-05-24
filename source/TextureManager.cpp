@@ -13,6 +13,11 @@ TextureManager::~TextureManager()
 	{
 		delete textures.at(i);
 	}
+
+	if (s_instance)
+	{
+		delete s_instance;
+	}
 }
 
 Texture* TextureManager::getTexture(std::string name)

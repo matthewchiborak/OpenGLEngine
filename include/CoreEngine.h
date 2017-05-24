@@ -8,6 +8,7 @@
 #include "Display.h"
 #include "Scene.h"
 #include "Game.h"
+#include "RenderingEngine.h"
 
 class CoreEngine
 {
@@ -31,6 +32,7 @@ public:
 private:
 	static CoreEngine* s_instance;
 	Display* display;
+
 	int width;
 	int height;
 	std::string name;

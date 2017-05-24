@@ -42,6 +42,7 @@ public:
 	virtual void init();
 	virtual void input();
 	void render(Camera* camera);
+	void render(Camera* camera, Shader* shader);
 
 	void addChild(GameObject* newChild);
 	void addComponent(GameComponent* newComponent);

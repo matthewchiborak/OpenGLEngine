@@ -25,6 +25,7 @@ Scene::Scene(std::string name, std::string fileName, float windowWidth, float wi
 	lastTimeUpdated = Time::getTime();
 }
 
+//More or less the base init function
 void Scene::assignInfo(std::string name, int width, int height)
 {
 	this->name = name;
@@ -38,35 +39,13 @@ void Scene::assignInfo(std::string name, int width, int height)
 void Scene::init()
 {
 }
-void Scene::earlyUpdate()
-{
 
-}
 void Scene::input(Display* display)
 {
-	
+	root.input();
 }
-void Scene::lateUpdate()
-{
-	
-}
+
 //
-
-void Scene::render()
-{
-	//Draw the objects
-	//for (int i = 0; i < gameObjects.size(); i++)
-	//{
-	//	if (gameObjects.at(i)->isEnabled())
-	//	{
-	//		//Update speical updates on the objects
-	//		gameObjects.at(i)->update();
-
-	//		//gameObjects.at(i)->draw(camera);
-	//		gameObjects.at(i)->render(camera);
-	//	}
-	//}
-}
 
 void Scene::moveCamera(Vec9 atLookUp)
 {
@@ -137,10 +116,26 @@ GameObject* Scene::getGameObject(std::string name)
 	return NULL;
 }
 
-void Scene::update(Display* display)
+void Scene::update()
 {
-	earlyUpdate();
-	input(display);
-	render();
-	lateUpdate();
+	root.update();
+}
+
+//void Scene::baseUpdate()
+//{
+//	update();
+//}
+//
+//void Scene::baseInput(Display* display)
+//{
+//	input(display);
+//}
+//void Scene::baseRender()
+//{
+//	render();
+//}
+
+GameObject* Scene::getRootObject()
+{
+	return &root;
 }

@@ -19,6 +19,7 @@ public:
 	virtual void update();
 	//void render(Camera* camera);
 	virtual void render(Camera* camera);
+	virtual void render(Camera* camera, Shader* shader);
 
 protected:
 	GameObject* gameObject;

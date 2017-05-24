@@ -15,10 +15,9 @@ public:
 	void init();
 	
 private:
-	void earlyUpdate();
-	void lateUpdate();
+	/*void update();
 	void input(Display* display);
-	void render();
+	void render();*/
 };
 
 #endif

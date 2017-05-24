@@ -13,6 +13,7 @@ public:
 	void input();
 	void update();
 	void render(Camera* camera);
+	void render(Camera* camera, Shader* shader);
 
 private:
 	Mesh* mesh;

@@ -33,3 +33,14 @@ void MeshRenderer::render(Camera* camera)
 
 	mesh->draw();
 }
+
+void MeshRenderer::render(Camera* camera, Shader* shader)
+{
+	shader->bind();
+
+	texture->bind(0);
+
+	shader->update(*gameObject->getTransform(), *camera);
+
+	mesh->draw();
+}

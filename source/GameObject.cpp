@@ -457,6 +457,18 @@ void GameObject::render(Camera* camera)
 		children.at(i)->render(camera);
 	}
 }
+void GameObject::render(Camera* camera, Shader* shader)
+{
+	for (int i = 0; i < components.size(); i++)
+	{
+		components.at(i)->render(camera, shader);
+	}
+
+	for (int i = 0; i < children.size(); i++)
+	{
+		children.at(i)->render(camera, shader);
+	}
+}
 
 void GameObject::input() 
 {

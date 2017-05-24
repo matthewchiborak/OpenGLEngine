@@ -13,6 +13,11 @@ ShaderManager::~ShaderManager()
 	{
 		delete shaders.at(i);
 	}
+
+	if (s_instance)
+	{
+		delete s_instance;
+	}
 }
 
 Shader* ShaderManager::getShader(std::string name)
