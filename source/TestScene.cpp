@@ -18,6 +18,8 @@ void TestScene::init()
 	GameObject* testObject = new GameObject();
 	testObject->addComponent(testMR);
 	root.addChild(testObject);
+
+	//camera->setOrthographic(-5, 5, -5, 5, 0.1, 100);
 }
 
 //void TestScene::render()

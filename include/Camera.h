@@ -22,6 +22,20 @@ public:
 		sensitivity = 90.0f / 10000.0f;
 	}
 
+	//Constructor for an orthographic camera. 
+	Camera(Vec9 atLookUp, float left, float right, float top, float bottom, float zNear, float zFar)
+	{
+		m_perspective = glm::ortho(left, right, top, bottom, zNear, zFar);
+
+		//UP AND FORWARD SHOULD BE NORMALIZED
+		m_position = atLookUp.pos;
+		m_forward = atLookUp.rot;
+		m_up = atLookUp.scale;
+		//m_forward = glm::vec3(0, 0, 1);
+		//m_up = glm::vec3(0, 1, 0);
+		sensitivity = 90.0f / 10000.0f;
+	}
+
 	inline glm::mat4 GetViewProjection() const
 	{
 		return m_perspective * glm::lookAt(m_position, m_position + m_forward, m_up);
@@ -75,9 +89,17 @@ public:
 	{
 		m_perspective = glm::perspective(fov, aspect, zNear, zFar);
 	}
+	void setOrthographic(float left, float right, float bottom, float top, float zNear, float zFar)
+	{
+		m_perspective = glm::ortho(left, right, bottom, top, zNear, zFar);
+	}
 	void setPerspective(glm::mat4 m_perspective)
 	{
 		this->m_perspective = m_perspective;
+	}
+	void setOrthographic(glm::mat4 m_ortho)
+	{
+		this->m_perspective = m_ortho;
 	}
 	glm::mat4 getPerspective()
 	{
