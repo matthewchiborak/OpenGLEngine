@@ -15,11 +15,11 @@ void MeshRenderer::init()
 {
 
 }
-void MeshRenderer::input()
+void MeshRenderer::input(float delta)
 {
 
 }
-void MeshRenderer::update()
+void MeshRenderer::update(float delta)
 {
 
 }

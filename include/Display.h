@@ -26,6 +26,9 @@ public:
 	int getMouseDifX();
 	int getMouseDifY();
 
+	float getScreenCenterX();
+	float getScreenCenterY();
+
 	virtual ~Display();
 private:
 	Display(const Display& other) {}

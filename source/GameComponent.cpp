@@ -17,11 +17,11 @@ void GameComponent::init()
 {
 	
 }
-void GameComponent::input()
+void GameComponent::input(float delta)
 {
 
 }
-void GameComponent::update()
+void GameComponent::update(float delta)
 {
 
 }

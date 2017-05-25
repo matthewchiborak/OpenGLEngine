@@ -44,8 +44,8 @@ public:
 	//void baseRender();
 
 	GameObject* getRootObject();
-	void update();
-	void input(Display* display);
+	void update(float delta);
+	void input(Display* display, float delta);
 
 protected:
 	std::string name;

@@ -243,3 +243,12 @@ bool Display::checkMouseUp(int key)
 
 	return false;
 }
+
+float Display::getScreenCenterX()
+{
+	return windowWidth / 2;
+}
+float Display::getScreenCenterY()
+{
+	return windowHeight / 2;
+}

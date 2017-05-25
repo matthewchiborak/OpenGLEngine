@@ -10,8 +10,8 @@ public:
 	~MeshRenderer();
 
 	void init();
-	void input();
-	void update();
+	void input(float delta);
+	void update(float delta);
 	void render(Camera* camera);
 	void render(Camera* camera, Shader* shader);
 

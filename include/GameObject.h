@@ -38,9 +38,9 @@ public:
 	static GameObject* createCubePartTexture(std::string name, float width, float height, float depth, float XLower, float XHigher, float YLower, float YHigher, Texture* texture, Shader* shader);
 
 	//Switching to scene graph. Unsure if this is how I want to do it
-	virtual void update();
+	virtual void update(float delta);
 	virtual void init();
-	virtual void input();
+	virtual void input(float delta);
 	void render(Camera* camera);
 	void render(Camera* camera, Shader* shader);
 

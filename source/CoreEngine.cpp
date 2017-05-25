@@ -100,8 +100,8 @@ void CoreEngine::run()
 		//UPDATE GAME
 		display->clear(0.0f, 0.0f, 0.0f, 0.0f);
 
-		scenes.at(currentScene)->update();
-		scenes.at(currentScene)->input(display);
+		scenes.at(currentScene)->update(passedTime);
+		scenes.at(currentScene)->input(display, passedTime);
 		RenderingEngine::getRenderingEngine()->render(scenes.at(currentScene)->getRootObject(), scenes.at(currentScene)->getCamera());
 		display->Update();
 

@@ -15,8 +15,8 @@ public:
 	void setGameObject(GameObject* gameObject);
 
 	virtual void init();
-	virtual void input();
-	virtual void update();
+	virtual void input(float delta);
+	virtual void update(float delta);
 	//void render(Camera* camera);
 	virtual void render(Camera* camera);
 	virtual void render(Camera* camera, Shader* shader);

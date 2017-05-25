@@ -40,10 +40,7 @@ void Scene::init()
 {
 }
 
-void Scene::input(Display* display)
-{
-	root.input();
-}
+
 
 //
 
@@ -116,9 +113,13 @@ GameObject* Scene::getGameObject(std::string name)
 	return NULL;
 }
 
-void Scene::update()
+void Scene::update(float delta)
 {
-	root.update();
+	root.update(delta);
+}
+void Scene::input(Display* display, float delta)
+{
+	root.input(delta);
 }
 
 //void Scene::baseUpdate()

@@ -25,7 +25,7 @@ public:
 		return std::chrono::high_resolution_clock::now();
 	}
 
-	static double detDelta()
+	/*static double detDelta()
 	{
 		return delta;
 	}
@@ -33,7 +33,7 @@ public:
 	static void setDelta(double delta)
 	{
 		Time::delta = delta;
-	}
+	}*/
 
 	static long const SECOND = 1000000000;
 };

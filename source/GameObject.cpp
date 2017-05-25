@@ -470,29 +470,29 @@ void GameObject::render(Camera* camera, Shader* shader)
 	}
 }
 
-void GameObject::input() 
+void GameObject::input(float delta)
 {
 	for (int i = 0; i < components.size(); i++)
 	{
-		components.at(i)->input();
+		components.at(i)->input(delta);
 	}
 
 	for (int i = 0; i < children.size(); i++)
 	{
-		children.at(i)->input();
+		children.at(i)->input(delta);
 	}
 }
 
-void GameObject::update()
+void GameObject::update(float delta)
 {
 	for (int i = 0; i < components.size(); i++)
 	{
-		components.at(i)->update();
+		components.at(i)->update(delta);
 	}
 
 	for (int i = 0; i < children.size(); i++)
 	{
-		children.at(i)->update();
+		children.at(i)->update(delta);
 	}
 }
 
