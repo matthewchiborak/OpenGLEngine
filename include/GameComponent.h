@@ -21,6 +21,8 @@ public:
 	virtual void render(Camera* camera);
 	virtual void render(Camera* camera, Shader* shader);
 
+	//void addToRenderingEngine();
+
 protected:
 	GameObject* gameObject;
 };

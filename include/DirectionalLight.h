@@ -4,7 +4,7 @@
 #include <D:/OpenGL2017/glm-0.9.8.4/glm-0.9.8.4/glm/glm.hpp>
 #include "BaseLight.h"
 
-class DirectionalLight
+class DirectionalLight //: public GameComponent
 {
 public:
 	DirectionalLight();

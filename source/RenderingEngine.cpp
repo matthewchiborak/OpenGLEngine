@@ -11,15 +11,28 @@ RenderingEngine::RenderingEngine()
 	specularIntensity = 2;
 	specularExponent = 32;
 
-	SpotLight* temp = new SpotLight();
+	/*SpotLight* temp = new SpotLight();
 	spotLights.push_back(temp);
 	temp->setPointLight(glm::fvec3(0, 0, 0), 10, glm::fvec3(1, 1, 1), 10, 0, 0, 0.01);
 	temp->setDirection(glm::fvec3(1,0,0));
-	temp->setCutoff(0.7);
+	temp->setCutoff(0.7);*/
 }
 
 RenderingEngine::~RenderingEngine()
 {
+	for (int i = 0; i < directionalLights.size(); i++)
+	{
+		delete directionalLights.at(i);
+	}
+	for (int i = 0; i < pointLights.size(); i++)
+	{
+		delete pointLights.at(i);
+	}
+	for (int i = 0; i < spotLights.size(); i++)
+	{
+		delete spotLights.at(i);
+	}
+
 	if (s_instance)
 	{
 		delete s_instance;
@@ -108,4 +121,31 @@ PointLight* RenderingEngine::getPointLight()
 SpotLight* RenderingEngine::getSpotLight()
 {
 	return spotLight;
+}
+
+void RenderingEngine::addDirectionalLight(glm::fvec3 color, float intensity, glm::fvec3 direction)
+{
+	DirectionalLight* temp = new DirectionalLight();
+	temp->setBase(color, intensity);
+	temp->setDirection(direction);
+	directionalLights.push_back(temp);
+}
+
+void RenderingEngine::addPointLight(glm::fvec3 color, float intensity, glm::fvec3 position, float range, float constant, float linear, float exponent)
+{
+	PointLight* temp = new PointLight();
+	temp->setBaseLight(color, intensity);
+	temp->setPosition(position);
+	temp->setRange(range);
+	temp->setAtten(constant, linear, exponent);
+	pointLights.push_back(temp);
+}
+
+void RenderingEngine::addSpotLight(glm::fvec3 color, float intensity, glm::fvec3 position, float range, float constant, float linear, float exponent, glm::fvec3 direction, float cutoff)
+{
+	SpotLight* temp = new SpotLight();
+	temp->setPointLight(position, range, color, intensity, constant, linear, exponent);
+	temp->setDirection(direction);
+	temp->setCutoff(cutoff);
+	spotLights.push_back(temp);
 }

@@ -19,6 +19,9 @@ void TestScene::init()
 	testObject->addComponent(testMR);
 	root.addChild(testObject);
 
+	//Render
+	RenderingEngine::getRenderingEngine()->addDirectionalLight(glm::fvec3(1, 0, 0), 1, glm::fvec3(1, 0, 0));
+
 	//camera->setOrthographic(-5, 5, -5, 5, 0.1, 100);
 }
 

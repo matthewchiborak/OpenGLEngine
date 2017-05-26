@@ -3,7 +3,7 @@
 
 #include "Scene.h"
 
-#include "MeshRenderer.h"
+//#include "MeshRenderer.h"
 
 class TestScene : public Scene
 {

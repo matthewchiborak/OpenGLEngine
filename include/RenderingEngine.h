@@ -24,6 +24,10 @@ public:
 
 	float getSpecularIntensity();
 	float getSpecularExponent();
+	
+	void addDirectionalLight(glm::fvec3 color, float intensity, glm::fvec3 direction);
+	void addPointLight(glm::fvec3 color, float intensity, glm::fvec3 position, float range, float constant, float linear, float exponent);
+	void addSpotLight(glm::fvec3 color, float intensity, glm::fvec3 position, float range, float constant, float linear, float exponent, glm::fvec3 direction, float cutoff);
 
 private:
 	static RenderingEngine* s_instance;

@@ -37,3 +37,8 @@ void GameComponent::render(Camera* camera, Shader* shader)
 {
 
 }
+
+//void GameComponent::addToRenderingEngine()
+//{
+//
+//}
