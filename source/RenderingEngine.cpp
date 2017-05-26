@@ -8,19 +8,14 @@ RenderingEngine::RenderingEngine()
 	ambientLight.y = 0.2;
 	ambientLight.z = 0.2;
 
-	directionalLight.setBase(glm::fvec3(1, 0, 0), 1);
-	directionalLight.setDirection(glm::fvec3(1, 0, 0));
-
-	directionalLight2.setBase(glm::fvec3(0, 0, 1), 1);
-	directionalLight2.setDirection(glm::fvec3(-1, 0, 0));
-
-	pointLight.setAtten(0, 0, 1);
-	pointLight.setPosition(glm::fvec3(0, 0, 0));
-	pointLight.setBaseLight(glm::fvec3(0, 1, 0), 5);
-	pointLight.setRange(20);
-
 	specularIntensity = 2;
 	specularExponent = 32;
+
+	SpotLight* temp = new SpotLight();
+	spotLights.push_back(temp);
+	temp->setPointLight(glm::fvec3(0, 0, 0), 10, glm::fvec3(1, 1, 1), 10, 0, 0, 0.01);
+	temp->setDirection(glm::fvec3(1,0,0));
+	temp->setCutoff(0.7);
 }
 
 RenderingEngine::~RenderingEngine()
@@ -60,21 +55,25 @@ void RenderingEngine::render(GameObject* object, Camera* camera)
 	glDepthFunc(GL_EQUAL);
 
 	//Add the directional light
-	object->render(camera, ForwardDirectional::getForwardDirectional());
-
-	//Add the other directional light
-	DirectionalLight temp = directionalLight;
-	directionalLight = directionalLight2;
-	directionalLight2 = temp;
-
-	object->render(camera, ForwardDirectional::getForwardDirectional());
-
-	temp = directionalLight2;
-	directionalLight2 = directionalLight;
-	directionalLight = temp;
-
+	for (int i = 0; i < directionalLights.size(); i++)
+	{
+		directionalLight = directionalLights.at(i);
+		object->render(camera, ForwardDirectional::getForwardDirectional());
+	}
+	
 	//Point light
-	object->render(camera, ForwardPoint::getForwardPoint());
+	for (int i = 0; i < pointLights.size(); i++)
+	{
+		pointLight = pointLights.at(i);
+		object->render(camera, ForwardPoint::getForwardPoint());
+	}
+
+	//Spot lights
+	for (int i = 0; i < spotLights.size(); i++)
+	{
+		spotLight = spotLights.at(i);
+		object->render(camera, ForwardSpot::getForwardSpot());
+	}
 
 	//Reset everything
 	glDepthFunc(GL_LESS);
@@ -89,7 +88,7 @@ glm::fvec3 RenderingEngine::getAmbientLight()
 
 DirectionalLight* RenderingEngine::getDirectionalLight()
 {
-	return &directionalLight;
+	return directionalLight;
 }
 
 float RenderingEngine::getSpecularIntensity()
@@ -103,5 +102,10 @@ float RenderingEngine::getSpecularExponent()
 
 PointLight* RenderingEngine::getPointLight()
 {
-	return &pointLight;
+	return pointLight;
+}
+
+SpotLight* RenderingEngine::getSpotLight()
+{
+	return spotLight;
 }

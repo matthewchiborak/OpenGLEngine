@@ -6,6 +6,7 @@
 #include "ForwardAmbient.h"
 #include "ForwardDirectional.h"
 #include "ForwardPoint.h"
+#include "ForwardSpot.h"
 
 class RenderingEngine
 {
@@ -19,6 +20,7 @@ public:
 	glm::fvec3 getAmbientLight();
 	DirectionalLight* getDirectionalLight();
 	PointLight* getPointLight();
+	SpotLight* getSpotLight();
 
 	float getSpecularIntensity();
 	float getSpecularExponent();
@@ -29,10 +31,14 @@ private:
 	//Forward rendering lighting
 	glm::fvec3 ambientLight;
 
-	DirectionalLight directionalLight;
-	DirectionalLight directionalLight2;
+	DirectionalLight* directionalLight;
+	std::vector<DirectionalLight*> directionalLights;
 
-	PointLight pointLight;
+	PointLight* pointLight;
+	std::vector<PointLight*> pointLights;
+
+	SpotLight* spotLight;
+	std::vector<SpotLight*> spotLights;
 
 	float specularIntensity;
 	float specularExponent;
