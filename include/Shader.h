@@ -16,6 +16,7 @@
 class Shader
 {
 public:
+	Shader();
 	Shader(const std::string& name, const std::string& fileName);
 	Shader(const std::string& fileName);
 
@@ -24,7 +25,7 @@ public:
 	//Set cpu to use shader
 	void bind();
 
-	void update(const Transform& transform, Camera& camera);
+	virtual void update(const Transform& transform, Camera& camera);
 
 	void setAmbientLight(glm::fvec3 light);
 	glm::fvec3 getAmbientLight();
@@ -42,7 +43,14 @@ public:
 
 	virtual ~Shader();
 
-private:
+	static void CheckShaderError(GLuint shader, GLuint flag, bool isProgram, const std::string& errorMessage);
+	//Loads text file from the harddrive
+	static std::string LoadShader(const std::string& fileName);
+
+	//Create shader from full text
+	static GLuint CreateShader(const std::string& text, GLenum shaderType);
+
+protected:
 	std::string name;
 	//If using a geometry shader this will be 3. 2 is just vertex and fragment
 	static const unsigned int NUM_SHADERS = 2;

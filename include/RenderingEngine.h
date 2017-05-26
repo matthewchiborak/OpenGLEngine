@@ -3,6 +3,7 @@
 
 #include "GameObject.h"
 #include "ShaderManager.h"
+#include "ForwardAmbient.h"
 
 class RenderingEngine
 {
@@ -13,8 +14,13 @@ public:
 	static RenderingEngine* getRenderingEngine();
 	void render(GameObject* object, Camera* camera);
 
+	glm::fvec3 getAmbientLight();
+
 private:
 	static RenderingEngine* s_instance;
+
+	//Forward rendering lighting
+	glm::fvec3 ambientLight;
 };
 
 #endif

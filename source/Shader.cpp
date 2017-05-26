@@ -3,13 +3,18 @@
 
 PointLight Shader::pointLights[] = {};
 SpotLight Shader::spotLights[] = {};
+//
+//static void CheckShaderError(GLuint shader, GLuint flag, bool isProgram, const std::string& errorMessage);
+////Loads text file from the harddrive
+//static std::string LoadShader(const std::string& fileName);
+//
+////Create shader from full text
+//static GLuint CreateShader(const std::string& text, GLenum shaderType);
 
-static void CheckShaderError(GLuint shader, GLuint flag, bool isProgram, const std::string& errorMessage);
-//Loads text file from the harddrive
-static std::string LoadShader(const std::string& fileName);
+Shader::Shader()
+{
 
-//Create shader from full text
-static GLuint CreateShader(const std::string& text, GLenum shaderType);
+}
 
 Shader::Shader(const std::string& fileName)
 {
@@ -171,6 +176,7 @@ Shader::Shader(const std::string& name, const std::string& fileName)
 
 	//Tells opengl what part of data to read as what variable.
 	//Need to map variable in the mesh to variable in shader so that it knows about it
+	//Atributes
 	glBindAttribLocation(m_program, 0, "position"); //MUST BE SPELLED THE SAME AS IN THE VERTEX
 	glBindAttribLocation(m_program, 1, "texCoord");
 	glBindAttribLocation(m_program, 2, "normal");
@@ -312,7 +318,7 @@ std::string Shader::getName()
 	return name;
 }
 
-static GLuint CreateShader(const std::string& text, GLenum shaderType)
+GLuint Shader::CreateShader(const std::string& text, GLenum shaderType)
 {
 	GLuint shader = glCreateShader(shaderType);
 
@@ -337,7 +343,7 @@ static GLuint CreateShader(const std::string& text, GLenum shaderType)
 	return shader;
 }
 
-static std::string LoadShader(const std::string& fileName)
+std::string Shader::LoadShader(const std::string& fileName)
 {
 	std::ifstream file;
 	file.open((fileName).c_str());
@@ -361,7 +367,7 @@ static std::string LoadShader(const std::string& fileName)
 	return output;
 }
 
-static void CheckShaderError(GLuint shader, GLuint flag, bool isProgram, const std::string& errorMessage)
+void Shader::CheckShaderError(GLuint shader, GLuint flag, bool isProgram, const std::string& errorMessage)
 {
 	GLint success = 0;
 	GLchar error[1024] = { 0 };

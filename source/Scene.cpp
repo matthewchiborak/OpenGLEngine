@@ -120,6 +120,30 @@ void Scene::update(float delta)
 void Scene::input(Display* display, float delta)
 {
 	root.input(delta);
+
+	//TEST CODE
+	if (display->checkKey(SDLK_w))
+	{
+		glm::fvec3 movementAmount(camera->getForward().x * 0.1, camera->getForward().y * 0.1, camera->getForward().z * 0.1);
+		camera->movePosition(movementAmount);
+	}
+	if (display->checkKey(SDLK_s))
+	{
+		glm::fvec3 movementAmount(camera->getForward().x * -0.1, camera->getForward().y * -0.1, camera->getForward().z * -0.1);
+		camera->movePosition(movementAmount);
+	}
+	if (display->checkKey(SDLK_a))
+	{
+		glm::fvec3 movementAmount(camera->getLeft().x * 0.1, camera->getLeft().y * 0.1, camera->getLeft().z * 0.1);
+		camera->movePosition(movementAmount);
+	}
+	if (display->checkKey(SDLK_d))
+	{
+		glm::fvec3 movementAmount(camera->getLeft().x * -0.1, camera->getLeft().y * -0.1, camera->getLeft().z * -0.1);
+		camera->movePosition(movementAmount);
+	}
+	
+	camera->rotateY(camera->getSensitivity() * display->getMouseDifX());
 }
 
 //void Scene::baseUpdate()
