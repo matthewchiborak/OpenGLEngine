@@ -4,6 +4,7 @@
 #include "GameObject.h"
 #include "ShaderManager.h"
 #include "ForwardAmbient.h"
+#include "ForwardDirectional.h"
 
 class RenderingEngine
 {
@@ -15,12 +16,20 @@ public:
 	void render(GameObject* object, Camera* camera);
 
 	glm::fvec3 getAmbientLight();
+	DirectionalLight* getDirectionalLight();
+
+	float getSpecularIntensity();
+	float getSpecularExponent();
 
 private:
 	static RenderingEngine* s_instance;
 
 	//Forward rendering lighting
 	glm::fvec3 ambientLight;
+	DirectionalLight directionalLight;
+	DirectionalLight directionalLight2;
+	float specularIntensity;
+	float specularExponent;
 };
 
 #endif

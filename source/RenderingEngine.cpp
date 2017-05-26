@@ -7,6 +7,15 @@ RenderingEngine::RenderingEngine()
 	ambientLight.x = 0.2;
 	ambientLight.y = 0.2;
 	ambientLight.z = 0.2;
+
+	directionalLight.setBase(glm::fvec3(1, 0, 0), 1);
+	directionalLight.setDirection(glm::fvec3(1, 0, 0));
+
+	directionalLight2.setBase(glm::fvec3(0, 0, 1), 1);
+	directionalLight2.setDirection(glm::fvec3(-1, 0, 0));
+
+	specularIntensity = 2;
+	specularExponent = 32;
 }
 
 RenderingEngine::~RenderingEngine()
@@ -33,10 +42,53 @@ void RenderingEngine::render(GameObject* object, Camera* camera)
 	object->render(camera, ForwardAmbient::getForwardAmbient());
 
 	//Blend in other lighting
+	glEnable(GL_BLEND);
 
+	//Adding more color into the scene
+	//Existing color * a factor + new color * a factor
+	glBlendFunc(GL_ONE, GL_ONE);
+
+	//Disable writing to the depth buffer
+	glDepthMask(false);
+	//Only try add on the new pixel if has the exact same value to the pixel closest to the screen.
+	//Aka only do calcuations on pixels that are drawn to the screen. Avoids unessarry calcuations.
+	glDepthFunc(GL_EQUAL);
+
+	//Add the directional light
+	object->render(camera, ForwardDirectional::getForwardDirectional());
+
+	//Add the other directional light
+	DirectionalLight temp = directionalLight;
+	directionalLight = directionalLight2;
+	directionalLight2 = temp;
+
+	object->render(camera, ForwardDirectional::getForwardDirectional());
+
+	temp = directionalLight2;
+	directionalLight2 = directionalLight;
+	directionalLight = temp;
+
+	//Reset everything
+	glDepthFunc(GL_LESS);
+	glDepthMask(true);
+	glDisable(GL_BLEND);
 }
 
 glm::fvec3 RenderingEngine::getAmbientLight()
 {
 	return ambientLight;
+}
+
+DirectionalLight* RenderingEngine::getDirectionalLight()
+{
+	return &directionalLight;
+}
+
+float RenderingEngine::getSpecularIntensity()
+{
+	return specularIntensity;
+}
+float RenderingEngine::getSpecularExponent()
+{
+	return specularExponent;
 }
