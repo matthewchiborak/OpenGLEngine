@@ -5,6 +5,7 @@
 #include "ShaderManager.h"
 #include "ForwardAmbient.h"
 #include "ForwardDirectional.h"
+#include "ForwardPoint.h"
 
 class RenderingEngine
 {
@@ -17,6 +18,7 @@ public:
 
 	glm::fvec3 getAmbientLight();
 	DirectionalLight* getDirectionalLight();
+	PointLight* getPointLight();
 
 	float getSpecularIntensity();
 	float getSpecularExponent();
@@ -26,8 +28,12 @@ private:
 
 	//Forward rendering lighting
 	glm::fvec3 ambientLight;
+
 	DirectionalLight directionalLight;
 	DirectionalLight directionalLight2;
+
+	PointLight pointLight;
+
 	float specularIntensity;
 	float specularExponent;
 };

@@ -14,6 +14,11 @@ RenderingEngine::RenderingEngine()
 	directionalLight2.setBase(glm::fvec3(0, 0, 1), 1);
 	directionalLight2.setDirection(glm::fvec3(-1, 0, 0));
 
+	pointLight.setAtten(0, 0, 1);
+	pointLight.setPosition(glm::fvec3(0, 0, 0));
+	pointLight.setBaseLight(glm::fvec3(0, 1, 0), 5);
+	pointLight.setRange(20);
+
 	specularIntensity = 2;
 	specularExponent = 32;
 }
@@ -68,6 +73,9 @@ void RenderingEngine::render(GameObject* object, Camera* camera)
 	directionalLight2 = directionalLight;
 	directionalLight = temp;
 
+	//Point light
+	object->render(camera, ForwardPoint::getForwardPoint());
+
 	//Reset everything
 	glDepthFunc(GL_LESS);
 	glDepthMask(true);
@@ -91,4 +99,9 @@ float RenderingEngine::getSpecularIntensity()
 float RenderingEngine::getSpecularExponent()
 {
 	return specularExponent;
+}
+
+PointLight* RenderingEngine::getPointLight()
+{
+	return &pointLight;
 }
