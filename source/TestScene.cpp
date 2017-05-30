@@ -19,6 +19,12 @@ void TestScene::init()
 	testObject->addComponent(testMR);
 	root.addChild(testObject);
 
+	GameObject* testObject2 = new GameObject();
+	MeshRenderer* testMR2 = new MeshRenderer(testMesh, TextureManager::getTextureManager()->getTexture("Arwing"), ShaderManager::getShaderManager()->getShader("Phong"));
+	testObject2->addComponent(testMR2);
+	testObject->addChild(testObject2);
+	testObject2->move(Vec9::createVec9(1, 0, 0, 0, 0, 0, 0, 0, 0));
+
 	//Render 
 	testObject->addDirectionalLight(new DirectionalLight(glm::fvec3(1, 0, 0), glm::fvec3(1, 0, 0), 1));
 	//RenderingEngine::getRenderingEngine()->addDirectionalLight(glm::fvec3(1, 0, 0), 1, glm::fvec3(1, 0, 0));

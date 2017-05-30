@@ -33,7 +33,7 @@ void GameComponent::render(Camera* camera)
 {
 
 }
-void GameComponent::render(Camera* camera, Shader* shader)
+void GameComponent::render(Camera* camera, Shader* shader, Transform parentTransform)
 {
 
 }

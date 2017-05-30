@@ -34,13 +34,18 @@ void MeshRenderer::render(Camera* camera)
 	mesh->draw();
 }
 
-void MeshRenderer::render(Camera* camera, Shader* shader)
+void MeshRenderer::render(Camera* camera, Shader* shader, Transform parentTransform)
 {
 	shader->bind();
 
 	texture->bind(0);
 
-	shader->update(*gameObject->getTransform(), *camera);
+	Transform newTranform = *gameObject->getTransform();
+	newTranform.GetPos() += parentTransform.GetPos();
+	newTranform.GetRot() += parentTransform.GetRot();
+	newTranform.GetScale() *= parentTransform.GetScale();
+	//shader->update(*gameObject->getTransform(), *camera);
+	shader->update(newTranform, *camera);
 
 	mesh->draw();
 }

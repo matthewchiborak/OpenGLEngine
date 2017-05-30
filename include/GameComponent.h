@@ -19,7 +19,8 @@ public:
 	virtual void update(float delta);
 	//void render(Camera* camera);
 	virtual void render(Camera* camera);
-	virtual void render(Camera* camera, Shader* shader);
+	//virtual void render(Camera* camera, Shader* shader);
+	virtual void render(Camera* camera, Shader* shader, Transform parentTransform);
 
 	//void addToRenderingEngine();
 

@@ -56,7 +56,7 @@ void RenderingEngine::render(GameObject* object, Camera* camera)
 	object->addToRenderingEngine();
 
 	//object->render(camera, ShaderManager::getShaderManager()->getShader("Phong"));
-	object->render(camera, ForwardAmbient::getForwardAmbient());
+	object->render(camera, ForwardAmbient::getForwardAmbient(), *object->getTransform());
 
 	//Blend in other lighting
 	glEnable(GL_BLEND);
@@ -75,21 +75,21 @@ void RenderingEngine::render(GameObject* object, Camera* camera)
 	for (int i = 0; i < directionalLights.size(); i++)
 	{
 		directionalLight = directionalLights.at(i);
-		object->render(camera, ForwardDirectional::getForwardDirectional());
+		object->render(camera, ForwardDirectional::getForwardDirectional(), *object->getTransform());
 	}
 	
 	//Point light
 	for (int i = 0; i < pointLights.size(); i++)
 	{
 		pointLight = pointLights.at(i);
-		object->render(camera, ForwardPoint::getForwardPoint());
+		object->render(camera, ForwardPoint::getForwardPoint(), *object->getTransform());
 	}
 
 	//Spot lights
 	for (int i = 0; i < spotLights.size(); i++)
 	{
 		spotLight = spotLights.at(i);
-		object->render(camera, ForwardSpot::getForwardSpot());
+		object->render(camera, ForwardSpot::getForwardSpot(), *object->getTransform());
 	}
 
 	//Reset everything

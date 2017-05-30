@@ -46,7 +46,8 @@ public:
 	virtual void init();
 	virtual void input(float delta);
 	void render(Camera* camera);
-	void render(Camera* camera, Shader* shader);
+	//void render(Camera* camera, Shader* shader);
+	void render(Camera* camera, Shader* shader, Transform parentTransform);
 
 	void addChild(GameObject* newChild);
 	void addComponent(GameComponent* newComponent);
@@ -56,6 +57,9 @@ public:
 	void addSpotLight(SpotLight* newLight);
 
 	void addToRenderingEngine();
+
+	//For testing purposes
+	GameObject* getChild(int index);
 
 protected:
 	std::string name;

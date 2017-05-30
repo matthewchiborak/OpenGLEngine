@@ -479,16 +479,32 @@ void GameObject::render(Camera* camera)
 		children.at(i)->render(camera);
 	}
 }
-void GameObject::render(Camera* camera, Shader* shader)
+//void GameObject::render(Camera* camera, Shader* shader)
+//{
+//	for (int i = 0; i < components.size(); i++)
+//	{
+//		components.at(i)->render(camera, shader);
+//	}
+//
+//	for (int i = 0; i < children.size(); i++)
+//	{
+//		children.at(i)->render(camera, shader);
+//	}
+//}
+void GameObject::render(Camera* camera, Shader* shader, Transform parentTransform)
 {
 	for (int i = 0; i < components.size(); i++)
 	{
-		components.at(i)->render(camera, shader);
+		components.at(i)->render(camera, shader, parentTransform);
 	}
 
+	Transform newTransform = transform;
+	newTransform.GetPos() += parentTransform.GetPos();
+	newTransform.GetRot() += parentTransform.GetRot();
+	newTransform.GetScale() *= parentTransform.GetScale();
 	for (int i = 0; i < children.size(); i++)
 	{
-		children.at(i)->render(camera, shader);
+		children.at(i)->render(camera, shader, newTransform);
 	}
 }
 
@@ -557,4 +573,14 @@ void GameObject::addToRenderingEngine()
 	{
 		children.at(i)->addToRenderingEngine();
 	}
+}
+
+GameObject* GameObject::getChild(int index)
+{
+	if (index >= children.size() || index < 0)
+	{
+		return nullptr;
+	}
+
+	return children.at(index);
 }
