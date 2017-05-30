@@ -143,7 +143,8 @@ void Scene::input(Display* display, float delta)
 		camera->movePosition(movementAmount);
 	}
 	
-	camera->rotateY(camera->getSensitivity() * display->getMouseDifX());
+	camera->rotateX(camera->getSensitivity() * display->getMouseDifX());
+	camera->rotateY(camera->getSensitivity() * display->getMouseDifY());
 }
 
 //void Scene::baseUpdate()

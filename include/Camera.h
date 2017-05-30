@@ -110,10 +110,17 @@ public:
 		return sensitivity;
 	}
 
-	void rotateY(float angle)
+	void rotateXQuat(float angle)
 	{
-		glm::fvec3 Haxis(1, 0, 0);
-		glm::fvec3 Vaxis(0, 1, 0);
+
+	}
+
+	void rotateX(float angle)
+	{
+		//glm::fvec3 Haxis(1, 0, 0);
+		//glm::fvec3 Vaxis(0, 1, 0);
+		glm::fvec3 Vaxis = getUp();
+		
 
 		//Forward rotate the angle around y axis. and normalize
 		float sinHalfAngle = (float)sin((angle / 2));
@@ -128,13 +135,20 @@ public:
 
 		m_forward = rotation * m_forward;
 
-		//m_up = glm::cross(m_forward, Haxis);
-		//m_up = glm::normalize(m_up);
+
+	/*	m_up = glm::cross(m_forward, Haxis);
+		m_up = glm::normalize(m_up);*/
 	}
 
-	void rotateX(float angle)
+	void rotateY(float angle)
 	{
-		glm::fvec3 Haxis(1, 0, 0);
+		/*if (m_forward.z > 0)
+		{
+			angle *= -1;
+		}*/
+
+		//glm::fvec3 Haxis(1, 0, 0);
+		glm::fvec3 Haxis = getRight();
 
 		//Forward rotate the angle around Haxis.
 		//MIGHT NEED TO CONVERT TO RADIANS
@@ -150,8 +164,8 @@ public:
 
 		m_forward = rotation * m_forward;
 
-		m_up = glm::cross(m_forward, Haxis);
-		m_up = glm::normalize(m_up);
+		/*m_up = glm::cross(m_forward, Haxis);
+		m_up = glm::normalize(m_up);*/
 	}
 
 private:
