@@ -12,7 +12,7 @@ public:
 	void init();
 	void input(float delta);
 	void update(float delta);
-	void render(Camera* camera);
+	//void render(Camera* camera);
 	void render(Camera* camera, Shader* shader, Transform parentTransform);
 
 private:

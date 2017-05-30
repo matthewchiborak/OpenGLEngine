@@ -26,7 +26,8 @@ void TestScene::init()
 	testObject2->move(Vec9::createVec9(1, 0, 0, 0, 0, 0, 0, 0, 0));
 
 	//Render 
-	testObject->addDirectionalLight(new DirectionalLight(glm::fvec3(1, 0, 0), glm::fvec3(1, 0, 0), 1));
+	//testObject->addDirectionalLight(new DirectionalLight(glm::fvec3(1, 0, 0), glm::fvec3(1, 0, 0), 1));
+	testObject2->addPointLight(new PointLight(glm::fvec3(0, 1, 0), 10, glm::fvec3(0, 0, 0), 0, 0, 2));
 	//RenderingEngine::getRenderingEngine()->addDirectionalLight(glm::fvec3(1, 0, 0), 1, glm::fvec3(1, 0, 0));
 
 	//camera->setOrthographic(-5, 5, -5, 5, 0.1, 100);

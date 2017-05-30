@@ -25,7 +25,7 @@ public:
 	//Set cpu to use shader
 	void bind();
 
-	virtual void update(const Transform& transform, Camera& camera);
+	virtual void update(const Transform& transform, Camera& camera, Transform parentTransform);
 
 	void setAmbientLight(glm::fvec3 light);
 	glm::fvec3 getAmbientLight();

@@ -13,7 +13,7 @@ public:
 	static ForwardSpot* getForwardSpot();
 	//static void setForwardDirectional(ForwardDirectional* forwardDirectional);
 
-	void update(const Transform& transform, Camera& camera);
+	void update(const Transform& transform, Camera& camera, Transform parentTransform);
 
 private:
 	static ForwardSpot* s_instance;

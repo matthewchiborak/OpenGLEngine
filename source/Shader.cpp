@@ -401,7 +401,7 @@ void Shader::bind()
 	glUseProgram(m_program);
 }
 
-void Shader::update(const Transform& transform, Camera& camera)
+void Shader::update(const Transform& transform, Camera& camera, Transform parentTransform)
 {
 	//Get the modelViewProjection
 	glm::mat4 model = camera.GetViewProjection() * transform.GetModel();

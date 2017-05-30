@@ -63,7 +63,7 @@ ForwardDirectional::~ForwardDirectional()
 	}
 }
 
-void ForwardDirectional::update(const Transform& transform, Camera& camera)
+void ForwardDirectional::update(const Transform& transform, Camera& camera, Transform parentTransform)
 {
 	//Get the modelViewProjection
 	glm::mat4 model = camera.GetViewProjection() * transform.GetModel();

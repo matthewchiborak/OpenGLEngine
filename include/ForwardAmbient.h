@@ -12,7 +12,7 @@ public:
 	~ForwardAmbient();
 	static ForwardAmbient* getForwardAmbient();
 
-	void update(const Transform& transform, Camera& camera);
+	void update(const Transform& transform, Camera& camera, Transform parentTransform);
 
 private:
 	static ForwardAmbient* s_instance;

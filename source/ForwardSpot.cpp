@@ -67,7 +67,7 @@ ForwardSpot::~ForwardSpot()
 	}
 }
 
-void ForwardSpot::update(const Transform& transform, Camera& camera)
+void ForwardSpot::update(const Transform& transform, Camera& camera, Transform parentTransform)
 {
 	//Get the modelViewProjection
 	glm::mat4 model = camera.GetViewProjection() * transform.GetModel();
@@ -75,8 +75,11 @@ void ForwardSpot::update(const Transform& transform, Camera& camera)
 	glUniformMatrix4fv(uniforms[ForwardSpotUniforms::MODEL], 1, GL_FALSE, &transform.GetModel()[0][0]);
 	glUniformMatrix4fv(uniforms[ForwardSpotUniforms::MVP], 1, GL_FALSE, &model[0][0]);
 	
-	glUniform3fv(uniforms[ForwardSpotUniforms::SPOT_LIGHT_POINT_POSITION], 1, &RenderingEngine::getRenderingEngine()->getSpotLight()->getPointLight().getTotalPosition()[0]);
+	/*glUniform3fv(uniforms[ForwardSpotUniforms::SPOT_LIGHT_POINT_POSITION], 1, &RenderingEngine::getRenderingEngine()->getSpotLight()->getPointLight().getTotalPosition()[0]);*/
 	//glUniform3fv(uniforms[ForwardSpotUniforms::SPOT_LIGHT_POINT_POSITION], 1, &RenderingEngine::getRenderingEngine()->getSpotLight()->getPointLight().getPosition()[0]);
+	glm::fvec3 newPos = RenderingEngine::getRenderingEngine()->getSpotLight()->getPointLight().getTotalPosition();
+	newPos += parentTransform.GetPos();
+	glUniform3fv(uniforms[ForwardSpotUniforms::SPOT_LIGHT_POINT_POSITION], 1, &newPos[0]);
 	glUniform1f(uniforms[ForwardSpotUniforms::SPOT_LIGHT_POINT_INTENSITY], RenderingEngine::getRenderingEngine()->getSpotLight()->getPointLight().getBaseIntensity());
 	glUniform3fv(uniforms[ForwardSpotUniforms::SPOT_LIGHT_POINT_COLOR], 1, &RenderingEngine::getRenderingEngine()->getSpotLight()->getPointLight().getBaseColor()[0]);
 	glUniform1f(uniforms[ForwardSpotUniforms::SPOT_LIGHT_POINT_CONSTANT], RenderingEngine::getRenderingEngine()->getSpotLight()->getPointLight().getConstant());

@@ -65,12 +65,18 @@ ForwardPoint::~ForwardPoint()
 	}
 }
 
-void ForwardPoint::update(const Transform& transform, Camera& camera)
+void ForwardPoint::update(const Transform& transform, Camera& camera, Transform parentTransform)
 {
+	/*Transform tempTrans = transform;
+	tempTrans.GetPos() += parentTransform.GetPos();
+	tempTrans.GetRot() += parentTransform.GetRot();
+	tempTrans.GetScale() += parentTransform.GetScale();*/
 	//Get the modelViewProjection
 	glm::mat4 model = camera.GetViewProjection() * transform.GetModel();
+	//glm::mat4 model = camera.GetViewProjection() * tempTrans.GetModel();
 
 	glUniformMatrix4fv(uniforms[ForwardPointUniforms::MODEL], 1, GL_FALSE, &transform.GetModel()[0][0]);
+	//glUniformMatrix4fv(uniforms[ForwardPointUniforms::MODEL], 1, GL_FALSE, &tempTrans.GetModel()[0][0]);
 	glUniformMatrix4fv(uniforms[ForwardPointUniforms::MVP], 1, GL_FALSE, &model[0][0]);
 
 	/*POINT_LIGHT_POSITION,
@@ -83,7 +89,10 @@ void ForwardPoint::update(const Transform& transform, Camera& camera)
 
 	
 	//glUniform3fv(uniforms[ForwardPointUniforms::POINT_LIGHT_POSITION], 1, &RenderingEngine::getRenderingEngine()->getPointLight()->getPosition()[0]);
-	glUniform3fv(uniforms[ForwardPointUniforms::POINT_LIGHT_POSITION], 1, &RenderingEngine::getRenderingEngine()->getPointLight()->getTotalPosition()[0]);
+	glm::fvec3 newPos = RenderingEngine::getRenderingEngine()->getPointLight()->getTotalPosition();
+	newPos += parentTransform.GetPos();
+	/*glUniform3fv(uniforms[ForwardPointUniforms::POINT_LIGHT_POSITION], 1, &RenderingEngine::getRenderingEngine()->getPointLight()->getTotalPosition()[0]);*/
+	glUniform3fv(uniforms[ForwardPointUniforms::POINT_LIGHT_POSITION], 1, &newPos[0]);
 	glUniform1f(uniforms[ForwardPointUniforms::POINT_LIGHT_BASE_INTENSITY], RenderingEngine::getRenderingEngine()->getPointLight()->getBaseIntensity());
 	glUniform3fv(uniforms[ForwardPointUniforms::POINT_LIGHT_BASE_COLOR], 1, &RenderingEngine::getRenderingEngine()->getPointLight()->getBaseColor()[0]);
 	glUniform1f(uniforms[ForwardPointUniforms::POINT_LIGHT_ATTEN_CONSTANT], RenderingEngine::getRenderingEngine()->getPointLight()->getConstant());

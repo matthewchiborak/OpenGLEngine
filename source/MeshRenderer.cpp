@@ -23,16 +23,16 @@ void MeshRenderer::update(float delta)
 {
 
 }
-void MeshRenderer::render(Camera* camera)
-{
-	shader->bind();
-
-	texture->bind(0);
-
-	shader->update(*gameObject->getTransform(), *camera);
-
-	mesh->draw();
-}
+//void MeshRenderer::render(Camera* camera)
+//{
+//	shader->bind();
+//
+//	texture->bind(0);
+//
+//	shader->update(*gameObject->getTransform(), *camera);
+//
+//	mesh->draw();
+//}
 
 void MeshRenderer::render(Camera* camera, Shader* shader, Transform parentTransform)
 {
@@ -45,7 +45,7 @@ void MeshRenderer::render(Camera* camera, Shader* shader, Transform parentTransf
 	newTranform.GetRot() += parentTransform.GetRot();
 	newTranform.GetScale() *= parentTransform.GetScale();
 	//shader->update(*gameObject->getTransform(), *camera);
-	shader->update(newTranform, *camera);
+	shader->update(newTranform, *camera, parentTransform);
 
 	mesh->draw();
 }
