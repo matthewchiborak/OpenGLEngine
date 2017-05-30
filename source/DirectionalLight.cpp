@@ -35,3 +35,24 @@ glm::fvec3 DirectionalLight::getDirection()
 {
 	return direction;
 }
+
+//void DirectionalLight::init()
+//{
+//
+//}
+//void DirectionalLight::input(float delta)
+//{
+//
+//}
+//void DirectionalLight::update(float delta)
+//{
+//
+//}
+//void DirectionalLight::render(Camera* camera)
+//{
+//
+//}
+//void DirectionalLight::render(Camera* camera, Shader* shader)
+//{
+//
+//}

@@ -369,6 +369,28 @@ GameObject::~GameObject()
 	texture = NULL;
 	shader = NULL;
 
+	for (int i = 0; i < directionalLights.size(); i++)
+	{
+		if (directionalLights.at(i) != NULL)
+		{
+			delete directionalLights.at(i);
+		}
+	}
+	for (int i = 0; i < spotLights.size(); i++)
+	{
+		if (spotLights.at(i) != NULL)
+		{
+			delete spotLights.at(i);
+		}
+	}
+	for (int i = 0; i < pointLights.size(); i++)
+	{
+		if (pointLights.at(i) != NULL)
+		{
+			delete pointLights.at(i);
+		}
+	}
+
 	/*if (mesh!=NULL)
 	{
 		delete mesh;
@@ -499,4 +521,40 @@ void GameObject::update(float delta)
 void GameObject::init()
 {
 
+}
+
+void GameObject::addDirectionalLight(DirectionalLight* newLight)
+{
+	directionalLights.push_back(newLight);
+}
+void GameObject::addPointLight(PointLight* newLight)
+{
+	pointLights.push_back(newLight);
+}
+void GameObject::addSpotLight(SpotLight* newLight)
+{
+	spotLights.push_back(newLight);
+}
+
+void GameObject::addToRenderingEngine()
+{
+	for (int i = 0; i < directionalLights.size(); i++)
+	{
+		RenderingEngine::getRenderingEngine()->addDirectionalLight(directionalLights.at(i));
+	}
+	for (int i = 0; i < pointLights.size(); i++)
+	{
+		pointLights.at(i)->setOffset(transform.GetPos());
+		RenderingEngine::getRenderingEngine()->addPointLight(pointLights.at(i));
+	}
+	for (int i = 0; i < spotLights.size(); i++)
+	{
+		spotLights.at(i)->setOffset(transform.GetPos());
+		RenderingEngine::getRenderingEngine()->addSpotLight(spotLights.at(i));
+	}
+
+	for (int i = 0; i < children.size(); i++)
+	{
+		children.at(i)->addToRenderingEngine();
+	}
 }

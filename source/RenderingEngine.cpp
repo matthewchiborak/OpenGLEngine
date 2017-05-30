@@ -51,6 +51,10 @@ RenderingEngine* RenderingEngine::getRenderingEngine()
 
 void RenderingEngine::render(GameObject* object, Camera* camera)
 {
+	//Clear the list of lights and readd them
+	clearLight();
+	object->addToRenderingEngine();
+
 	//object->render(camera, ShaderManager::getShaderManager()->getShader("Phong"));
 	object->render(camera, ForwardAmbient::getForwardAmbient());
 
@@ -148,4 +152,29 @@ void RenderingEngine::addSpotLight(glm::fvec3 color, float intensity, glm::fvec3
 	temp->setDirection(direction);
 	temp->setCutoff(cutoff);
 	spotLights.push_back(temp);
+}
+
+void RenderingEngine::setAmbientLight(glm::fvec3 light)
+{
+	ambientLight = light;
+}
+
+void RenderingEngine::addDirectionalLight(DirectionalLight* newLight)
+{
+	directionalLights.push_back(newLight);
+}
+void RenderingEngine::addPointLight(PointLight* newLight)
+{
+	pointLights.push_back(newLight);
+}
+void RenderingEngine::addSpotLight(SpotLight* newLight)
+{
+	spotLights.push_back(newLight);
+}
+
+void RenderingEngine::clearLight()
+{
+	directionalLights.clear();
+	pointLights.clear();
+	spotLights.clear();
 }

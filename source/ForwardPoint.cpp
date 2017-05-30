@@ -80,8 +80,10 @@ void ForwardPoint::update(const Transform& transform, Camera& camera)
 	POINT_LIGHT_ATTEN_LINEAR,
 	POINT_LIGHT_ATTEN_EXPONENT,
 	POINT_LIGHT_RANGE,*/
+
 	
-	glUniform3fv(uniforms[ForwardPointUniforms::POINT_LIGHT_POSITION], 1, &RenderingEngine::getRenderingEngine()->getPointLight()->getPosition()[0]);
+	//glUniform3fv(uniforms[ForwardPointUniforms::POINT_LIGHT_POSITION], 1, &RenderingEngine::getRenderingEngine()->getPointLight()->getPosition()[0]);
+	glUniform3fv(uniforms[ForwardPointUniforms::POINT_LIGHT_POSITION], 1, &RenderingEngine::getRenderingEngine()->getPointLight()->getTotalPosition()[0]);
 	glUniform1f(uniforms[ForwardPointUniforms::POINT_LIGHT_BASE_INTENSITY], RenderingEngine::getRenderingEngine()->getPointLight()->getBaseIntensity());
 	glUniform3fv(uniforms[ForwardPointUniforms::POINT_LIGHT_BASE_COLOR], 1, &RenderingEngine::getRenderingEngine()->getPointLight()->getBaseColor()[0]);
 	glUniform1f(uniforms[ForwardPointUniforms::POINT_LIGHT_ATTEN_CONSTANT], RenderingEngine::getRenderingEngine()->getPointLight()->getConstant());

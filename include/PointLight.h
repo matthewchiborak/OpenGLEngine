@@ -10,6 +10,7 @@ class PointLight
 {
 public:
 	PointLight();
+	PointLight(glm::fvec3 color, float intensity, glm::fvec3 position, float constant, float linear, float exponent);
 	~PointLight();
 
 	void setBaseLight(glm::fvec3 color, float intensity);
@@ -26,11 +27,17 @@ public:
 	float getRange();
 	void setRange(float value);
 
+	void setOffset(glm::fvec3 offset);
+	glm::fvec3 getTotalPosition();
+
 private:
 	BaseLight baseLight;
 	Attenuation atten;
 	glm::fvec3 position;
+	glm::fvec3 offset;
 	float range;
+
+	static int COLOR_DEPTH;
 };
 
 #endif

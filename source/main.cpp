@@ -11,8 +11,7 @@
 int main(int argc, char** argv)
 {
 	//Game or scene? Should change it so the game has scenes???
-	Game testGame;
-	CoreEngine::getCoreEngine()->init(WIDTH, HEIGHT, 30, &testGame, "Hello world!!!");
+	CoreEngine::getCoreEngine()->init(WIDTH, HEIGHT, 30, "Hello world!!!");
 
 	//ShaderManager::getShaderManager()->loadShader("Phong", ".\\res\\PhongShader");
 	//ShaderManager::getShaderManager()->loadShader("Basic", ".\\res\\basicShader");

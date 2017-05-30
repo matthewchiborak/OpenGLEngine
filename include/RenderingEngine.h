@@ -8,6 +8,8 @@
 #include "ForwardPoint.h"
 #include "ForwardSpot.h"
 
+class GameObject;
+
 class RenderingEngine
 {
 public:
@@ -25,9 +27,17 @@ public:
 	float getSpecularIntensity();
 	float getSpecularExponent();
 	
+	void setAmbientLight(glm::fvec3 light);
 	void addDirectionalLight(glm::fvec3 color, float intensity, glm::fvec3 direction);
 	void addPointLight(glm::fvec3 color, float intensity, glm::fvec3 position, float range, float constant, float linear, float exponent);
 	void addSpotLight(glm::fvec3 color, float intensity, glm::fvec3 position, float range, float constant, float linear, float exponent, glm::fvec3 direction, float cutoff);
+
+	void addDirectionalLight(DirectionalLight* newLight);
+	void addPointLight(PointLight* newLight);
+	void addSpotLight(SpotLight* newLight);
+
+	void clearLight();
+
 
 private:
 	static RenderingEngine* s_instance;
@@ -46,6 +56,7 @@ private:
 
 	float specularIntensity;
 	float specularExponent;
+
 };
 
 #endif

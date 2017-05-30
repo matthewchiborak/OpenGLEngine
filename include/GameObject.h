@@ -8,6 +8,10 @@
 #include "Camera.h"
 #include "Mesh.h"
 #include "GameComponent.h"
+#include "DirectionalLight.h"
+#include "SpotLight.h"
+#include "PointLight.h"
+#include "RenderingEngine.h"
 
 class GameComponent;
 
@@ -47,6 +51,12 @@ public:
 	void addChild(GameObject* newChild);
 	void addComponent(GameComponent* newComponent);
 
+	void addDirectionalLight(DirectionalLight* newLight);
+	void addPointLight(PointLight* newLight);
+	void addSpotLight(SpotLight* newLight);
+
+	void addToRenderingEngine();
+
 protected:
 	std::string name;
 	//Mesh* mesh;
@@ -61,6 +71,10 @@ protected:
 	//All children inherit properties of above
 	std::vector<GameObject*> children;
 	std::vector<GameComponent*> components;
+
+	std::vector<DirectionalLight*> directionalLights;
+	std::vector<PointLight*> pointLights;
+	std::vector<SpotLight*> spotLights;
 };
 
 #endif

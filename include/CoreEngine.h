@@ -7,7 +7,7 @@
 
 #include "Display.h"
 #include "Scene.h"
-#include "Game.h"
+//#include "Game.h"
 #include "RenderingEngine.h"
 
 class CoreEngine
@@ -18,7 +18,8 @@ public:
 
 	static CoreEngine* getCoreEngine();
 
-	void init(int width, int height, double frameRate, Game* game, std::string name);
+	//void init(int width, int height, double frameRate, Game* game, std::string name);
+	void init(int width, int height, double frameRate, std::string name);
 
 	void loadScene(std::string name, std::string fileName);
 	void loadScene(Scene* newScene, std::string name, std::string fileName);
@@ -41,7 +42,7 @@ private:
 
 	int currentScene;
 	std::vector<Scene*> scenes;
-	Game* game;
+	//Game* game;
 	double FRAME_CAP;
 	double frameTime;
 };

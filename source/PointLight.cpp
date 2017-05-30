@@ -1,5 +1,7 @@
 #include "../include/PointLight.h"
 
+int PointLight::COLOR_DEPTH = 256;
+
 PointLight::PointLight()
 {
 	atten.setConstant(1);
@@ -12,6 +14,14 @@ PointLight::PointLight()
 	this->position = glm::fvec3(0,0,0);
 
 	range = 2;
+}
+
+PointLight::PointLight(glm::fvec3 color, float intensity, glm::fvec3 position, float constant, float linear, float exponent)
+{
+	this->baseLight.setColor(color);
+	this->baseLight.setIntensity(intensity);
+	this->position = position;
+	this->setAtten(constant, linear, exponent);
 }
 
 PointLight::~PointLight()
@@ -28,6 +38,19 @@ void PointLight::setAtten(float constant, float linear, float exponent)
 	atten.setConstant(constant);
 	atten.setExponent(exponent);
 	atten.setLinear(linear);
+
+	float max = baseLight.getColor().x;
+	if (baseLight.getColor().y > max)
+	{
+		max = baseLight.getColor().y;
+	}
+	if (baseLight.getColor().z > max)
+	{
+		max = baseLight.getColor().z;
+	}
+
+	float c = constant - (COLOR_DEPTH * baseLight.getIntensity() * max);
+	range = (-linear + sqrt(linear * linear - 4 * exponent * c)) / (2 * exponent);
 }
 void PointLight::setPosition(glm::fvec3 position)
 {
@@ -66,4 +89,13 @@ float PointLight::getRange()
 void PointLight::setRange(float value)
 {
 	range = value;
+}
+
+void PointLight::setOffset(glm::fvec3 offset)
+{
+	this->offset = offset;
+}
+glm::fvec3 PointLight::getTotalPosition()
+{
+	return position + offset;
 }

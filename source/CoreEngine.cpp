@@ -31,11 +31,12 @@ CoreEngine * CoreEngine::getCoreEngine()
 	return s_instance;
 }
 
-void CoreEngine::init(int width, int height, double frameRate, Game* game, std::string name)
+//void CoreEngine::init(int width, int height, double frameRate, Game* game, std::string name)
+void CoreEngine::init(int width, int height, double frameRate, std::string name)
 {
 	this->width = width;
 	this->height = height;
-	this->game = game;
+	//this->game = game;
 	this->FRAME_CAP = frameRate;
 	frameTime = 1 / frameRate;
 

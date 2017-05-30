@@ -555,7 +555,7 @@ void Shader::setPointLight(int index, glm::fvec3 position, glm::fvec3 color, flo
 	pointLights[index].setPosition(position);
 	pointLights[index].setBaseLight(color, intensity);
 	pointLights[index].setAtten(constant, linear, exponent);
-	pointLights[index].setRange(range);
+	//pointLights[index].setRange(range);
 }
 
 void Shader::setSpotLight(int index, glm::fvec3 position, glm::fvec3 color, float intensity, float range, float constant, float linear, float exponent, glm::fvec3 direction, float cutoff)

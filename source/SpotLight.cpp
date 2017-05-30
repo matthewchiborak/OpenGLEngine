@@ -6,6 +6,15 @@ SpotLight::SpotLight()
 	cutoff = 1;
 }
 
+SpotLight::SpotLight(glm::fvec3 color, float intensity, glm::fvec3 position, float constant, float linear, float exponent, glm::fvec3 direction, float cutoff)
+{
+	this->direction = direction;
+	this->cutoff = cutoff;
+	pointLight.setBaseLight(color, intensity);
+	pointLight.setPosition(position);
+	pointLight.setAtten(constant, linear, exponent);
+}
+
 SpotLight::~SpotLight()
 {
 }
@@ -36,4 +45,13 @@ glm::fvec3 SpotLight::getDirection()
 float SpotLight::getCutoff()
 {
 	return cutoff;
+}
+
+void SpotLight::setOffset(glm::fvec3 offset)
+{
+	this->offset = offset;
+}
+glm::fvec3 SpotLight::getTotalPosition()
+{
+	return pointLight.getPosition() + offset;
 }
