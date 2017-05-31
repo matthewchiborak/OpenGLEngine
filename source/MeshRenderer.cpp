@@ -7,6 +7,12 @@ MeshRenderer::MeshRenderer(Mesh* mesh, Texture* texture, Shader* shader)
 	this->shader = shader;
 }
 
+MeshRenderer::MeshRenderer(Mesh* mesh, Texture* texture)
+{
+	this->mesh = mesh;
+	this->texture = texture;
+}
+
 MeshRenderer::~MeshRenderer()
 {
 }

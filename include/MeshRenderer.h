@@ -7,6 +7,7 @@ class MeshRenderer : public GameComponent
 {
 public:
 	MeshRenderer(Mesh* mesh, Texture* texture, Shader* shader);
+	MeshRenderer(Mesh* mesh, Texture* texture);
 	~MeshRenderer();
 
 	void init();

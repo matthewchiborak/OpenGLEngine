@@ -6,6 +6,13 @@ Mesh::Mesh(const std::string& fileName)
 	initMesh(model);
 }
 
+Mesh::Mesh(const std::string& name, const std::string& fileName)
+{
+	this->name = name;
+	IndexedModel model = OBJModel(fileName).ToIndexedModel();
+	initMesh(model);
+}
+
 void Mesh::initMesh(const IndexedModel& model)
 {
 	m_drawCount = model.indices.size();
@@ -89,4 +96,9 @@ void Mesh::draw()
 
 	//Now longer effect the vertex object
 	glBindVertexArray(0);
+}
+
+std::string Mesh::getName()
+{
+	return name;
 }

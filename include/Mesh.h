@@ -37,11 +37,14 @@ public:
 	Mesh(Vertex* vertices, unsigned int numVertices, unsigned int* indices, unsigned int numIndices);
 	//Obj based constructor
 	Mesh(const std::string& fileName);
+	Mesh(const std::string& name, const std::string& fileName);
 
 	//Draw the mesh with the graphics card
 	void draw();
 
 	virtual ~Mesh();
+
+	std::string getName();
 private:
 	Mesh(const Mesh& other) {}
 	void operator=(const Mesh& other) {}
@@ -67,6 +70,8 @@ private:
 
 	//Tell opengl how much of the array object we want to be drawn.
 	unsigned int m_drawCount;
+
+	std::string name;
 };
 
 #endif

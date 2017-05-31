@@ -9,6 +9,7 @@
 #include "Display.h"
 #include "ShaderManager.h"
 #include "TextureManager.h"
+#include "MeshManager.h"
 #include "Bitmap.h"
 #include "Time.h"
 #include "MeshRenderer.h"
