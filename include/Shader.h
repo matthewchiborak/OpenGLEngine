@@ -50,6 +50,8 @@ public:
 	//Create shader from full text
 	static GLuint CreateShader(const std::string& text, GLenum shaderType);
 
+	void addAllUniforms(std::string shaderText);
+
 protected:
 	std::string name;
 	//If using a geometry shader this will be 3. 2 is just vertex and fragment
@@ -168,6 +170,9 @@ protected:
 	float specularIntensity;
 	//This is how wide the reflection is
 	float specularExponent;
+
+	std::string vertexShaderText;
+	std::string fragmentShaderText;
 };
 
 #endif

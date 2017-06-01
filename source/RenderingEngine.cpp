@@ -52,6 +52,8 @@ RenderingEngine* RenderingEngine::getRenderingEngine()
 void RenderingEngine::render(GameObject* object, Camera* camera)
 {
 	//Clear the list of lights and readd them
+
+	//TODO change so that only updates on changes
 	clearLight();
 	object->addToRenderingEngine();
 

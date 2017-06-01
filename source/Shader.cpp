@@ -574,3 +574,8 @@ void Shader::setSpotLight(int index, glm::fvec3 position, glm::fvec3 color, floa
 	spotLights[index].setDirection(direction);
 	spotLights[index].setCutoff(cutoff);
 }
+
+void Shader::addAllUniforms(std::string shaderText)
+{
+
+}

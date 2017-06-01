@@ -11,8 +11,12 @@ ForwardAmbient::ForwardAmbient()
 	//Create the vertex and fragment shaders
 	//m_shaders[0] = CreateShader(LoadShader(fileName + ".vs.txt"), GL_VERTEX_SHADER);
 	//m_shaders[1] = CreateShader(LoadShader(fileName + ".fs.txt"), GL_FRAGMENT_SHADER);
-	m_shaders[0] = CreateShader(LoadShader(".\\res\\ForwardAmbient.vs.txt"), GL_VERTEX_SHADER);
-	m_shaders[1] = CreateShader(LoadShader(".\\res\\ForwardAmbient.fs.txt"), GL_FRAGMENT_SHADER);
+	vertexShaderText = LoadShader(".\\res\\ForwardAmbient.vs.txt");
+	fragmentShaderText = LoadShader(".\\res\\ForwardAmbient.fs.txt");
+	//m_shaders[0] = CreateShader(LoadShader(".\\res\\ForwardAmbient.vs.txt"), GL_VERTEX_SHADER);
+	//m_shaders[1] = CreateShader(LoadShader(".\\res\\ForwardAmbient.fs.txt"), GL_FRAGMENT_SHADER);
+	m_shaders[0] = CreateShader(vertexShaderText, GL_VERTEX_SHADER);
+	m_shaders[1] = CreateShader(fragmentShaderText, GL_FRAGMENT_SHADER);
 
 	//Add shaders to the shader program
 	for (unsigned int i = 0; i < NUM_SHADERS; i++)

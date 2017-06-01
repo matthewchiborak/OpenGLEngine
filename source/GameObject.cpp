@@ -497,7 +497,7 @@ void GameObject::render(Camera* camera, Shader* shader, Transform parentTransfor
 	{
 		components.at(i)->render(camera, shader, parentTransform);
 	}
-
+	
 	Transform newTransform = transform;
 	newTransform.GetPos() += parentTransform.GetPos();
 	newTransform.GetRot() += parentTransform.GetRot();
