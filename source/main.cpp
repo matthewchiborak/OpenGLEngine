@@ -5,7 +5,9 @@
 #include "../include/CoreEngine.h"
 #include "../include/TestScene.h"
 
+//TESTING
 #include "../include/BoundingSphere.h"
+#include "../include/AABB.h"
 
 #define WIDTH 800
 #define HEIGHT 600
@@ -24,6 +26,22 @@ int main(int argc, char** argv)
 	std::cout << "1 -> 2: " << sphere1IntersectSphere2.getDoesIntersect() << ", Distance: " << sphere1IntersectSphere2.getDistance() << "\n";
 	std::cout << "1 -> 3: " << sphere1IntersectSphere3.getDoesIntersect() << ", Distance: " << sphere1IntersectSphere3.getDistance() << "\n";
 	std::cout << "1 -> 4: " << sphere1IntersectSphere4.getDoesIntersect() << ", Distance: " << sphere1IntersectSphere4.getDistance() << "\n";
+
+	AABB aabb1(glm::fvec3(0, 0, 0), glm::fvec3(1, 1, 1));
+	AABB aabb2(glm::fvec3(1, 1, 1), glm::fvec3(2, 2, 2));
+	AABB aabb3(glm::fvec3(1, 0, 0), glm::fvec3(2, 1, 1));
+	AABB aabb4(glm::fvec3(0, 0, -2), glm::fvec3(1, 1, -1));
+	AABB aabb5(glm::fvec3(0, 0.5, 0), glm::fvec3(1, 1.5, 1));
+
+	IntersectData aabb1IntersectAabb2 = aabb1.intersectAABB(&aabb2);
+	IntersectData aabb1IntersectAabb3 = aabb1.intersectAABB(&aabb3);
+	IntersectData aabb1IntersectAabb4 = aabb1.intersectAABB(&aabb4);
+	IntersectData aabb1IntersectAabb5 = aabb1.intersectAABB(&aabb5);
+
+	std::cout << "1 -> 2: " << aabb1IntersectAabb2.getDoesIntersect() << ", Distance: " << aabb1IntersectAabb2.getDistance() << "\n";
+	std::cout << "1 -> 3: " << aabb1IntersectAabb3.getDoesIntersect() << ", Distance: " << aabb1IntersectAabb3.getDistance() << "\n";
+	std::cout << "1 -> 4: " << aabb1IntersectAabb4.getDoesIntersect() << ", Distance: " << aabb1IntersectAabb4.getDistance() << "\n";
+	std::cout << "1 -> 5: " << aabb1IntersectAabb5.getDoesIntersect() << ", Distance: " << aabb1IntersectAabb5.getDistance() << "\n";
 
 	CoreEngine::getCoreEngine()->init(WIDTH, HEIGHT, 30, "Hello world!!!");
 
