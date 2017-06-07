@@ -49,6 +49,7 @@ public:
 	GameObject* getRootObject();
 	void update(float delta);
 	void input(Display* display, float delta);
+	virtual void gameInput(Display* display, float delta);
 
 protected:
 	std::string name;

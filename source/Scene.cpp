@@ -120,59 +120,13 @@ void Scene::update(float delta)
 void Scene::input(Display* display, float delta)
 {
 	root.input(delta);
-
-	//TEST CODE
-	if (display->checkKey(SDLK_w))
-	{
-		glm::fvec3 movementAmount(camera->getForward().x * 0.1, camera->getForward().y * 0.1, camera->getForward().z * 0.1);
-		camera->movePosition(movementAmount);
-	}
-	if (display->checkKey(SDLK_s))
-	{
-		glm::fvec3 movementAmount(camera->getForward().x * -0.1, camera->getForward().y * -0.1, camera->getForward().z * -0.1);
-		camera->movePosition(movementAmount);
-	}
-	if (display->checkKey(SDLK_a))
-	{
-		glm::fvec3 movementAmount(camera->getLeft().x * 0.1, camera->getLeft().y * 0.1, camera->getLeft().z * 0.1);
-		camera->movePosition(movementAmount);
-	}
-	if (display->checkKey(SDLK_d))
-	{
-		glm::fvec3 movementAmount(camera->getLeft().x * -0.1, camera->getLeft().y * -0.1, camera->getLeft().z * -0.1);
-		camera->movePosition(movementAmount);
-	}
-
-	if (display->checkKey(SDLK_e))
-	{
-		root.getChild(0)->move(Vec9::createVec9(0.1, 0, 0, 0, 0, 0, 0, 0, 0));
-	}
-	if (display->checkKey(SDLK_r))
-	{
-		root.getChild(0)->move(Vec9::createVec9(-0.1, 0, 0, 0, 0, 0, 0, 0, 0));
-	}
-	if (display->checkKey(SDLK_t))
-	{
-		root.getChild(0)->getChild(0)->move(Vec9::createVec9(-0.1, 0, 0, 0, 0, 0, 0, 0, 0));
-	}
-	
-	camera->rotateX(camera->getSensitivity() * display->getMouseDifX());
-	camera->rotateY(camera->getSensitivity() * display->getMouseDifY());
+	gameInput(display, delta);
 }
 
-//void Scene::baseUpdate()
-//{
-//	update();
-//}
-//
-//void Scene::baseInput(Display* display)
-//{
-//	input(display);
-//}
-//void Scene::baseRender()
-//{
-//	render();
-//}
+void Scene::gameInput(Display* display, float delta)
+{
+
+}
 
 GameObject* Scene::getRootObject()
 {

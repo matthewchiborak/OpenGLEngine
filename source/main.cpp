@@ -10,7 +10,6 @@
 
 int main(int argc, char** argv)
 {
-	//Game or scene? Should change it so the game has scenes???
 	CoreEngine::getCoreEngine()->init(WIDTH, HEIGHT, 30, "Hello world!!!");
 
 	TextureManager::getTextureManager()->loadTexture("Arwing", ".\\res\\body.png");

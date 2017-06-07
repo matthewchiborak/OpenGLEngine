@@ -13,6 +13,7 @@ public:
 
 	//Need to inherit
 	void init();
+	void gameInput(Display* display, float delta);
 	
 private:
 	/*void update();
