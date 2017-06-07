@@ -8,6 +8,7 @@
 //TESTING
 #include "../include/BoundingSphere.h"
 #include "../include/AABB.h"
+#include "../include/Plane.h"
 
 #define WIDTH 800
 #define HEIGHT 600
@@ -38,10 +39,26 @@ int main(int argc, char** argv)
 	IntersectData aabb1IntersectAabb4 = aabb1.intersectAABB(&aabb4);
 	IntersectData aabb1IntersectAabb5 = aabb1.intersectAABB(&aabb5);
 
+	std::cout << "\n";
 	std::cout << "1 -> 2: " << aabb1IntersectAabb2.getDoesIntersect() << ", Distance: " << aabb1IntersectAabb2.getDistance() << "\n";
 	std::cout << "1 -> 3: " << aabb1IntersectAabb3.getDoesIntersect() << ", Distance: " << aabb1IntersectAabb3.getDistance() << "\n";
 	std::cout << "1 -> 4: " << aabb1IntersectAabb4.getDoesIntersect() << ", Distance: " << aabb1IntersectAabb4.getDistance() << "\n";
 	std::cout << "1 -> 5: " << aabb1IntersectAabb5.getDoesIntersect() << ", Distance: " << aabb1IntersectAabb5.getDistance() << "\n";
+
+	std::cout << "\n";
+	Plane plane1(glm::fvec3(0, 1, 0), 0);
+
+	IntersectData plane1IntersectSphere1 = plane1.intersectSphere(&sphere1);
+	IntersectData plane1IntersectSphere2 = plane1.intersectSphere(&sphere2);
+	IntersectData plane1IntersectSphere3 = plane1.intersectSphere(&sphere3);
+	IntersectData plane1IntersectSphere4 = plane1.intersectSphere(&sphere4);
+
+	std::cout << "1 -> 1: " << plane1IntersectSphere1.getDoesIntersect() << ", Distance: " << plane1IntersectSphere1.getDistance() << "\n";
+	std::cout << "1 -> 2: " << plane1IntersectSphere2.getDoesIntersect() << ", Distance: " << plane1IntersectSphere2.getDistance() << "\n";
+	std::cout << "1 -> 3: " << plane1IntersectSphere3.getDoesIntersect() << ", Distance: " << plane1IntersectSphere3.getDistance() << "\n";
+	std::cout << "1 -> 4: " << plane1IntersectSphere4.getDoesIntersect() << ", Distance: " << plane1IntersectSphere4.getDistance() << "\n";
+
+	//End of testing TODO
 
 	CoreEngine::getCoreEngine()->init(WIDTH, HEIGHT, 30, "Hello world!!!");
 
