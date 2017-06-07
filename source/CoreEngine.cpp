@@ -104,6 +104,9 @@ void CoreEngine::run()
 		scenes.at(currentScene)->update(passedTime);
 		scenes.at(currentScene)->input(display, passedTime);
 		RenderingEngine::getRenderingEngine()->render(scenes.at(currentScene)->getRootObject(), scenes.at(currentScene)->getCamera());
+		
+		//Physics engine???
+
 		display->Update();
 
 		counter += 0.01f;
