@@ -14,6 +14,7 @@
 #include "Time.h"
 #include "MeshRenderer.h"
 #include "RenderingEngine.h"
+#include "PhysicsEngine.h"
 
 #include <D:/OpenGL2017/glm-0.9.8.4/glm-0.9.8.4/glm/glm.hpp>
 

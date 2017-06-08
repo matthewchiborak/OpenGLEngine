@@ -1,7 +1,12 @@
 #include "../include/BoundingSphere.h"
 
+BoundingSphere::BoundingSphere()
+{
+
+}
 BoundingSphere::BoundingSphere(glm::fvec3 center, float radius)
 {
+	setType(ColliderType::TYPE_SPHERE);
 	this->radius = radius;
 	this->center = center;
 }
@@ -18,7 +23,7 @@ void BoundingSphere::setRadius(float radius)
 {
 	this->radius = radius;
 }
-glm::fvec3 BoundingSphere::getCenter()
+glm::fvec3 BoundingSphere::getBoundingSphereCenter()
 {
 	return center;
 }
@@ -46,4 +51,25 @@ IntersectData BoundingSphere::intersectBoundingSphere(BoundingSphere* other)
 	}
 
 	return IntersectData(false, centerDistance - radiusDistance);
+}
+
+IntersectData BoundingSphere::intersect(Collider* other)
+{
+	if (type == TYPE_SPHERE && other->getType() == TYPE_SPHERE)
+	{
+		return intersectBoundingSphere((BoundingSphere*)other);
+	}
+
+	std::cerr << "Error: Collsions not implemented between specifed colliders.\n";
+	return IntersectData(false, 0);
+}
+
+void BoundingSphere::transform(glm::fvec3 translation)
+{
+	center += translation;
+}
+
+glm::fvec3 BoundingSphere::getCenter()
+{
+	return center;
 }

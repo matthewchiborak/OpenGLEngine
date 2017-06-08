@@ -106,6 +106,8 @@ void CoreEngine::run()
 		RenderingEngine::getRenderingEngine()->render(scenes.at(currentScene)->getRootObject(), scenes.at(currentScene)->getCamera());
 		
 		//Physics engine???
+		PhysicsEngine::getPhysicsEngine()->simulate(passedTime / Time::SECOND);
+		PhysicsEngine::getPhysicsEngine()->handleCollisions();
 
 		display->Update();
 

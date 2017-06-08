@@ -34,6 +34,10 @@ void TestScene::init()
 	//RenderingEngine::getRenderingEngine()->addDirectionalLight(glm::fvec3(1, 0, 0), 1, glm::fvec3(1, 0, 0));
 
 	//camera->setOrthographic(-5, 5, -5, 5, 0.1, 100);
+
+	//Physics Test Setup
+	PhysicsEngine::getPhysicsEngine()->addObject(new PhysicsObject(new BoundingSphere(glm::fvec3(0, 0, 0), 1), glm::fvec3(0, 0, 1)));
+	PhysicsEngine::getPhysicsEngine()->addObject(new PhysicsObject(new BoundingSphere(glm::fvec3(0, 0, 10), 1), glm::fvec3(0, 0, -1)));
 }
 
 void TestScene::gameInput(Display* display, float delta)
