@@ -40,7 +40,7 @@ glm::fvec3 PhysicsObject::getVelocity()
 	return velocity;
 }
 
-void PhysicsObject::integrate(long delta)
+void PhysicsObject::integrate(double delta)
 {
 	position.x += velocity.x * delta;
 	position.y += velocity.y * delta;

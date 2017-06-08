@@ -16,7 +16,7 @@ public:
 
 	void addObject(PhysicsObject* object);
 	
-	void simulate(long delta);
+	void simulate(double delta);
 
 	void handleCollisions();
 

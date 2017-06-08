@@ -39,5 +39,5 @@ IntersectData Plane::intersectSphere(BoundingSphere* other)
 
 	float distanceFromSphere = distanceFromSphereCenter - other->getRadius();
 
-	return IntersectData(distanceFromSphere < 0, distanceFromSphere);
+	return IntersectData(distanceFromSphere < 0, normal * distanceFromSphere);
 }

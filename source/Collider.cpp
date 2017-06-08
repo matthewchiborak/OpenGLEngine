@@ -29,7 +29,7 @@ IntersectData Collider::intersect(Collider* other)
 	//{
 	//	//BoundingSph
 	//}
-	return IntersectData(false, 0);
+	return IntersectData(false, glm::fvec3(0,0,0));
 }
 
 void Collider::transform(glm::fvec3 translation)

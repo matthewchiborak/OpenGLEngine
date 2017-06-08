@@ -1,9 +1,9 @@
 #include "../include/IntersectData.h"
 
-IntersectData::IntersectData(bool doesIntersect, float distance)
+IntersectData::IntersectData(bool doesIntersect, glm::fvec3 direction)
 {
 	this->doesIntersect = doesIntersect;
-	this->distance = distance;
+	this->direction = direction;
 }
 
 IntersectData::~IntersectData()
@@ -14,15 +14,19 @@ void IntersectData::setDoesIntersect(bool status)
 {
 	this->doesIntersect = status;
 }
-void IntersectData::setDistance(float distance)
+void IntersectData::setDirection(glm::fvec3 direction)
 {
-	this->distance = distance;
+	this->direction = direction;
 }
 bool IntersectData::getDoesIntersect()
 {
 	return doesIntersect;
 }
+glm::fvec3 IntersectData::getDirection()
+{
+	return direction;
+}
 float IntersectData::getDistance()
 {
-	return distance;
+	return sqrtf((direction.x * direction.x) + (direction.y * direction.y) + (direction.z * direction.z));
 }

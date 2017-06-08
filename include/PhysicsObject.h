@@ -18,7 +18,7 @@ public:
 	glm::fvec3 getVelocity();
 
 	//Based on velo and pos, update the position. 
-	void integrate(long delta);
+	void integrate(double delta);
 
 	Collider* getCollider();
 

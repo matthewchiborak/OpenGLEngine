@@ -6,17 +6,20 @@
 class IntersectData
 {
 public:
-	IntersectData(bool doesIntersect, float distance);
+	IntersectData(bool doesIntersect, glm::fvec3 direction);
 	~IntersectData();
 
 	void setDoesIntersect(bool status);
-	void setDistance(float distance);
+	void setDirection(glm::fvec3 direction);
 	bool getDoesIntersect();
+	glm::fvec3 getDirection();
 	float getDistance();
 
 private:
 	bool doesIntersect;
-	float distance;
+	//float distance;
+	//Direction and magnitude of the collision
+	glm::fvec3 direction;
 };
 
 #endif

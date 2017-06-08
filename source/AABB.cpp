@@ -59,5 +59,5 @@ IntersectData AABB::intersectAABB(AABB* other)
 	}
 
 	//If max distance is > 0, then theres some distance between them so they cant be intersecting
-	return IntersectData(maxDistance < 0, maxDistance);
+	return IntersectData(maxDistance < 0, distances);
 }

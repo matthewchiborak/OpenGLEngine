@@ -81,11 +81,13 @@ void CoreEngine::run()
 	//Fixed frame rate
 	//static double FRAME_CAP = 5000.0;
 	//static double FRAME_CAP = 60.0;
-	long lastTime = Time::getTime();
+	//long lastTime = Time::getTime();
+	double lastTime = Time::getTimeDouble();
 	double unprocessedTime = 0; //Keep track of time still needed to be processed to update the game
 	//double frameTime = 1.0 / FRAME_CAP;
 	int frames = 0;
-	long frameCounter = 0;
+	//long frameCounter = 0;
+	double frameCounter = 0;
 
 	//Start the scene
 	scenes.at(currentScene)->init();
@@ -93,8 +95,10 @@ void CoreEngine::run()
 	while (!display->isClosed() && isRunning)
 	{
 		//Fixed Frame rate
-		long startTime = Time::getTime();
-		long passedTime = startTime - lastTime;
+		//long startTime = Time::getTime();
+		//long passedTime = startTime - lastTime;
+		double startTime = Time::getTimeDouble();
+		double passedTime = startTime - lastTime;
 		lastTime = startTime;
 		frameCounter += passedTime;
 
@@ -106,16 +110,17 @@ void CoreEngine::run()
 		RenderingEngine::getRenderingEngine()->render(scenes.at(currentScene)->getRootObject(), scenes.at(currentScene)->getCamera());
 		
 		//Physics engine???
-		PhysicsEngine::getPhysicsEngine()->simulate(passedTime / Time::SECOND);
+		//Timing is the issue???
+		PhysicsEngine::getPhysicsEngine()->simulate(passedTime);
 		PhysicsEngine::getPhysicsEngine()->handleCollisions();
 
 		display->Update();
 
-		counter += 0.01f;
+		//counter += 0.01f;
 		frames++;
 
 		//Output the framerate
-		if (frameCounter >= Time::SECOND)
+		if (frameCounter >= 1.0)
 		{
 			std::cout << "FPS: " << frames << "\n";
 			frames = 0;
