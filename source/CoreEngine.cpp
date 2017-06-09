@@ -105,15 +105,17 @@ void CoreEngine::run()
 		//UPDATE GAME
 		display->clear(0.0f, 0.0f, 0.0f, 0.0f);
 
+		//Physics engine
+		PhysicsEngine::getPhysicsEngine()->clear();
+		scenes.at(currentScene)->getRootObject()->addtoPhysicsEngine(*scenes.at(currentScene)->getRootObject()->getTransform());
+		PhysicsEngine::getPhysicsEngine()->simulate(passedTime);
+		PhysicsEngine::getPhysicsEngine()->handleCollisions();
+		scenes.at(currentScene)->getRootObject()->applyPhysicsSimulationChanges();
+
 		scenes.at(currentScene)->update(passedTime);
 		scenes.at(currentScene)->input(display, passedTime);
 		RenderingEngine::getRenderingEngine()->render(scenes.at(currentScene)->getRootObject(), scenes.at(currentScene)->getCamera());
 		
-		//Physics engine???
-		//Timing is the issue???
-		PhysicsEngine::getPhysicsEngine()->simulate(passedTime);
-		PhysicsEngine::getPhysicsEngine()->handleCollisions();
-
 		display->Update();
 
 		//counter += 0.01f;

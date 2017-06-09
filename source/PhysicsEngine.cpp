@@ -79,3 +79,8 @@ void PhysicsEngine::handleCollisions()
 		}
 	}
 }
+
+void PhysicsEngine::clear()
+{
+	objects.clear();
+}

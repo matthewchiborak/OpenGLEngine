@@ -49,9 +49,23 @@ void PhysicsObject::integrate(double delta)
 
 Collider* PhysicsObject::getCollider()
 {
-	glm::fvec3 translation = position - oldPosition;
+	//glm::fvec3 
+	translation = position - oldPosition;
 	oldPosition = position;
 
 	collider->transform(translation);
 	return collider;
+}
+
+void PhysicsObject::addToPosition(glm::fvec3 pos)
+{
+	position += pos;
+	oldPosition += pos;
+
+	collider->transform(pos);
+}
+
+glm::fvec3 PhysicsObject::getTranslation()
+{
+	return translation;
 }

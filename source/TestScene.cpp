@@ -17,16 +17,21 @@ void TestScene::init()
 	//MeshRenderer* testMR = new MeshRenderer(MeshManager::getMeshManager()->getMesh("Arwing"), TextureManager::getTextureManager()->getTexture("Arwing"), ShaderManager::getShaderManager()->getShader("Phong"));
 	//root.addComponent(testMR);
 	MeshRenderer* testMR = new MeshRenderer(MeshManager::getMeshManager()->getMesh("Arwing"), TextureManager::getTextureManager()->getTexture("Arwing"));
+	PhysicsObject* testPO = new PhysicsObject(new BoundingSphere(glm::fvec3(0, 0, 0), 1), glm::fvec3(0, 0, 1));
 	GameObject* testObject = new GameObject();
 	testObject->addComponent(testMR);
+	testObject->setPhysicsObject(testPO);
 	root.addChild(testObject);
 
 	GameObject* testObject2 = new GameObject();
 	//MeshRenderer* testMR2 = new MeshRenderer(MeshManager::getMeshManager()->getMesh("Arwing"), TextureManager::getTextureManager()->getTexture("Arwing"), ShaderManager::getShaderManager()->getShader("Phong"));
 	MeshRenderer* testMR2 = new MeshRenderer(MeshManager::getMeshManager()->getMesh("Arwing"), TextureManager::getTextureManager()->getTexture("Arwing"));
+	PhysicsObject* testPO2 = new PhysicsObject(new BoundingSphere(glm::fvec3(0, 0, 0), 1), glm::fvec3(0, 0, -1.5));
 	testObject2->addComponent(testMR2);
-	testObject->addChild(testObject2);
-	testObject2->move(Vec9::createVec9(1, 0, 0, 0, 0, 0, 0, 0, 0));
+	testObject2->setPhysicsObject(testPO2);
+	//testObject->addChild(testObject2);
+	root.addChild(testObject2);
+	testObject2->move(Vec9::createVec9(0.5, 0, 20, 0, 0, 0, 0, 0, 0));
 
 	//Render 
 	//testObject->addDirectionalLight(new DirectionalLight(glm::fvec3(1, 0, 0), glm::fvec3(1, 0, 0), 1));
@@ -36,8 +41,8 @@ void TestScene::init()
 	//camera->setOrthographic(-5, 5, -5, 5, 0.1, 100);
 
 	//Physics Test Setup
-	PhysicsEngine::getPhysicsEngine()->addObject(new PhysicsObject(new BoundingSphere(glm::fvec3(0.5, 0, 0), 1), glm::fvec3(0, 0, 1)));
-	PhysicsEngine::getPhysicsEngine()->addObject(new PhysicsObject(new BoundingSphere(glm::fvec3(0, 0, 10), 1), glm::fvec3(0, 0, -1.5)));
+	//PhysicsEngine::getPhysicsEngine()->addObject(new PhysicsObject(new BoundingSphere(glm::fvec3(0.5, 0, 0), 1), glm::fvec3(0, 0, 1)));
+	//PhysicsEngine::getPhysicsEngine()->addObject(new PhysicsObject(new BoundingSphere(glm::fvec3(0, 0, 10), 1), glm::fvec3(0, 0, -1.5)));
 }
 
 void TestScene::gameInput(Display* display, float delta)

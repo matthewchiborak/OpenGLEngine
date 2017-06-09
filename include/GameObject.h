@@ -12,6 +12,7 @@
 #include "SpotLight.h"
 #include "PointLight.h"
 #include "RenderingEngine.h"
+#include "PhysicsEngine.h"
 
 class GameComponent;
 
@@ -61,6 +62,12 @@ public:
 	//For testing purposes
 	GameObject* getChild(int index);
 
+	void setPhysicsObject(PhysicsObject* object);
+
+	void addtoPhysicsEngine(Transform parentTransform);
+
+	void applyPhysicsSimulationChanges();
+
 protected:
 	std::string name;
 	//Mesh* mesh;
@@ -79,6 +86,8 @@ protected:
 	std::vector<DirectionalLight*> directionalLights;
 	std::vector<PointLight*> pointLights;
 	std::vector<SpotLight*> spotLights;
+
+	PhysicsObject* physicsObject;
 };
 
 #endif

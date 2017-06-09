@@ -3,6 +3,7 @@
 GameObject::GameObject()
 {
 	enabled = true;
+	physicsObject = NULL;
 }
 
 GameObject::GameObject(std::string name, std::string meshFile, Texture* texture, Shader* shader)
@@ -12,6 +13,7 @@ GameObject::GameObject(std::string name, std::string meshFile, Texture* texture,
 	this->texture = texture;
 	this->shader = shader;
 	enabled = true;
+	physicsObject = NULL;
 }
 
 GameObject::GameObject(std::string name, Mesh* mesh, Texture* texture, Shader* shader)
@@ -21,6 +23,7 @@ GameObject::GameObject(std::string name, Mesh* mesh, Texture* texture, Shader* s
 	this->texture = texture;
 	this->shader = shader;
 	enabled = true;
+	physicsObject = NULL;
 }
 
 GameObject::GameObject(std::string name, Mesh* mesh, Texture* texture, Shader* shader, glm::fvec3 dimensions)
@@ -31,6 +34,7 @@ GameObject::GameObject(std::string name, Mesh* mesh, Texture* texture, Shader* s
 	this->shader = shader;
 	this->dimensions = dimensions;
 	enabled = true;
+	physicsObject = NULL;
 }
 
 GameObject* GameObject::createSquare(std::string name, float width, float height, float depth, bool oppositeNormal, float repeatFactorX, float repeatFactorY, Texture* texture, Shader* shader)
@@ -421,6 +425,11 @@ void GameObject::move(Vec9 change)
 	transform.GetScale().x += change.scale.x;
 	transform.GetScale().y += change.scale.y;
 	transform.GetScale().z += change.scale.z;
+
+	if (physicsObject != NULL)
+	{
+		physicsObject->addToPosition(change.pos);
+	}
 }
 void GameObject::setTransform(Vec9 change)
 {
@@ -575,6 +584,20 @@ void GameObject::addToRenderingEngine()
 	}
 }
 
+void GameObject::addtoPhysicsEngine(Transform parentTransform)
+{
+	if (physicsObject != NULL)
+	{
+		//Transform the gameobject based on the physics objects new position MAYBE ILL APPLY THIS LATER TODO
+		PhysicsEngine::getPhysicsEngine()->addObject(physicsObject);
+	}
+
+	for (int i = 0; i < children.size(); i++)
+	{
+		children.at(i)->addtoPhysicsEngine(parentTransform);
+	}
+}
+
 GameObject* GameObject::getChild(int index)
 {
 	if (index >= children.size() || index < 0)
@@ -583,4 +606,26 @@ GameObject* GameObject::getChild(int index)
 	}
 
 	return children.at(index);
+}
+
+void GameObject::setPhysicsObject(PhysicsObject* object)
+{
+	physicsObject = object;
+	object->addToPosition(transform.GetPos());
+}
+
+void GameObject::applyPhysicsSimulationChanges()
+{
+	if (physicsObject != NULL)
+	{
+		//Tranform the gameobjects tranform based on the physicsobject's new position
+		//transform.SetPos(physicsObject->getPosition());
+		//transform.GetPos() += physicsObject->getDifference();
+		transform.SetPos(transform.GetPos() + physicsObject->getTranslation());
+	}
+
+	for (int i = 0; i < children.size(); i++)
+	{
+		children.at(i)->applyPhysicsSimulationChanges();
+	}
 }

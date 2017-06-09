@@ -22,10 +22,15 @@ public:
 
 	Collider* getCollider();
 
+	void addToPosition(glm::fvec3 pos);
+	glm::fvec3 getTranslation();
+
 private:
 	glm::fvec3 position;
 	glm::fvec3 oldPosition;
 	glm::fvec3 velocity;
+
+	glm::fvec3 translation;
 
 	Collider* collider;
 };

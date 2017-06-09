@@ -20,6 +20,8 @@ public:
 
 	void handleCollisions();
 
+	void clear();
+
 private:
 	static PhysicsEngine* s_instance;
 
