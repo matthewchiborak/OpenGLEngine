@@ -41,3 +41,8 @@ glm::fvec3 Collider::getCenter()
 {
 	return glm::fvec3(0, 0, 0);
 }
+
+void Collider::setCenter(glm::fvec3 pos)
+{
+
+}

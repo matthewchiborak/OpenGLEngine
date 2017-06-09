@@ -589,12 +589,18 @@ void GameObject::addtoPhysicsEngine(Transform parentTransform)
 	if (physicsObject != NULL)
 	{
 		//Transform the gameobject based on the physics objects new position MAYBE ILL APPLY THIS LATER TODO
+		physicsObject->resetPositionWithOriginalOffset(transform.GetPos() + parentTransform.GetPos());
 		PhysicsEngine::getPhysicsEngine()->addObject(physicsObject);
 	}
 
+	Transform newTransform = transform;
+	newTransform.GetPos() += parentTransform.GetPos();
+	newTransform.GetRot() += parentTransform.GetRot();
+	newTransform.GetScale() *= parentTransform.GetScale();
+
 	for (int i = 0; i < children.size(); i++)
 	{
-		children.at(i)->addtoPhysicsEngine(parentTransform);
+		children.at(i)->addtoPhysicsEngine(newTransform);
 	}
 }
 

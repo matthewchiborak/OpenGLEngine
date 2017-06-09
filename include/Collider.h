@@ -24,6 +24,7 @@ public:
 	virtual IntersectData intersect(Collider* other);
 	virtual void transform(glm::fvec3 translation);
 	virtual glm::fvec3 getCenter();
+	virtual void setCenter(glm::fvec3 center);
 
 protected:
 	int type;

@@ -25,10 +25,14 @@ public:
 	void addToPosition(glm::fvec3 pos);
 	glm::fvec3 getTranslation();
 
+	void resetPositionWithOriginalOffset(glm::fvec3 pos);
+
 private:
 	glm::fvec3 position;
 	glm::fvec3 oldPosition;
 	glm::fvec3 velocity;
+
+	glm::fvec3 offset;
 
 	glm::fvec3 translation;
 

@@ -13,6 +13,7 @@ PhysicsObject::PhysicsObject(Collider* collider, glm::fvec3 velocity)
 	this->velocity = velocity;
 	this->position = collider->getCenter();
 	this->oldPosition = collider->getCenter();
+	this->offset = collider->getCenter();
 }
 
 PhysicsObject::~PhysicsObject()
@@ -68,4 +69,10 @@ void PhysicsObject::addToPosition(glm::fvec3 pos)
 glm::fvec3 PhysicsObject::getTranslation()
 {
 	return translation;
+}
+
+void PhysicsObject::resetPositionWithOriginalOffset(glm::fvec3 pos)
+{
+	position = pos + offset;
+	collider->setCenter(position);
 }
