@@ -52,10 +52,23 @@ void TestScene::gameInput(Display* display, float delta)
 	//Check the physics events
 	for (int i = 0; i < objectsAffectedByPhysics.size(); i++)
 	{
-		std::cout << i << ": ObjectPos: " << objectsAffectedByPhysics.at(i)->getTransform()->GetPos().z << "\n";
-		std::cout << i << ": PhysicsObjectPos: " << objectsAffectedByPhysics.at(i)->getPhysicsObject()->getPosition().z << "\n";
-		std::cout << i << ": PhysicsObjectPos: " << objectsAffectedByPhysics.at(i)->getPhysicsObject()->getVelocity().z << "\n";
-		std::cout << i << ": ColliderCenter: " << objectsAffectedByPhysics.at(i)->getPhysicsObject()->getCollider()->getCenter().z << "\n";
+		//Handle collisions
+		glm::fvec3 direction = objectsAffectedByPhysics.at(i)->getPhysicsObject()->getLastIntersetData().getDirection() / objectsAffectedByPhysics.at(i)->getPhysicsObject()->getLastIntersetData().getDistance();
+		//glm::fvec3 otherDirection = direction.Reflect(objects.at(i)->getVelocity().normalized);
+		float directionMagnitude = sqrtf((objectsAffectedByPhysics.at(i)->getPhysicsObject()->getVelocity().x * objectsAffectedByPhysics.at(i)->getPhysicsObject()->getVelocity().x)
+			+ (objectsAffectedByPhysics.at(i)->getPhysicsObject()->getVelocity().y * objectsAffectedByPhysics.at(i)->getPhysicsObject()->getVelocity().y)
+			+ (objectsAffectedByPhysics.at(i)->getPhysicsObject()->getVelocity().z * objectsAffectedByPhysics.at(i)->getPhysicsObject()->getVelocity().z));
+
+		glm::fvec3 tempDirection = objectsAffectedByPhysics.at(i)->getPhysicsObject()->getVelocity() / directionMagnitude;
+		float reflect = 2 * ((direction.x * tempDirection.x) + (direction.y * tempDirection.y) + (direction.z * tempDirection.z));
+
+		glm::fvec3 otherDirection = direction - (tempDirection * reflect);
+
+		//Now to set the new velocities
+		//glm::fvec3 newVelo1 = objects.at(i)->getVelocity().reflect(otherDirection);
+		float reflect2 = 2 * ((objectsAffectedByPhysics.at(i)->getPhysicsObject()->getVelocity().x * otherDirection.x) + (objectsAffectedByPhysics.at(i)->getPhysicsObject()->getVelocity().y * otherDirection.y) + (objectsAffectedByPhysics.at(i)->getPhysicsObject()->getVelocity().z * otherDirection.z));
+		glm::fvec3 newVelo1 = objectsAffectedByPhysics.at(i)->getPhysicsObject()->getVelocity() - (otherDirection * reflect2);
+		objectsAffectedByPhysics.at(i)->getPhysicsObject()->setVelocity(newVelo1);
 	}
 
 	//TEST CODE
