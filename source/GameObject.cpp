@@ -620,6 +620,11 @@ void GameObject::setPhysicsObject(PhysicsObject* object)
 	object->addToPosition(transform.GetPos());
 }
 
+PhysicsObject* GameObject::getPhysicsObject()
+{
+	return physicsObject;
+}
+
 void GameObject::applyPhysicsSimulationChanges()
 {
 	if (physicsObject != NULL)
@@ -633,5 +638,22 @@ void GameObject::applyPhysicsSimulationChanges()
 	for (int i = 0; i < children.size(); i++)
 	{
 		children.at(i)->applyPhysicsSimulationChanges();
+	}
+}
+
+void GameObject::addToHandlePhysicsVector(std::vector<GameObject*>* objectVector)
+{
+	if (physicsObject != NULL)
+	{
+		if (physicsObject->hasNewIntersectData())
+		{
+			physicsObject->setHadNewIntersectData(false);
+			objectVector->push_back(this);
+		}
+	}
+
+	for (int i = 0; i < children.size(); i++)
+	{
+		children.at(i)->addToHandlePhysicsVector(objectVector);
 	}
 }

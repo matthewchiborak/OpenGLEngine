@@ -63,10 +63,13 @@ public:
 	GameObject* getChild(int index);
 
 	void setPhysicsObject(PhysicsObject* object);
+	PhysicsObject* getPhysicsObject();
 
 	void addtoPhysicsEngine(Transform parentTransform);
 
 	void applyPhysicsSimulationChanges();
+
+	void addToHandlePhysicsVector(std::vector<GameObject*>* objectVector);
 
 protected:
 	std::string name;

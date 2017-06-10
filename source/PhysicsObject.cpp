@@ -14,6 +14,8 @@ PhysicsObject::PhysicsObject(Collider* collider, glm::fvec3 velocity)
 	this->position = collider->getCenter();
 	this->oldPosition = collider->getCenter();
 	this->offset = collider->getCenter();
+
+	lastIntersectDataIsSet = false;
 }
 
 PhysicsObject::~PhysicsObject()
@@ -75,4 +77,26 @@ void PhysicsObject::resetPositionWithOriginalOffset(glm::fvec3 pos)
 {
 	position = pos + offset;
 	collider->setCenter(position);
+}
+
+void PhysicsObject::setLastIntersectData(IntersectData lastData)
+{
+	lastIntersectDataIsSet = true;
+	lastIntersectData = lastData;
+}
+
+IntersectData PhysicsObject::getLastIntersetData()
+{
+	//lastIntersectDataIsSet = false;
+	return lastIntersectData;
+}
+
+bool PhysicsObject::hasNewIntersectData()
+{
+	return lastIntersectDataIsSet;
+}
+
+void PhysicsObject::setHadNewIntersectData(bool status)
+{
+	lastIntersectDataIsSet = status;
 }

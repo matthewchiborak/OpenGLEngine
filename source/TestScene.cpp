@@ -47,6 +47,17 @@ void TestScene::init()
 
 void TestScene::gameInput(Display* display, float delta)
 {
+	//std::cout << objectsAffectedByPhysics.size() << "\n";
+
+	//Check the physics events
+	for (int i = 0; i < objectsAffectedByPhysics.size(); i++)
+	{
+		std::cout << i << ": ObjectPos: " << objectsAffectedByPhysics.at(i)->getTransform()->GetPos().z << "\n";
+		std::cout << i << ": PhysicsObjectPos: " << objectsAffectedByPhysics.at(i)->getPhysicsObject()->getPosition().z << "\n";
+		std::cout << i << ": PhysicsObjectPos: " << objectsAffectedByPhysics.at(i)->getPhysicsObject()->getVelocity().z << "\n";
+		std::cout << i << ": ColliderCenter: " << objectsAffectedByPhysics.at(i)->getPhysicsObject()->getCollider()->getCenter().z << "\n";
+	}
+
 	//TEST CODE
 	if (display->checkKey(SDLK_w))
 	{

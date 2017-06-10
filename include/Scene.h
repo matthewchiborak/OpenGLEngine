@@ -52,6 +52,11 @@ public:
 	void input(Display* display, float delta);
 	virtual void gameInput(Display* display, float delta);
 
+	//Returns list of gameObjects that have a collision
+	void handlePhysics();
+	//Recursively find all the objects
+	/*void addToHandlePhysicsVector(GameObject* object, std::vector<GameObject*>* objectVector);*/
+
 protected:
 	std::string name;
 	Camera* camera;
@@ -64,6 +69,8 @@ protected:
 	static int NUM_TEXTURES;
 
 	GameObject root;
+
+	std::vector<GameObject*> objectsAffectedByPhysics;
 	
 	/*virtual void update();
 	virtual void input(Display* display);

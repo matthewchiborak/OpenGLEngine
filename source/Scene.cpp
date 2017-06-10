@@ -116,6 +116,7 @@ GameObject* Scene::getGameObject(std::string name)
 void Scene::update(float delta)
 {
 	root.update(delta);
+	handlePhysics();
 }
 void Scene::input(Display* display, float delta)
 {
@@ -127,6 +128,34 @@ void Scene::gameInput(Display* display, float delta)
 {
 
 }
+
+void Scene::handlePhysics()
+{
+	/*if (objectsAffectedByPhysics.size() > 0)
+	{
+		std::cout << "HI";
+	}*/
+
+	objectsAffectedByPhysics.clear();
+
+	root.addToHandlePhysicsVector(&objectsAffectedByPhysics);
+}
+
+//void Scene::addToHandlePhysicsVector(GameObject* object, std::vector<GameObject*>* objectVector)
+//{
+//	if (object->getPhysicsObject != NULL)
+//	{
+//		if (object->getPhysicsObject()->hasNewIntersectData())
+//		{
+//			objectVector->push_back(object);
+//		}
+//	}
+//
+//	for (int i = 0; i < object->get)
+//	{
+//
+//	}
+//}
 
 GameObject* Scene::getRootObject()
 {

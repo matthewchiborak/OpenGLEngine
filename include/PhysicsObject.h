@@ -27,6 +27,11 @@ public:
 
 	void resetPositionWithOriginalOffset(glm::fvec3 pos);
 
+	void setLastIntersectData(IntersectData lastData);
+	IntersectData getLastIntersetData();
+	bool hasNewIntersectData();
+	void setHadNewIntersectData(bool status);
+
 private:
 	glm::fvec3 position;
 	glm::fvec3 oldPosition;
@@ -37,6 +42,10 @@ private:
 	glm::fvec3 translation;
 
 	Collider* collider;
+
+	//Might want to store the last two so can tell enter and exit collision events
+	bool lastIntersectDataIsSet;
+	IntersectData lastIntersectData;
 };
 
 #endif

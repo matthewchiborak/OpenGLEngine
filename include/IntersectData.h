@@ -6,6 +6,7 @@
 class IntersectData
 {
 public:
+	IntersectData();
 	IntersectData(bool doesIntersect, glm::fvec3 direction);
 	~IntersectData();
 

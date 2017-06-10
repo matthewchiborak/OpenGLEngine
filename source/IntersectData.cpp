@@ -6,6 +6,11 @@ IntersectData::IntersectData(bool doesIntersect, glm::fvec3 direction)
 	this->direction = direction;
 }
 
+IntersectData::IntersectData()
+{
+
+}
+
 IntersectData::~IntersectData()
 {
 }
