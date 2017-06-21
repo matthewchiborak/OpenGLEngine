@@ -93,10 +93,13 @@ void TestScene::gameInput(Display* display, float delta)
 		camera->movePosition(movementAmount);
 	}
 
-	if (display->checkKey(SDLK_e))
-	{
-		root.getChild(0)->move(Vec9::createVec9(0.1, 0, 0, 0, 0, 0, 0, 0, 0));
-	}
+	//if (display->checkKey(SDLK_e))
+	//{
+	//	//root.getChild(0)->move(Vec9::createVec9(0.1, 0, 0, 0, 0, 0, 0, 0, 0));
+	//	AudioSource testSource;
+	//	testSource.setAudioClip(AudioEngine::getAudioEngine()->getAudioClip("SCM"));
+	//	testSource.play();
+	//}
 	if (display->checkKey(SDLK_r))
 	{
 		root.getChild(0)->move(Vec9::createVec9(-0.1, 0, 0, 0, 0, 0, 0, 0, 0));
