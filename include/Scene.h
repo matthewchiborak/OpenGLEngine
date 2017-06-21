@@ -17,6 +17,12 @@
 #include "PhysicsEngine.h"
 //#include "AudioEngine.h"
 //#include "AudioSource.h"
+#include "IAudioDevice.h"
+#include "IAudioContext.h"
+#include "AudioObject.h"
+#include "SDLAudioDevice.h"
+#include "SDLAudioContext.h"
+#include "SampleInfo.h"
 
 #include <D:/OpenGL2017/glm-0.9.8.4/glm-0.9.8.4/glm/glm.hpp>
 
@@ -73,6 +79,13 @@ protected:
 	GameObject root;
 
 	std::vector<GameObject*> objectsAffectedByPhysics;
+
+	//Audio Components
+	IAudioDevice* device;
+	//IAudioContext* context;
+	std::vector<IAudioContext*> audioSources;
+
+	std::vector<AudioObject*> audioClips;
 	
 	/*virtual void update();
 	virtual void input(Display* display);

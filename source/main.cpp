@@ -9,22 +9,22 @@
 #define HEIGHT 600
 
 //TEST CODE
-#define FILE_PATH ".\\res\\testClip.wav"
+//#define FILE_PATH ".\\res\\testClip.wav"
 //#include "iaudiodevice.hpp"
 //#include "iaudiocontext.hpp"
 //#include "audioobject.hpp"
-#include "../include/IAudioDevice.h"
-#include "../include/IAudioContext.h"
-#include "../include/AudioObject.h"
-#include "../include/SDLAudioDevice.h"
-#include "../include/SDLAudioContext.h"
-#include "../include/SampleInfo.h"
+//#include "../include/IAudioDevice.h"
+//#include "../include/IAudioContext.h"
+//#include "../include/AudioObject.h"
+//#include "../include/SDLAudioDevice.h"
+//#include "../include/SDLAudioContext.h"
+//#include "../include/SampleInfo.h"
 
 int main(int argc, char** argv)
 {
 	//TEST CODE
-	SDL_Init(SDL_INIT_AUDIO);
-	IAudioDevice* device = new SDLAudioDevice();
+	//SDL_Init(SDL_INIT_AUDIO);
+	/*IAudioDevice* device = new SDLAudioDevice();
 	IAudioContext* context = new SDLAudioContext();
 
 	IAudioData* data = device->createAudioFromFile(FILE_PATH);
@@ -54,7 +54,7 @@ int main(int argc, char** argv)
 
 	device->releaseAudio(data);
 	delete context;
-	delete device;
+	delete device;*/
 
 	//TEST CODE
 

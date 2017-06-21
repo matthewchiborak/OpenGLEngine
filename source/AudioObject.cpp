@@ -1,4 +1,5 @@
 #include "../include/AudioObject.h"
+#include <iostream>
 
 AudioObject::AudioObject(const SampleInfo& info, IAudioData* data)
 {
@@ -10,6 +11,10 @@ AudioObject::AudioObject(const SampleInfo& info, IAudioData* data)
 
 AudioObject::~AudioObject()
 {
+	if (m_audioData != NULL)
+	{
+		delete m_audioData;
+	}
 }
 
 bool AudioObject::generateSamples(float* stream, size_t streamLength)

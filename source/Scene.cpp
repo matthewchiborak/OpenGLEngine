@@ -86,6 +86,26 @@ Scene::~Scene()
 
 	//TODO CLEAN UP THE SCENE GRAPH
 
+	//TODO clean up audioClips
+	for (int i = 0; i < audioClips.size(); i++)
+	{
+		if (audioClips.at(i) != NULL)
+		{
+			delete audioClips.at(i);
+		}
+	}
+	for (int i = 0; i < audioSources.size(); i++)
+	{
+		if (audioSources.at(i) != NULL)
+		{
+			delete audioSources.at(i);
+		}
+	}
+	if (device != NULL)
+	{
+		delete device;
+	}
+	
 	if (camera != NULL)
 		delete camera;
 }

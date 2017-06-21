@@ -43,6 +43,30 @@ void TestScene::init()
 	//Physics Test Setup
 	//PhysicsEngine::getPhysicsEngine()->addObject(new PhysicsObject(new BoundingSphere(glm::fvec3(0.5, 0, 0), 1), glm::fvec3(0, 0, 1)));
 	//PhysicsEngine::getPhysicsEngine()->addObject(new PhysicsObject(new BoundingSphere(glm::fvec3(0, 0, 10), 1), glm::fvec3(0, 0, -1.5)));
+
+	device = new SDLAudioDevice();
+
+	//Create all the desired audio sources
+	for (int i = 0; i < 2; i++)
+	{
+		audioSources.push_back(new SDLAudioContext());
+	}
+
+	//Test clip 1
+	IAudioData* data = device->createAudioFromFile(".\\res\\testClip.wav");
+
+	SampleInfo info;
+	info.volume = 1.0;
+
+	audioClips.push_back(new AudioObject(info, data));
+
+	//Test Clip 2
+	IAudioData* data2 = device->createAudioFromFile(".\\res\\starfox.wav");
+
+	SampleInfo info2;
+	info2.volume = 1.0;
+
+	audioClips.push_back(new AudioObject(info2, data2));
 }
 
 void TestScene::gameInput(Display* display, float delta)
@@ -69,7 +93,13 @@ void TestScene::gameInput(Display* display, float delta)
 		float reflect2 = 2 * ((objectsAffectedByPhysics.at(i)->getPhysicsObject()->getVelocity().x * otherDirection.x) + (objectsAffectedByPhysics.at(i)->getPhysicsObject()->getVelocity().y * otherDirection.y) + (objectsAffectedByPhysics.at(i)->getPhysicsObject()->getVelocity().z * otherDirection.z));
 		glm::fvec3 newVelo1 = objectsAffectedByPhysics.at(i)->getPhysicsObject()->getVelocity() - (otherDirection * reflect2);
 		objectsAffectedByPhysics.at(i)->getPhysicsObject()->setVelocity(newVelo1);
+
+		//Test playing an audio clip on collision
+		//audioSources.at(0)->playAudio(*audioClips.at(0));
 	}
+
+	//Handle Audio
+	//audioSources.at(1)->playAudio(*audioClips.at(1));
 
 	//TEST CODE
 	if (display->checkKey(SDLK_w))
@@ -93,6 +123,15 @@ void TestScene::gameInput(Display* display, float delta)
 		camera->movePosition(movementAmount);
 	}
 
+	if (display->checkKey(SDLK_f))
+	{
+		audioSources.at(0)->playAudio(*audioClips.at(0));
+	}
+	if (display->checkKey(SDLK_r))
+	{
+		audioSources.at(0)->stopAudio(*audioClips.at(0));
+	}
+
 	//if (display->checkKey(SDLK_e))
 	//{
 	//	//root.getChild(0)->move(Vec9::createVec9(0.1, 0, 0, 0, 0, 0, 0, 0, 0));
@@ -100,14 +139,14 @@ void TestScene::gameInput(Display* display, float delta)
 	//	testSource.setAudioClip(AudioEngine::getAudioEngine()->getAudioClip("SCM"));
 	//	testSource.play();
 	//}
-	if (display->checkKey(SDLK_r))
-	{
-		root.getChild(0)->move(Vec9::createVec9(-0.1, 0, 0, 0, 0, 0, 0, 0, 0));
-	}
-	if (display->checkKey(SDLK_t))
-	{
-		root.getChild(0)->getChild(0)->move(Vec9::createVec9(-0.1, 0, 0, 0, 0, 0, 0, 0, 0));
-	}
+	//if (display->checkKey(SDLK_r))
+	//{
+	//	root.getChild(0)->move(Vec9::createVec9(-0.1, 0, 0, 0, 0, 0, 0, 0, 0));
+	//}
+	//if (display->checkKey(SDLK_t))
+	//{
+	//	root.getChild(0)->getChild(0)->move(Vec9::createVec9(-0.1, 0, 0, 0, 0, 0, 0, 0, 0));
+	//}
 
 	camera->rotateX(camera->getSensitivity() * display->getMouseDifX());
 	camera->rotateY(camera->getSensitivity() * display->getMouseDifY());
