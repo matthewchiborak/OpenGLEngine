@@ -17,8 +17,8 @@ SDLWavAudioData::SDLWavAudioData(const std::string& fileName, bool streamFromFil
 
 	m_pos = wavStart;
 	m_start = wavStart;
-	//THIS IS WHERE ITS BREAKING
 	m_length = wavLength;
+	m_totalLength = wavLength;
 }
 
 SDLWavAudioData::~SDLWavAudioData()
@@ -31,6 +31,15 @@ size_t SDLWavAudioData::generateSamples(float* stream, size_t streamsLength, siz
 	if (m_length == 0)
 	{
 		return (size_t)-1;
+	}
+
+	//m_pos = pos;
+	//std::cout << *stream << " | " << m_length << " | " << (Uint32)streamsLength << " | " << pos << " | " << *(Sint16*)m_pos << " \n ";
+	//Need to update m_pos based on pos's value
+	if (pos == 0)
+	{
+		m_pos = m_start;
+		m_length = m_totalLength;
 	}
 
 	Uint32 length = (Uint32)streamsLength;
@@ -62,7 +71,8 @@ size_t SDLWavAudioData::generateSamples(float* stream, size_t streamsLength, siz
 
 	if ((int)m_length - (int)(length * 2) < 0)
 	{
-		m_length = 0;
+		//m_length = 0;
+		m_length = m_totalLength;
 		return (size_t)-1;
 	}
 

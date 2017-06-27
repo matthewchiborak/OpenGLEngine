@@ -47,7 +47,7 @@ void TestScene::init()
 	device = new SDLAudioDevice();
 
 	//Create all the desired audio sources
-	for (int i = 0; i < 2; i++)
+	for (int i = 0; i < 3; i++)
 	{
 		audioSources.push_back(new SDLAudioContext());
 	}
@@ -64,9 +64,17 @@ void TestScene::init()
 	IAudioData* data2 = device->createAudioFromFile(".\\res\\starfox.wav");
 
 	SampleInfo info2;
-	info2.volume = 1.0;
+	info2.volume = 0.5;
 
 	audioClips.push_back(new AudioObject(info2, data2));
+
+	//TestClip 3
+	IAudioData* data3 = device->createAudioFromFile(".\\res\\hit.wav");
+
+	SampleInfo info3;
+	info3.volume = 1.0;
+
+	audioClips.push_back(new AudioObject(info3, data3));
 }
 
 void TestScene::gameInput(Display* display, float delta)
@@ -76,6 +84,9 @@ void TestScene::gameInput(Display* display, float delta)
 	//Check the physics events
 	for (int i = 0; i < objectsAffectedByPhysics.size(); i++)
 	{
+		//Test sound effect
+		audioSources.at(2)->playAudio(*audioClips.at(2));
+
 		//Handle collisions
 		glm::fvec3 direction = objectsAffectedByPhysics.at(i)->getPhysicsObject()->getLastIntersetData().getDirection() / objectsAffectedByPhysics.at(i)->getPhysicsObject()->getLastIntersetData().getDistance();
 		//glm::fvec3 otherDirection = direction.Reflect(objects.at(i)->getVelocity().normalized);
@@ -131,6 +142,13 @@ void TestScene::gameInput(Display* display, float delta)
 	{
 		audioSources.at(0)->stopAudio(*audioClips.at(0));
 	}
+	if (display->checkKey(SDLK_t))
+	{
+		audioSources.at(0)->pauseAudio(*audioClips.at(0));
+	}
+
+	//Test looping background music
+	audioSources.at(1)->playAudio(*audioClips.at(1));
 
 	//if (display->checkKey(SDLK_e))
 	//{
