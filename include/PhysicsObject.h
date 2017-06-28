@@ -32,6 +32,9 @@ public:
 	bool hasNewIntersectData();
 	void setHadNewIntersectData(bool status);
 
+	std::string getName();
+	void setName(std::string name);
+
 private:
 	glm::fvec3 position;
 	glm::fvec3 oldPosition;
@@ -46,6 +49,8 @@ private:
 	//Might want to store the last two so can tell enter and exit collision events
 	bool lastIntersectDataIsSet;
 	IntersectData lastIntersectData;
+
+	std::string name;
 };
 
 #endif

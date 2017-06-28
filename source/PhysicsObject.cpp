@@ -100,3 +100,12 @@ void PhysicsObject::setHadNewIntersectData(bool status)
 {
 	lastIntersectDataIsSet = status;
 }
+
+std::string PhysicsObject::getName()
+{
+	return name;
+}
+void PhysicsObject::setName(std::string name)
+{
+	this->name = name;
+}

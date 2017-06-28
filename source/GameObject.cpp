@@ -1,9 +1,10 @@
 #include "../include/GameObject.h"
 
-GameObject::GameObject()
+GameObject::GameObject(std::string name)
 {
 	enabled = true;
 	physicsObject = NULL;
+	this->name = name;
 }
 
 GameObject::GameObject(std::string name, std::string meshFile, Texture* texture, Shader* shader)
@@ -617,6 +618,10 @@ GameObject* GameObject::getChild(int index)
 void GameObject::setPhysicsObject(PhysicsObject* object)
 {
 	physicsObject = object;
+
+	//Pass on the name
+	object->setName(name);
+
 	object->addToPosition(transform.GetPos());
 }
 

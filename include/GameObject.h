@@ -21,7 +21,7 @@ class GameComponent;
 class GameObject
 {
 public:
-	GameObject();
+	GameObject(std::string name = "None");
 	GameObject(std::string name, std::string meshFile, Texture* texture, Shader* shader);
 	GameObject(std::string name, Mesh* mesh, Texture* texture, Shader* shader);
 	GameObject(std::string name, Mesh* mesh, Texture* texture, Shader* shader, glm::fvec3 dimensions);

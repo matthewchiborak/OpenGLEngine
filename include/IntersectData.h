@@ -2,6 +2,7 @@
 #define __INTERSECTDATA_H
 
 #include <D:/OpenGL2017/glm-0.9.8.4/glm-0.9.8.4/glm/glm.hpp>
+#include <string>
 
 class IntersectData
 {
@@ -15,6 +16,8 @@ public:
 	bool getDoesIntersect();
 	glm::fvec3 getDirection();
 	float getDistance();
+
+	std::string colliderName;
 
 private:
 	bool doesIntersect;

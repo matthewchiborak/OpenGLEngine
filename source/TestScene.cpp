@@ -18,12 +18,12 @@ void TestScene::init()
 	//root.addComponent(testMR);
 	MeshRenderer* testMR = new MeshRenderer(MeshManager::getMeshManager()->getMesh("Arwing"), TextureManager::getTextureManager()->getTexture("Arwing"));
 	PhysicsObject* testPO = new PhysicsObject(new BoundingSphere(glm::fvec3(0, 0, 0), 1), glm::fvec3(0, 0, 1));
-	GameObject* testObject = new GameObject();
+	GameObject* testObject = new GameObject("Ship1");
 	testObject->addComponent(testMR);
 	testObject->setPhysicsObject(testPO);
 	root.addChild(testObject);
 
-	GameObject* testObject2 = new GameObject();
+	GameObject* testObject2 = new GameObject("Ship2");
 	//MeshRenderer* testMR2 = new MeshRenderer(MeshManager::getMeshManager()->getMesh("Arwing"), TextureManager::getTextureManager()->getTexture("Arwing"), ShaderManager::getShaderManager()->getShader("Phong"));
 	MeshRenderer* testMR2 = new MeshRenderer(MeshManager::getMeshManager()->getMesh("Arwing"), TextureManager::getTextureManager()->getTexture("Arwing"));
 	PhysicsObject* testPO2 = new PhysicsObject(new BoundingSphere(glm::fvec3(0, 0, 0), 1), glm::fvec3(0, 0, -1.5));
@@ -85,7 +85,10 @@ void TestScene::gameInput(Display* display, float delta)
 	for (int i = 0; i < objectsAffectedByPhysics.size(); i++)
 	{
 		//Test sound effect
-		audioSources.at(2)->playAudio(*audioClips.at(2));
+		if (objectsAffectedByPhysics.at(i)->getPhysicsObject()->getLastIntersetData().colliderName == "Ship1")
+		{
+			audioSources.at(2)->playAudio(*audioClips.at(2));
+		}
 
 		//Handle collisions
 		glm::fvec3 direction = objectsAffectedByPhysics.at(i)->getPhysicsObject()->getLastIntersetData().getDirection() / objectsAffectedByPhysics.at(i)->getPhysicsObject()->getLastIntersetData().getDistance();
